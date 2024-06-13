@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bubbleBlue">#25FDFF</color>
+    <color name="blueLight">#02B2B4</color>
+    <color name="gray">#b3acaf</color>
+    <color name="red">#F44336</color>
+    <color name="grayLight">#EBEFF1</color>
+    <color name="dark">#252627</color>
+    <color name="darkHeavy">#000407</color>
+    <color name="darkLight">#2F3032</color>
+
+    <color name="switch_thumb_checked">#03D8DA</color> <!-- Màu đỏ khi bật -->
+    <color name="switch_thumb_unchecked">#767676</color> <!-- Màu xanh lá khi tắt -->
+    <color name="switch_track_checked">#80e2e3</color> <!-- Xanh dương bán trong suốt khi bật -->
+    <color name="switch_track_unchecked">#adadad</color> <!-- Xanh lá bán trong suốt khi tắt -->
+
+</resources>

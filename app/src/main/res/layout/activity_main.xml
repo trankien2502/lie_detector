@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkHeavy"
+    android:layout_weight="3"
+    android:orientation="vertical"
+    tools:context=".activity.MainActivity">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/img_home_foreground"/>
+    <FrameLayout
+        android:id="@+id/layout_scanner"
+        android:layout_width="350dp"
+        android:layout_marginTop="-50dp"
+        android:layout_gravity="center"
+        android:layout_height="150dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/img_button_border_home" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:padding="12dp"
+                android:layout_marginStart="50dp"
+                android:src="@drawable/imc_finger_print1" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="2dp"
+                android:text="SCANNER"
+                android:gravity="center"
+                android:fontFamily="@font/druk_text_wide_medium_trial"
+                android:textColor="@color/white"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/layout_sound"
+        android:layout_width="350dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="-40dp"
+        android:layout_height="150dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/img_button_border_home"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="12dp"
+                android:layout_marginStart="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/img_audio1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="2dp"
+                android:text="SOUND"
+                android:gravity="center"
+                android:fontFamily="@font/druk_text_wide_medium_trial"
+                android:textColor="@color/white"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

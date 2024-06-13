@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">LieDetector</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="sound_name_0">AIR HORN</string>
+    <string name="sound_name_1">LAUGH</string>
+    <string name="sound_name_2">CLAPS</string>
+    <string name="sound_name_3">WHISTLE</string>
+    <string name="sound_name_4">FART</string>
+    <string name="sound_name_5">PUNCH</string>
+    <string name="sound_name_6">OMG</string>
+    <string name="sound_name_7">POLICE</string>
+    <string name="sound_name_8">REMOTE</string>
+    <string name="sound_name_9">CAT</string>
+    <string name="sound_name_10">BROKE</string>
+    <string name="sound_name_11">MOUSE</string>
+    <string name="sound_name_12">DOG</string>
+    <string name="sound_name_13">BOMB</string>
+    <string name="sound_name_14">FART</string>
+    <string name="sound_name_15">DOOR</string>
+    <string name="sound_name_16">GHOST</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
