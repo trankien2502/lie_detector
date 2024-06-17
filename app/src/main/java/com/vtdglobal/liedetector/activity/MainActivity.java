@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         mActivityMainBinding.layoutScanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(MainActivity.this, FingerPrintScannerActivity.class);
+                startActivity(intent);
             }
         });
         mActivityMainBinding.layoutSound.setOnClickListener(new View.OnClickListener() {

@@ -10,6 +10,10 @@
     <color name="dark">#252627</color>
     <color name="darkHeavy">#000407</color>
     <color name="darkLight">#2F3032</color>
+    <color name="none">#00000000</color>
+    <color name="liar">#FF3232</color>
+    <color name="truth">#01e98a</color>
+    <color name="grayDefault">#969696</color>
 
     <color name="switch_thumb_checked">#03D8DA</color> <!-- Màu đỏ khi bật -->
     <color name="switch_thumb_unchecked">#767676</color> <!-- Màu xanh lá khi tắt -->

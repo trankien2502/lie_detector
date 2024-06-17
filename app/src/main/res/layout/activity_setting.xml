@@ -15,17 +15,7 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/tvfsvf"
-                android:padding="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="fhjbvfhvjfvnsxivbfsfjknf"
-                android:gravity="center_horizontal"
-                android:layout_gravity="center"/>
-        </LinearLayout>
+            android:layout_height="match_parent"/>
         <!--        <androidx.viewpager2.widget.ViewPager2-->
         <!--            android:id="@+id/view_pager_2_sounds"-->
         <!--            android:layout_width="match_parent"-->
