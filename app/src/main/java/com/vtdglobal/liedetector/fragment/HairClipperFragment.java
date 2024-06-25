@@ -18,7 +18,7 @@ public class HairClipperFragment extends Fragment {
     FragmentHairClipperBinding mFragmentHairClipperBinding;
     boolean isClipperOn = false;
     MediaPlayer mediaPlayer;
-    private int currentPosition = 0;
+    private int currentPosition;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class HairClipperFragment extends Fragment {
     }
 
     private void initListener() {
-        mFragmentHairClipperBinding.btnClipperOn.setOnClickListener(new View.OnClickListener() {
+        mFragmentHairClipperBinding.imgClipper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(isClipperOn){
@@ -46,8 +46,8 @@ public class HairClipperFragment extends Fragment {
 
     private void onClickClipperOn() {
         if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.sound_alarm);
-            mediaPlayer.seekTo(currentPosition);
+            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.hair_clipper);
+            mediaPlayer.seekTo(0);
             mediaPlayer.start();
         } else if (!mediaPlayer.isPlaying()) {
             mediaPlayer.seekTo(currentPosition);
@@ -55,20 +55,17 @@ public class HairClipperFragment extends Fragment {
         }
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                isClipperOn = false;
-                mFragmentHairClipperBinding.imgClipper.setImageResource(R.drawable.img_clipper_off);
+            public void onCompletion(MediaPlayer mp) {
+                mp.seekTo(0);
+                mp.start();
             }
         });
     }
 
     private void onClickClipperOff() {
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            // Resetting the mediaPlayer to be prepared for another play
-            mediaPlayer.reset();
-            mediaPlayer.release();
-            mediaPlayer = null;
+            mediaPlayer.pause();
+            currentPosition = mediaPlayer.getCurrentPosition();
         }
     }
 

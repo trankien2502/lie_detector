@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/darkHeavy"
     android:layout_weight="3"
-    android:orientation="vertical"
     tools:context=".activity.MainActivity">
     <ImageView
+        android:id="@+id/img_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:src="@drawable/img_home_foreground"/>
     <FrameLayout
         android:id="@+id/layout_scanner"
+        android:layout_above="@+id/layout_sound"
+        android:layout_centerHorizontal="true"
         android:layout_width="350dp"
-        android:layout_marginTop="-50dp"
         android:layout_gravity="center"
         android:layout_height="150dp">
 
@@ -54,8 +55,10 @@
     <FrameLayout
         android:id="@+id/layout_sound"
         android:layout_width="350dp"
-        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="-40dp"
+        android:layout_marginBottom="40dp"
         android:layout_height="150dp">
         <ImageView
             android:layout_width="match_parent"
@@ -87,4 +90,4 @@
         </LinearLayout>
     </FrameLayout>
 
-</LinearLayout>
+</RelativeLayout>

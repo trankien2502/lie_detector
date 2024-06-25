@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,6 +8,7 @@
     tools:context=".fragment.Intro2Fragment">
 
     <ImageView
+        android:id="@+id/img_intro2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -15,26 +16,31 @@
         android:src="@drawable/img_intro2" />
 
     <TextView
+        android:id="@+id/tv_intro2"
+        android:layout_below="@+id/img_intro2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/druk_text_wide_medium_trial"
-        android:text="FUNNY SOUND"
+        android:text="EYE DETECTOR"
         android:textColor="@color/white"
         android:textSize="26sp"
         android:textStyle="bold" />
 
     <TextView
+        android:layout_below="@+id/tv_intro2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/urbanist_medium"
-        android:text="Eye scanner will tell you the truth"
+        android:text="Eye scanner will tell you the true"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="normal" />
 
 
-</LinearLayout>
+</RelativeLayout>

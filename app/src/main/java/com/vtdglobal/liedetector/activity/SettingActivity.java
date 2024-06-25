@@ -18,7 +18,7 @@ import com.vtdglobal.liedetector.fragment.LanguageFragment;
 import com.vtdglobal.liedetector.fragment.SettingFragment;
 import com.vtdglobal.liedetector.fragment.SoundsFragment;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
     static ActivitySettingBinding mActivitySettingBinding;
     LanguageFragment languageFragment = new LanguageFragment();
     public static final int TYPE_SETTING = 1;

@@ -12,11 +12,5 @@
         android:layout_height="match_parent"
         android:src="@drawable/img_clipper_off"
         android:adjustViewBounds="true"/>
-    <TextView
-        android:id="@+id/btn_clipper_on"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"/>
 
 </FrameLayout>

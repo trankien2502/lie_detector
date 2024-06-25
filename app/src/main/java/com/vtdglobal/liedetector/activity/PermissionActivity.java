@@ -29,18 +29,15 @@ import android.widget.Toast;
 import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.databinding.ActivityPermissionBinding;
 
-public class PermissionActivity extends AppCompatActivity {
+public class PermissionActivity extends BaseActivity {
     ActivityPermissionBinding mActivityPermissionBinding;
     public static boolean isPermissionCamera ;
     public static boolean isPermissionMicro ;
-    public static boolean isPermissionNotification ;
 
-    private static final int MICRO_PERMISSION_REQUEST_CODE = 2;
-    private static final int CAMERA_PERMISSION_REQUEST_CODE = 3;
-    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 4;
+    public static final int MICRO_PERMISSION_REQUEST_CODE = 2;
+    public static final int CAMERA_PERMISSION_REQUEST_CODE = 3;
 
-//    SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("permissionData", Context.MODE_PRIVATE);
-//    SharedPreferences.Editor editor = sharedPreferences.edit();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +53,12 @@ public class PermissionActivity extends AppCompatActivity {
     }
 
     private boolean checkAllPermission() {
-        SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("permissionData", Context.MODE_PRIVATE);
-        isPermissionMicro = sharedPreferences.getBoolean("permissionMicro", Boolean.valueOf(String.valueOf(Context.MODE_PRIVATE)));
-        isPermissionCamera = sharedPreferences.getBoolean("permissionCamera", Boolean.valueOf(String.valueOf(Context.MODE_PRIVATE)));
-        isPermissionNotification = sharedPreferences.getBoolean("permissionNotification", Boolean.valueOf(String.valueOf(Context.MODE_PRIVATE)));
-//        checkNotificationPermission();
-//        checkCameraPermission();
-//        checkMicroPermission();
-        return isPermissionNotification && isPermissionCamera && isPermissionMicro;
+//        SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("permissionData", Context.MODE_PRIVATE);
+//        isPermissionMicro = sharedPreferences.getBoolean("permissionMicro", Boolean.valueOf(String.valueOf(Context.MODE_PRIVATE)));
+//        isPermissionCamera = sharedPreferences.getBoolean("permissionCamera", Boolean.valueOf(String.valueOf(Context.MODE_PRIVATE)));
+        checkCameraPermission();
+        checkMicroPermission();
+        return  isPermissionCamera && isPermissionMicro;
     }
 
     private void requestPermissionMicro() {
@@ -72,7 +67,6 @@ public class PermissionActivity extends AppCompatActivity {
     }
 
     private void checkMicroPermission() {
-
         isPermissionMicro = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
     }
@@ -85,20 +79,6 @@ public class PermissionActivity extends AppCompatActivity {
     private void checkCameraPermission() {
         isPermissionCamera = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestPermissionNotification() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    private void checkNotificationPermission() {
-
-        isPermissionNotification = ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -127,18 +107,6 @@ public class PermissionActivity extends AppCompatActivity {
                     editor.apply();
                 } else {
                     Toast.makeText(this, "Camera permission denied. Please enable it in settings.", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case NOTIFICATION_PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    isPermissionNotification = true;
-                    mActivityPermissionBinding.swichNotification.setChecked(true);
-                    SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("permissionData", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("permissionNotification", true);
-                    editor.apply();
-                } else {
-                    Toast.makeText(this, "Post notification permission denied. Please enable it in settings.", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -185,25 +153,6 @@ public class PermissionActivity extends AppCompatActivity {
                         Toast.makeText(PermissionActivity.this, "Microphone permission is already granted", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
-        });
-        mActivityPermissionBinding.swichNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    checkNotificationPermission();
-                }
-                if (!isPermissionNotification) requestPermissionNotification();
-                if (b) {
-                    mActivityPermissionBinding.swichNotification.setChecked(isPermissionNotification);
-                } else {
-                    if (ActivityCompat.checkSelfPermission(PermissionActivity.this,
-                            Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                        mActivityPermissionBinding.swichNotification.setChecked(true);
-                        Toast.makeText(PermissionActivity.this, "Post notification permission is already granted", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
             }
         });
     }
@@ -254,9 +203,6 @@ public class PermissionActivity extends AppCompatActivity {
         }
         if (isPermissionCamera) {
             mActivityPermissionBinding.swichCamera.setChecked(true);
-        }
-        if (isPermissionNotification) {
-            mActivityPermissionBinding.swichNotification.setChecked(true);
         }
     }
 

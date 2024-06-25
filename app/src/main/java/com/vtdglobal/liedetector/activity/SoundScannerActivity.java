@@ -2,13 +2,18 @@ package com.vtdglobal.liedetector.activity;
 
 import static android.graphics.Color.TRANSPARENT;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -16,19 +21,21 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.databinding.ActivitySoundScannerBinding;
-import com.vtdglobal.liedetector.databinding.ActivitySoundsBinding;
 
 import java.util.Random;
 
-public class SoundScannerActivity extends AppCompatActivity {
+public class SoundScannerActivity extends BaseActivity {
     ActivitySoundScannerBinding mActivitySoundScannerBinding;
     private final Handler handler = new Handler();
     private Runnable runnablePressing, runnableAnalyzing;
-    private int countdownPressing = 100, countdownAnalyzing = 0;
-    private boolean isButtonPressed = false;
+    private int countdownPressing = 16, countdownAnalyzing = 0;
+    private boolean isButtonPressed = false, isAnalyzing = false;
+    MediaPlayer mediaPlayer;
+    Random random = new Random();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +52,20 @@ public class SoundScannerActivity extends AppCompatActivity {
                     mActivitySoundScannerBinding.imgScannerDirectUp.setVisibility(View.GONE);
                     countdownPressing--;
                     if (countdownPressing>0){
-                        handler.postDelayed(this, 500);
+                        handler.postDelayed(this, 1000);
                     }
                     else {
                         mActivitySoundScannerBinding.tvSoundScreenScanner1.setVisibility(View.GONE);
                         mActivitySoundScannerBinding.layoutSoundScanningProgress.setVisibility(View.GONE);
                         mActivitySoundScannerBinding.layoutSoundAnalyzing.setVisibility(View.VISIBLE);
-                        countdownAnalyzing = 0;
+
+                        if (mediaPlayer!=null){
+                            mediaPlayer.release();
+                        }
+                        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.analyzing_sound);
+                        mediaPlayer.start();
+                        isAnalyzing = true;
+                        countdownAnalyzing = (16 - countdownPressing)*2 + random.nextInt(16);
                         handler.postDelayed(runnableAnalyzing, 500);
                     }
                 }
@@ -60,41 +74,34 @@ public class SoundScannerActivity extends AppCompatActivity {
         runnableAnalyzing = new Runnable() {
             @Override
             public void run() {
-                countdownAnalyzing++;
-                switch (countdownAnalyzing) {
-                    case 1:
+                countdownAnalyzing--;
+                switch (countdownAnalyzing%4) {
+                    case 0:
                         mActivitySoundScannerBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
                         mActivitySoundScannerBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("Analyzing");
+                        mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("Analyzing...");
                         break;
-                    case 2:
+                    case 1:
                         mActivitySoundScannerBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
                         mActivitySoundScannerBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
+                        mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("Analyzing..");
+                        break;
+                    case 2:
+                        mActivitySoundScannerBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
+                        mActivitySoundScannerBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
                         mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("Analyzing.");
                         break;
                     case 3:
-                        mActivitySoundScannerBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mActivitySoundScannerBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("Analyzing..");
-                        break;
-                    case 4:
                         mActivitySoundScannerBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
                         mActivitySoundScannerBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("Analyzing...");
-                        break;
-                    case 5:
-                        mActivitySoundScannerBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mActivitySoundScannerBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("Analyzing...");
-                        break;
-                    case 6:
-                        mActivitySoundScannerBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mActivitySoundScannerBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("The result is ready NOW");
-                        showDialogResult();
+                        mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("Analyzing");
                         break;
                 }
-                handler.postDelayed(this, 500);
+                if (countdownAnalyzing==0) {
+                    mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("The result is ready NOW");
+                    showDialogResult();
+                } else
+                    handler.postDelayed(this, 500);
 
             }
         };
@@ -110,18 +117,22 @@ public class SoundScannerActivity extends AppCompatActivity {
         mActivitySoundScannerBinding.layoutSoundPressButton2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (isAnalyzing) return false;
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         isButtonPressed = true;
-                        countdownPressing = 100;
-                        handler.postDelayed(runnablePressing, 500);
+                        countdownPressing = 16;
+                        if (mediaPlayer!=null){
+                            mediaPlayer.release();
+                            mediaPlayer = null;
+                        }
+                        handler.postDelayed(runnablePressing, 1000);
                         return true;
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
                         isButtonPressed = false;
-                        if (countdownPressing>96){
+                        if (countdownPressing>14){
                             initUIDefault();
-                            mActivitySoundScannerBinding.tvSoundScreenScanner1.setVisibility(View.VISIBLE);
                             mActivitySoundScannerBinding.tvScannerPress.setVisibility(View.VISIBLE);
                             mActivitySoundScannerBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
                             mActivitySoundScannerBinding.layoutSoundScanningProgress.setVisibility(View.GONE);
@@ -132,8 +143,16 @@ public class SoundScannerActivity extends AppCompatActivity {
                             mActivitySoundScannerBinding.tvSoundScreenScanner1.setVisibility(View.GONE);
                             mActivitySoundScannerBinding.layoutSoundScanningProgress.setVisibility(View.GONE);
                             mActivitySoundScannerBinding.layoutSoundAnalyzing.setVisibility(View.VISIBLE);
-                            countdownAnalyzing = 0;
+                            countdownAnalyzing = (16 - countdownPressing)*2;
                             handler.postDelayed(runnableAnalyzing, 500);
+                            if (mediaPlayer!=null){
+                                mediaPlayer.release();
+                                mediaPlayer = null;
+                            }
+                            mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.analyzing_sound);
+                            mediaPlayer.start();
+                            isAnalyzing = true;
+
                         }
 
 
@@ -145,6 +164,12 @@ public class SoundScannerActivity extends AppCompatActivity {
     }
     private void showDialogResult() {
         handler.removeCallbacks(runnableAnalyzing);
+        isAnalyzing = false;
+        if (mediaPlayer!=null){
+            mediaPlayer.release();
+        }
+        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.get_result_sound);
+        mediaPlayer.start();
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_scanner_result);
@@ -162,6 +187,8 @@ public class SoundScannerActivity extends AppCompatActivity {
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.release();
+                mediaPlayer = null;
                 getResultScanner();
                 dialog.dismiss();
             }
@@ -188,10 +215,16 @@ public class SoundScannerActivity extends AppCompatActivity {
         mActivitySoundScannerBinding.tvSoundScreenScanner3.setText("Analyzing");
         mActivitySoundScannerBinding.tvSoundScreenScanner3.setTextColor(getResources().getColor(R.color.white));
         mActivitySoundScannerBinding.tvScannerPress.setText("PRESS TO TALK");
+        mActivitySoundScannerBinding.tvSoundScreenScanner1.setVisibility(View.VISIBLE);
         mActivitySoundScannerBinding.imgSoundBottomButton.setImageResource(R.drawable.img_sound_bottom_button_default);
     }
 
     private void initUIGetTruth() {
+        if (mediaPlayer!=null){
+            mediaPlayer.release();
+        }
+        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.result_true);
+        mediaPlayer.start();
         mActivitySoundScannerBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mActivitySoundScannerBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_truth);
         mActivitySoundScannerBinding.imgSoundScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_truth);
@@ -211,6 +244,11 @@ public class SoundScannerActivity extends AppCompatActivity {
     }
 
     private void initUIGetLiar() {
+        if (mediaPlayer!=null){
+            mediaPlayer.release();
+        }
+        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.result_lie);
+        mediaPlayer.start();
         mActivitySoundScannerBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mActivitySoundScannerBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_liar);
         mActivitySoundScannerBinding.imgSoundScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_liar);
@@ -255,6 +293,36 @@ public class SoundScannerActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        initUIDefault();
+        if (ContextCompat.checkSelfPermission(SoundScannerActivity.this, Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(SoundScannerActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, PermissionActivity.MICRO_PERMISSION_REQUEST_CODE);
+        } else {
+            initUIDefault();
+        }
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PermissionActivity.MICRO_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initUIDefault();
+            } else {
+                Toast.makeText(this, "Micro permission denied. Please enable it in settings.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SoundScannerActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnableAnalyzing);
+        handler.removeCallbacks(runnablePressing);
+        if (mediaPlayer!=null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
     }
 }

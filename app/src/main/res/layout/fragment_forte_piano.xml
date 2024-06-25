@@ -6,13 +6,226 @@
     android:background="@color/darkHeavy"
     tools:context=".fragment.FortePianoFragment">
 
-    <ImageView
-        android:id="@+id/img_piano"
+    <FrameLayout
+        android:id="@+id/layout_piano"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/img_forte_piano"
-        android:adjustViewBounds="true"/>
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/img_piano"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/img_forte_piano"
+            android:adjustViewBounds="true"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="visible"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fg_gradient_piano"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
+        </LinearLayout>
+    </FrameLayout>
     <ImageView
         android:id="@+id/img_border_piano"
         android:layout_width="wrap_content"
@@ -20,7 +233,7 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@drawable/img_border_forte_piano"
-        android:layout_toEndOf="@+id/img_piano"/>
+        android:layout_toEndOf="@+id/layout_piano"/>
     <LinearLayout
         android:id="@+id/layout_notes_music"
         android:layout_width="match_parent"
@@ -33,6 +246,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="C"
@@ -58,6 +272,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_c_sharp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="C#"
@@ -82,6 +297,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_d"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="D"
@@ -106,6 +322,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_d_sharp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="D#"
@@ -130,6 +347,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_e"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="E"
@@ -154,6 +372,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_f"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="F"
@@ -178,6 +397,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_f_sharp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="F#"
@@ -202,6 +422,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_g"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="G"
@@ -226,6 +447,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_g_sharp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="G#"
@@ -250,6 +472,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_a"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="A"
@@ -274,6 +497,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_a_sharp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="A#"
@@ -298,6 +522,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_note_b"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="B"

@@ -33,7 +33,7 @@
             android:fontFamily="@font/druk_text_wide_medium_trial"
             android:text="WAIT 5 SECONDS TO SCAN"
             android:textColor="@color/white"
-            android:textSize="17sp"
+            android:textSize="14sp"
             android:visibility="visible" />
 
         <RelativeLayout
@@ -42,6 +42,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginStart="35dp"
+            android:gravity="center"
             android:layout_marginTop="35dp"
             android:layout_marginEnd="35dp"
             android:layout_marginBottom="40dp"
@@ -52,14 +53,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/druk_text_wide_medium_trial"
-                android:text="WAIT 4 SECONDS TO SCAN"
+                android:text="WAIT 5 SECONDS TO SCAN"
                 android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="14sp"
                 android:visibility="visible" />
 
             <ImageView
@@ -68,10 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_finger_print_screen_scanner_2"
                 android:layout_gravity="center"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
+                android:layout_margin="15dp"
 
                 android:src="@drawable/img_scanner_scanning_process" />
         </RelativeLayout>
@@ -88,14 +83,11 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/layout_finger_print_analyzing_light"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="@font/druk_text_wide_medium_trial"
                 android:text="Analyzing"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:visibility="visible" />
 
             <LinearLayout
@@ -144,7 +136,7 @@
                     android:padding="10dp"
                     android:text="THE TRUTH"
                     android:textColor="@color/grayDefault"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_finger_print_analyzing_liar"
@@ -156,7 +148,7 @@
                     android:padding="10dp"
                     android:text="THE LIAR "
                     android:textColor="@color/grayDefault"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
 
@@ -255,6 +247,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom|center_horizontal"
                             android:layout_marginTop="10dp"
+                            android:textSize="12sp"
                             android:fontFamily="@font/druk_text_wide_medium_trial"
                             android:text="PRESS HERE"
                             android:textColor="@color/white" />
@@ -301,7 +294,18 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginTop="20dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1" >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="EYES"
+                            android:layout_gravity="center_horizontal|bottom"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/druk_text_wide_medium_trial"
+                            android:textSize="12sp"
+                            android:layout_marginBottom="10dp"
+                            />
+                    </FrameLayout>
                 </LinearLayout>
             </FrameLayout>
 

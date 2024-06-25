@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
-    android:background="@drawable/bg_dark_corner_16"
+    android:background="@drawable/bg_white_corner_16"
     android:orientation="vertical">
 
     <TextView
@@ -12,8 +12,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:padding="10dp"
-        android:text="Permission Alert"
-        android:textColor="@color/white"
+        android:fontFamily="@font/urbanist_medium"
+        android:text="Permission Alert!"
+        android:textColor="@color/darkHeavy"
         android:textSize="24sp" />
 
     <TextView
@@ -22,8 +23,9 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:padding="10dp"
+        android:fontFamily="@font/urbanist_medium"
         android:text="Some functions will not work properly if you do not enable all permission."
-        android:textColor="@color/white"
+        android:textColor="@color/darkHeavy"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -39,7 +41,8 @@
             android:layout_weight="1"
             android:background="@drawable/bg_graylight_corner_8"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="10dp"
+            android:fontFamily="@font/urbanist_medium"
             android:text="Cancel"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -52,7 +55,8 @@
             android:layout_weight="1"
             android:background="@drawable/bg_blued_corner_8"
             android:gravity="center"
-            android:padding="12dp"
+            android:fontFamily="@font/urbanist_medium"
+            android:padding="10dp"
             android:text="OK"
             android:textColor="@color/white"
             android:textSize="20sp" />

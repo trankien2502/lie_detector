@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LieDetector</string>
+    <string name="app_name">Lie Detector</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="sound_name_0">AIR HORN</string>
     <string name="sound_name_1">LAUGH</string>

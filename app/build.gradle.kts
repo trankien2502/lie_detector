@@ -43,4 +43,11 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("me.relex:circleindicator:2.1.6")
 
+    implementation ("androidx.camera:camera-core:1.2.0-beta01")
+    implementation ("androidx.camera:camera-camera2:1.2.0-beta01")
+    implementation ("androidx.camera:camera-lifecycle:1.2.0-beta01")
+    implementation ("androidx.camera:camera-view:1.2.0-beta01")
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.23")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+
 }

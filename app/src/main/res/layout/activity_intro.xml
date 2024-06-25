@@ -20,19 +20,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="25dp">
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp">
 
         <me.relex.circleindicator.CircleIndicator3
             android:id="@+id/indicator_3"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_gravity="center"
-            android:padding="15dp"
+            android:layout_centerVertical="true"
             app:ci_drawable="@drawable/bg_blued_corner_8_width_10"
             app:ci_drawable_unselected="@drawable/bg_gray_corner_8_width_10"
-            app:ci_height="5dp"
-            app:ci_width="10dp" />
+             />
 
         <TextView
             android:id="@+id/btn_next"
@@ -41,6 +42,9 @@
             android:layout_alignParentEnd="true"
             android:fontFamily="@font/cabinet_grotesk_medium"
             android:text="Next"
+            android:padding="12dp"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />

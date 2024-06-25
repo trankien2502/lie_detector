@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:padding="5dp"
+    android:layout_height="wrap_content"
     android:background="@color/darkHeavy">
 
     <ImageView
@@ -11,8 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:padding="15dp"
-        android:layout_marginStart="10dp"
+        android:padding="16dp"
         android:src="@drawable/img_arrow_left"
         tools:ignore="ContentDescription" />
 
@@ -24,7 +22,7 @@
         android:text="SCANNER"
         android:fontFamily="@font/druk_text_wide_medium_trial"
         android:textColor="@color/white"
-        android:textSize="24sp" />
+        android:textSize="22sp" />
 
     <ImageView
         android:id="@+id/img_setting"
@@ -32,8 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:padding="15dp"
+        android:padding="16dp"
         android:src="@drawable/img_setting"
         tools:ignore="ContentDescription" />
 

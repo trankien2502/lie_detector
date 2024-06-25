@@ -20,11 +20,10 @@ import com.vtdglobal.liedetector.model.Language;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LanguageActivity extends AppCompatActivity {
+public class LanguageActivity extends BaseActivity {
     ActivityLanguageBinding mActivityLanguageBinding;
     List<Language> listLanguage;
     LanguageAdapter languageAdapter;
-    boolean isChoose = false;
     private String languageSelected;
 
     @Override
@@ -37,31 +36,29 @@ public class LanguageActivity extends AppCompatActivity {
         initUI();
         initListener();
     }
-    private void checkLanguage (){
-        SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
+
+    private void checkLanguage() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
         boolean check = sharedPreferences.getBoolean("selectedLanguage", Boolean.valueOf(String.valueOf(Context.MODE_PRIVATE)));
         if (check) {
-            Intent intent = new Intent(LanguageActivity.this,IntroActivity.class);
+            Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
             startActivity(intent);
             finish();
         }
     }
+
     private void initListener() {
         mActivityLanguageBinding.imgTick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isChoose) {
-                    SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("selectedLanguage",true);
-                    editor.putString("languageCurrent", languageSelected);
-                    editor.apply();
-                    Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(LanguageActivity.this, "Please choose a language!", Toast.LENGTH_SHORT).show();
-                }
-
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("selectedLanguage", true);
+                editor.putString("languageCurrent", languageSelected);
+                editor.apply();
+                Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -71,10 +68,11 @@ public class LanguageActivity extends AppCompatActivity {
         mActivityLanguageBinding.rcvLanguage.setLayoutManager(linearLayoutManager);
         languageAdapter = new LanguageAdapter(this, listLanguage, this::onSelected);
         mActivityLanguageBinding.rcvLanguage.setAdapter(languageAdapter);
+        languageAdapter.setSelectedPosition(Language.ENGLISH);
+        languageSelected = Language.LANGUAGE_0;
     }
 
     private void onSelected(Language language) {
-        isChoose = true;
         languageAdapter.setSelectedPosition(language.getId());
         languageSelected = language.getName();
     }

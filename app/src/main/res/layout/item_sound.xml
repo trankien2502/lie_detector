@@ -14,11 +14,13 @@
         tools:ignore="NestedWeights">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/img_sound_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            android:src="@drawable/img_border_sound_funny1" />
+            android:background="@drawable/bg_dark_heavy_corner_16"
+            android:src="@drawable/img_border_sound_funny" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +42,7 @@
                 android:text="AIR HORN"
                 android:layout_marginTop="15dp"
                 android:textColor="@color/white"
-                android:textSize="13sp"
+                android:textSize="10sp"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/druk_text_wide_medium_trial"/>

@@ -2,19 +2,24 @@ package com.vtdglobal.liedetector.activity;
 
 import static android.graphics.Color.TRANSPARENT;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import com.vtdglobal.liedetector.R;
@@ -22,12 +27,13 @@ import com.vtdglobal.liedetector.databinding.ActivityFingerPrintScannerBinding;
 
 import java.util.Random;
 
-public class FingerPrintScannerActivity extends AppCompatActivity {
+public class FingerPrintScannerActivity extends BaseActivity {
     ActivityFingerPrintScannerBinding mActivityFingerPrintScannerBinding;
     private final Handler handler = new Handler();
     private Runnable runnablePressing, runnableAnalyzing;
-    private int countdownPressing = 5, countdownAnalyzing = 0;
-    private boolean isButtonPressed = false;
+    private int countdownPressing = 5, countdownAnalyzing = 6;
+    private boolean isButtonPressed = false,isAnalyzing = false;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +45,12 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
             public void run() {
                 if (isButtonPressed) {
                     initUIDefault();
+                    countdownPressing--;
                     mActivityFingerPrintScannerBinding.imgFingerPrintPressing.setColorFilter(Color.TRANSPARENT);
                     mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner1.setVisibility(View.GONE);
                     mActivityFingerPrintScannerBinding.layoutFingerPrintScanningProgress.setVisibility(View.VISIBLE);
                     mActivityFingerPrintScannerBinding.tvScannerPress.setVisibility(View.GONE);
                     mActivityFingerPrintScannerBinding.imgScannerDirectUp.setVisibility(View.GONE);
-                    countdownPressing--;
                     mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner2.setText("WAIT " + countdownPressing + " SECONDS TO SCAN");
                     if (countdownPressing > 0) {
                         handler.postDelayed(this, 1000);
@@ -53,7 +59,16 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
                         mActivityFingerPrintScannerBinding.layoutFingerPrintScanningProgress.setVisibility(View.GONE);
                         mActivityFingerPrintScannerBinding.imgFingerPrintPressing.clearColorFilter();
                         mActivityFingerPrintScannerBinding.layoutFingerPrintAnalyzing.setVisibility(View.VISIBLE);
-                        countdownAnalyzing = 0;
+                        Random random = new Random();
+                        countdownAnalyzing = 6 + random.nextInt(10);
+
+                        if (mediaPlayer!=null){
+                            mediaPlayer.release();
+                            mediaPlayer=null;
+                        }
+                        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.analyzing_sound);
+                        mediaPlayer.start();
+                        isAnalyzing = true;
                         handler.postDelayed(runnableAnalyzing, 500);
                     }
                 }
@@ -62,41 +77,35 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
         runnableAnalyzing = new Runnable() {
             @Override
             public void run() {
-                countdownAnalyzing++;
-                switch (countdownAnalyzing) {
-                    case 1:
+                countdownAnalyzing--;
+                switch (countdownAnalyzing%4) {
+                    case 0:
                         mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
                         mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("Analyzing");
+                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("Analyzing...");
                         break;
-                    case 2:
+                    case 1:
                         mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
                         mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
+                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("Analyzing..");
+                        break;
+                    case 2:
+                        mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
+                        mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
                         mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("Analyzing.");
                         break;
                     case 3:
-                        mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("Analyzing..");
-                        break;
-                    case 4:
                         mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
                         mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("Analyzing...");
-                        break;
-                    case 5:
-                        mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("Analyzing...");
-                        break;
-                    case 6:
-                        mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mActivityFingerPrintScannerBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("The result is ready NOW");
-                        showDialogResult();
+                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("Analyzing");
                         break;
                 }
-                handler.postDelayed(this, 500);
+                if (countdownAnalyzing==0){
+                    mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner3.setText("The Result is ready NOW");
+                    handler.removeCallbacks(runnableAnalyzing);
+                    showDialogResult();
+                }else
+                    handler.postDelayed(this, 500);
 
             }
         };
@@ -104,9 +113,66 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
         initListenerHeader();
         initListener();
     }
+    @SuppressLint("ClickableViewAccessibility")
+    private void initListener() {
+        mActivityFingerPrintScannerBinding.layoutFingerPrintButtonLeft.setOnClickListener(view -> goToSoundScannerActivity());
+        mActivityFingerPrintScannerBinding.layoutFingerPrintButtonRight.setOnClickListener(view -> goToEyesScannerActivity());
+        mActivityFingerPrintScannerBinding.layoutFingerPrintButtonCenter.setOnClickListener(view -> initUI());
+        mActivityFingerPrintScannerBinding.layoutFingerPrintPressButton2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(isAnalyzing) return false;
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        isButtonPressed = true;
+                        countdownPressing = 5 ;
+                        mActivityFingerPrintScannerBinding.imgFingerPrintPressing.setColorFilter(Color.TRANSPARENT);
+                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner1.setVisibility(View.GONE);
+                        mActivityFingerPrintScannerBinding.layoutFingerPrintScanningProgress.setVisibility(View.VISIBLE);
+                        mActivityFingerPrintScannerBinding.tvScannerPress.setVisibility(View.GONE);
+                        mActivityFingerPrintScannerBinding.imgScannerDirectUp.setVisibility(View.GONE);
+                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner2.setText("WAIT " + countdownPressing + " SECONDS TO SCAN");
+                        handler.postDelayed(runnablePressing, 1000);
+                        runAnimation();
+                        if (mediaPlayer!=null){
+                            mediaPlayer.release();
+                            mediaPlayer = null;
+                        }
+                        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.scansound_effect2);
+                        mediaPlayer.start();
+                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner2.setText("WAIT " + countdownPressing + " SECONDS TO SCAN");
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        isButtonPressed = false;
+                        if (countdownPressing > 0) {
+                            initUIDefault();
+                            if (mediaPlayer!=null){
+                                mediaPlayer.release();
+                                mediaPlayer = null;
+                            }
+                            mActivityFingerPrintScannerBinding.tvScannerPress.setVisibility(View.VISIBLE);
+                            mActivityFingerPrintScannerBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
+
+                        }
+                        handler.removeCallbacks(runnablePressing);
+                        mActivityFingerPrintScannerBinding.layoutFingerPrintScanningProgress.setVisibility(View.GONE);
+                        mActivityFingerPrintScannerBinding.imgFingerPrintPressing.clearColorFilter();
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
 
     private void showDialogResult() {
+        isAnalyzing = false;
         handler.removeCallbacks(runnableAnalyzing);
+        if (mediaPlayer!=null){
+            mediaPlayer.release();
+        }
+        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.get_result_sound);
+        mediaPlayer.start();
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_scanner_result);
@@ -124,6 +190,8 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.release();
+                mediaPlayer = null;
                 getResultScanner();
                 dialog.dismiss();
             }
@@ -142,6 +210,7 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
     }
 
     private void initUIDefault() {
+        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner1.setVisibility(View.VISIBLE);
         mActivityFingerPrintScannerBinding.imgScannerResultBackgroundLight.setVisibility(View.GONE);
         mActivityFingerPrintScannerBinding.imgFingerPrintScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_default);
         mActivityFingerPrintScannerBinding.layoutFingerPrintAnalyzing.setVisibility(View.GONE);
@@ -155,6 +224,11 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
     }
 
     private void initUIGetTruth() {
+        if (mediaPlayer!=null){
+            mediaPlayer.release();
+        }
+        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.result_true);
+        mediaPlayer.start();
         mActivityFingerPrintScannerBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mActivityFingerPrintScannerBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_truth);
         mActivityFingerPrintScannerBinding.imgFingerPrintScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_truth);
@@ -174,6 +248,11 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
     }
 
     private void initUIGetLiar() {
+        if (mediaPlayer!=null){
+            mediaPlayer.release();
+        }
+        mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.result_lie);
+        mediaPlayer.start();
         mActivityFingerPrintScannerBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mActivityFingerPrintScannerBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_liar);
         mActivityFingerPrintScannerBinding.imgFingerPrintScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_liar);
@@ -203,39 +282,7 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private void initListener() {
-        mActivityFingerPrintScannerBinding.layoutFingerPrintButtonLeft.setOnClickListener(view -> goToSoundScannerActivity());
-        mActivityFingerPrintScannerBinding.layoutFingerPrintButtonRight.setOnClickListener(view -> goToEyesScannerActivity());
-        mActivityFingerPrintScannerBinding.layoutFingerPrintButtonCenter.setOnClickListener(view -> initUI());
-        mActivityFingerPrintScannerBinding.layoutFingerPrintPressButton2.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        isButtonPressed = true;
-                        countdownPressing = 5;
-                        mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner2.setText("WAIT " + countdownPressing + " SECONDS TO SCAN");
-                        handler.postDelayed(runnablePressing, 1000);
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        isButtonPressed = false;
-                        if (countdownPressing > 0) {
-                            initUIDefault();
-                            mActivityFingerPrintScannerBinding.tvScannerPress.setVisibility(View.VISIBLE);
-                            mActivityFingerPrintScannerBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
-                            mActivityFingerPrintScannerBinding.tvFingerPrintScreenScanner1.setVisibility(View.VISIBLE);
-                        }
-                        handler.removeCallbacks(runnablePressing);
-                        mActivityFingerPrintScannerBinding.layoutFingerPrintScanningProgress.setVisibility(View.GONE);
-                        mActivityFingerPrintScannerBinding.imgFingerPrintPressing.clearColorFilter();
-                        return true;
-                }
-                return false;
-            }
-        });
-    }
+
 
     private void goToEyesScannerActivity() {
         Intent intent = new Intent(FingerPrintScannerActivity.this, EyeScannerActivity.class);
@@ -251,5 +298,41 @@ public class FingerPrintScannerActivity extends AppCompatActivity {
 
     private void initUI() {
         initUIDefault();
+    }
+    private void runAnimation(){
+        ViewTreeObserver viewTreeObserver = mActivityFingerPrintScannerBinding.layoutFingerPrintPressButton2.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int parentHeight = mActivityFingerPrintScannerBinding.layoutFingerPrintPressButton2.getHeight();
+                int pressingLightHeight = mActivityFingerPrintScannerBinding.imgFingerPrintPressing.getHeight();
+                ValueAnimator animator = ValueAnimator.ofFloat(0f,parentHeight-pressingLightHeight);
+                animator.setDuration(800);
+                animator.setInterpolator(new LinearInterpolator());
+                animator.setRepeatCount(ValueAnimator.INFINITE);
+                animator.setRepeatMode(ValueAnimator.REVERSE);
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(@NonNull ValueAnimator valueAnimator) {
+                        float value = (float) valueAnimator.getAnimatedValue();
+                        mActivityFingerPrintScannerBinding.imgFingerPrintPressing.setTranslationY(value);
+                    }
+                });
+                animator.start();
+                mActivityFingerPrintScannerBinding.layoutFingerPrintPressButton2.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer!=null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        handler.removeCallbacks(runnableAnalyzing);
+        handler.removeCallbacks(runnablePressing);
+
     }
 }

@@ -2,65 +2,188 @@ package com.vtdglobal.liedetector.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.vtdglobal.liedetector.R;
+import com.vtdglobal.liedetector.databinding.FragmentFortePianoBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FortePianoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class FortePianoFragment extends Fragment {
+    FragmentFortePianoBinding mFragmentFortePianoBinding;
+    public static  final int TYPE_C = 0;
+    public static  final int TYPE_C_SHARP = 1;
+    public static  final int TYPE_D = 2;
+    public static  final int TYPE_D_SHARP = 3;
+    public static  final int TYPE_E = 4;
+    public static  final int TYPE_F = 5;
+    public static  final int TYPE_F_SHARP = 6;
+    public static  final int TYPE_G = 7;
+    public static  final int TYPE_G_SHARP = 8;
+    public static  final int TYPE_A = 9;
+    public static  final int TYPE_A_SHARP = 10;
+    public static  final int TYPE_B = 11;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public FortePianoFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FortePianoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FortePianoFragment newInstance(String param1, String param2) {
-        FortePianoFragment fragment = new FortePianoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    public static int mType = TYPE_C;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        mFragmentFortePianoBinding = FragmentFortePianoBinding.inflate(inflater,container,false);
+        initUI();
+        initListener();
+        return mFragmentFortePianoBinding.getRoot();
+    }
+    private void initUI(){
+        unSelectedNote();
+        switch (mType){
+            case TYPE_C:
+                mFragmentFortePianoBinding.noteC.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_C_SHARP:
+                mFragmentFortePianoBinding.noteCSharp.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_D:
+                mFragmentFortePianoBinding.noteD.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_D_SHARP:
+                mFragmentFortePianoBinding.noteDSharp.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_E:
+                mFragmentFortePianoBinding.noteE.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_F:
+                mFragmentFortePianoBinding.noteF.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_F_SHARP:
+                mFragmentFortePianoBinding.noteFSharp.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_G:
+                mFragmentFortePianoBinding.noteG.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_G_SHARP:
+                mFragmentFortePianoBinding.noteGSharp.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_A:
+                mFragmentFortePianoBinding.noteA.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_A_SHARP:
+                mFragmentFortePianoBinding.noteASharp.setVisibility(View.VISIBLE);
+                break;
+            case TYPE_B:
+                mFragmentFortePianoBinding.noteB.setVisibility(View.VISIBLE);
+                break;
         }
     }
+    private void unSelectedNote(){
+        mFragmentFortePianoBinding.noteC.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteCSharp.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteD.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteDSharp.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteE.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteF.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteFSharp.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteG.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteGSharp.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteA.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteASharp.setVisibility(View.GONE);
+        mFragmentFortePianoBinding.noteB.setVisibility(View.GONE);
+    }
+    private void initListener() {
+        mFragmentFortePianoBinding.tvNoteA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_A;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteASharp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_A_SHARP;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_B;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_C;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteCSharp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_C_SHARP;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_D;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteDSharp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_D_SHARP;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_E;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_F;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteFSharp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_F_SHARP;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_A;
+                initUI();
+            }
+        });
+        mFragmentFortePianoBinding.tvNoteGSharp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mType = TYPE_G_SHARP;
+                initUI();
+            }
+        });
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_forte_piano, container, false);
+    public void onDestroy() {
+        super.onDestroy();
+//        if (mediaPlayer != null) {
+//            mediaPlayer.release();
+//            mediaPlayer = null;
+//        }
     }
 }

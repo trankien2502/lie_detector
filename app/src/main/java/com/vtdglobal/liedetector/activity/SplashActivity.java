@@ -1,5 +1,7 @@
 package com.vtdglobal.liedetector.activity;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,11 +9,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
+import android.window.OnBackInvokedDispatcher;
 
 import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.databinding.ActivitySplashBinding;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
     ActivitySplashBinding mActivitySplashBinding;
 
     @Override
@@ -21,7 +24,11 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mActivitySplashBinding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(mActivitySplashBinding.getRoot());
-
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
         startLanguageActivity();
     }
 
@@ -32,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
-        }, 5500);
+        }, 5000);
     }
 
 }

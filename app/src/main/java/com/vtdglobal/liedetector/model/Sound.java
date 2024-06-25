@@ -17,7 +17,7 @@ public class Sound {
     public static final int SOUND_ID_6 = 6;
     public static final int SOUND_ID_7 = 7;
     public static final int SOUND_ID_8 = 8;
-    //ID
+    //ID HILARIOUS
     public static final int SOUND_ID_9 = 9;
     public static final int SOUND_ID_10 = 10;
     public static final int SOUND_ID_11 = 11;
@@ -26,6 +26,12 @@ public class Sound {
     public static final int SOUND_ID_14 = 14;
     public static final int SOUND_ID_15 = 15;
     public static final int SOUND_ID_16 = 16;
+
+    //ID SOUNDS
+    public static final int SOUND_ID_17 = 17;
+    public static final int SOUND_ID_18 = 18;
+    public static final int SOUND_ID_19 = 19;
+    public static final int SOUND_ID_20 = 20;
 
 
     public Sound() {

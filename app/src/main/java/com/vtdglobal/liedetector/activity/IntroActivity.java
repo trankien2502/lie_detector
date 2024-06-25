@@ -9,7 +9,7 @@ import android.view.View;
 import com.vtdglobal.liedetector.adapter.IntroViewPagerAdapter;
 import com.vtdglobal.liedetector.databinding.ActivityIntroBinding;
 
-public class IntroActivity extends AppCompatActivity {
+public class IntroActivity extends BaseActivity {
     ActivityIntroBinding mActivityIntroBinding;
 
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Thêm các thuộc tính chung của ứng dụng -->
+
+        <!-- Định nghĩa màu sắc cho thanh điều hướng -->
+        <item name="android:navigationBarColor">#000000</item>
+    </style>
+</resources>
