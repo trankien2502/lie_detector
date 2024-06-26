@@ -26,14 +26,6 @@ public class SettingActivity extends BaseActivity {
     public static final int TYPE_RATE = 3;
     public static final int TYPE_SHARE = 4;
     public static final int TYPE_ABOUT = 5;
-
-    public static final String TEXT_SETTING = "SETTING";
-    public static final String TEXT_LANGUAGE = "LANGUAGE";
-    public static final String TEXT_RATE = "RATE";
-    public static final String TEXT_SHARE = "SHARE";
-    public static final String TEXT_ABOUT = "ABOUT";
-
-
     public static int mType = TYPE_SETTING;
 
     @Override
@@ -99,15 +91,15 @@ public class SettingActivity extends BaseActivity {
     public static void initHeaderUI(){
         switch (mType){
             case TYPE_SETTING:
-                mActivitySettingBinding.headerSetting.tvTitle.setText(TEXT_SETTING);
+                mActivitySettingBinding.headerSetting.tvTitle.setText(R.string.setting);
                 mActivitySettingBinding.headerSetting.imgTick.setVisibility(View.GONE);
                 break;
             case TYPE_LANGUAGE:
-                mActivitySettingBinding.headerSetting.tvTitle.setText(TEXT_LANGUAGE);
+                mActivitySettingBinding.headerSetting.tvTitle.setText(R.string.language);
                 mActivitySettingBinding.headerSetting.imgTick.setVisibility(View.VISIBLE);
                 break;
             case TYPE_ABOUT:
-                mActivitySettingBinding.headerSetting.tvTitle.setText(TEXT_ABOUT);
+                mActivitySettingBinding.headerSetting.tvTitle.setText(R.string.up_about);
                 mActivitySettingBinding.headerSetting.imgTick.setVisibility(View.GONE);
                 break;
 

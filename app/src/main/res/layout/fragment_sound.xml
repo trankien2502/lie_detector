@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/druk_text_wide_medium_trial"
-            android:text="TALK TO SCAN"
+            android:text="@string/talk_to_scan"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:visibility="visible" />
@@ -65,7 +65,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/druk_text_wide_medium_trial"
-                android:text="Analyzing"
+                android:text="@string/analyzing"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 android:visibility="visible" />
@@ -114,7 +114,7 @@
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/dark_dimension"
                     android:padding="10dp"
-                    android:text="THE TRUTH"
+                    android:text="@string/the_truth"
                     android:textColor="@color/grayDefault"
                     android:textSize="16sp" />
 
@@ -126,7 +126,7 @@
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/dark_dimension"
                     android:padding="10dp"
-                    android:text="THE LIAR "
+                    android:text="@string/the_liar"
                     android:textColor="@color/grayDefault"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -201,7 +201,7 @@
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_margin="10dp"
                     android:fontFamily="@font/druk_text_wide_medium_trial"
-                    android:text="PRESS TO TALK"
+                    android:text="@string/press_to_talk"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>

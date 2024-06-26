@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_margin="15dp"
         android:fontFamily="@font/druk_text_wide_medium_trial"
-        android:text="PERMISSION"
+        android:text="@string/permission"
         android:textColor="@color/white"
         android:textSize="30sp" />
 
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:fontFamily="@font/cabinet_grotesk_medium"
-        android:text="Allow Body Editor to Read External Storage to work properly."
+        android:text="@string/permission_text"
         android:textColor="@color/white"
         android:textSize="18sp" />
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:fontFamily="@font/cabinet_grotesk_medium"
-            android:text="Microphone Access"
+            android:text="@string/microphone_access"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:fontFamily="@font/cabinet_grotesk_medium"
-            android:text="Camera Access"
+            android:text="@string/camera_access"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -95,7 +95,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/cabinet_grotesk_medium"
-        android:text="CONTINUE"
+        android:text="@string/continue_text"
         android:textColor="#03D8DA"
         android:textSize="24sp" />
 

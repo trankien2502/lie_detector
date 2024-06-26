@@ -186,8 +186,8 @@ public class ScannerActivity extends AppCompatActivity {
                         mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_eye_button_liar);
                         break;
                 }
-                mActivityScannerBinding.tvButtonLeft.setText("SOUND");
-                mActivityScannerBinding.tvButtonRight.setText("EYES");
+                mActivityScannerBinding.tvButtonLeft.setText(R.string.sound);
+                mActivityScannerBinding.tvButtonRight.setText(R.string.eyes);
                 break;
             case TYPE_SOUND:
                 mActivityScannerBinding.contentFrameEye.setVisibility(View.GONE);
@@ -209,8 +209,8 @@ public class ScannerActivity extends AppCompatActivity {
                         mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_eye_button_liar);
                         break;
                 }
-                mActivityScannerBinding.tvButtonLeft.setText("FINGER");
-                mActivityScannerBinding.tvButtonRight.setText("EYES");
+                mActivityScannerBinding.tvButtonLeft.setText(R.string.finger);
+                mActivityScannerBinding.tvButtonRight.setText(R.string.eyes);
                 break;
             case TYPE_EYES:
                 switch (mType) {
@@ -236,8 +236,8 @@ public class ScannerActivity extends AppCompatActivity {
                         mActivityScannerBinding.contentFrameEye.setVisibility(View.GONE);
                         break;
                 }
-                mActivityScannerBinding.tvButtonLeft.setText("SOUND");
-                mActivityScannerBinding.tvButtonRight.setText("FINGER");
+                mActivityScannerBinding.tvButtonLeft.setText(R.string.sound);
+                mActivityScannerBinding.tvButtonRight.setText(R.string.finger);
                 break;
         }
     }
@@ -253,6 +253,7 @@ public class ScannerActivity extends AppCompatActivity {
 
     }
     private void startCamera() {
+
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(new Runnable() {
             @Override
@@ -279,7 +280,7 @@ public class ScannerActivity extends AppCompatActivity {
                     initUIFooter();
                     initListenerFooter();
                 } else {
-                    Toast.makeText(this, "Microphone permission denied. Please enable it in settings.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case PermissionActivity.CAMERA_PERMISSION_REQUEST_CODE:
@@ -291,7 +292,7 @@ public class ScannerActivity extends AppCompatActivity {
                     initUIFooter();
                     initListenerFooter();
                 } else {
-                    Toast.makeText(this, "Camera permission denied. Please enable it in settings.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.denied_camera), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

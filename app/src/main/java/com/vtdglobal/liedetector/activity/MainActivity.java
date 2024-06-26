@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.NumberPicker;
 
+import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.databinding.ActivityMainBinding;
 
 import java.io.File;
@@ -51,11 +52,10 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ScannerActivity.class);
-                //Intent intent = new Intent(MainActivity.this, FingerPrintScannerActivity.class);
                 startActivity(intent);
             }
         });
-        mActivityMainBinding.layoutSound.setOnClickListener(new View.OnClickListener() {
+        mActivityMainBinding.layoutSounds.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SoundsActivity.class);
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity {
     }
     private void showConfirmExitApp(){
         AlertDialog Dialog = new AlertDialog.Builder(this)
-                .setTitle("LIE DETECTOR")
+                .setTitle(getString(R.string.lie_detector))
                 .setMessage("Are you sure you want to exit?")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override

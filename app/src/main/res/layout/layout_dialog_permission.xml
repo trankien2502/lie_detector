@@ -13,7 +13,7 @@
         android:layout_marginTop="10dp"
         android:padding="10dp"
         android:fontFamily="@font/urbanist_medium"
-        android:text="Permission Alert!"
+        android:text="@string/permission_alert"
         android:textColor="@color/darkHeavy"
         android:textSize="24sp" />
 
@@ -24,7 +24,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:fontFamily="@font/urbanist_medium"
-        android:text="Some functions will not work properly if you do not enable all permission."
+        android:text="@string/permission_text2"
         android:textColor="@color/darkHeavy"
         android:textSize="18sp" />
 
@@ -43,7 +43,7 @@
             android:gravity="center"
             android:padding="10dp"
             android:fontFamily="@font/urbanist_medium"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -57,7 +57,7 @@
             android:gravity="center"
             android:fontFamily="@font/urbanist_medium"
             android:padding="10dp"
-            android:text="OK"
+            android:text="@string/ok"
             android:textColor="@color/white"
             android:textSize="20sp" />
 

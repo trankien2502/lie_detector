@@ -34,7 +34,7 @@
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/img_language"
             android:fontFamily="@font/urbanist_medium"
-            android:text="Language"
+            android:text="@string/low_language"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </RelativeLayout>

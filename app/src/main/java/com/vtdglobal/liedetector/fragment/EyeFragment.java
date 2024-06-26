@@ -2,26 +2,16 @@ package com.vtdglobal.liedetector.fragment;
 
 import static android.graphics.Color.TRANSPARENT;
 
-import android.Manifest;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.Preview;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,23 +20,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.common.util.concurrent.ListenableFuture;
 import com.vtdglobal.liedetector.R;
-import com.vtdglobal.liedetector.activity.EyeScannerActivity;
-import com.vtdglobal.liedetector.activity.FingerPrintScannerActivity;
-import com.vtdglobal.liedetector.activity.MainActivity;
-import com.vtdglobal.liedetector.activity.PermissionActivity;
 import com.vtdglobal.liedetector.activity.ScannerActivity;
-import com.vtdglobal.liedetector.activity.SettingActivity;
-import com.vtdglobal.liedetector.activity.SoundScannerActivity;
 import com.vtdglobal.liedetector.databinding.FragmentEyeBinding;
 
-import java.io.IOException;
 import java.util.Random;
-
-import pl.droidsonroids.gif.GifDrawable;
 
 
 public class EyeFragment extends Fragment {
@@ -174,7 +153,7 @@ public class EyeFragment extends Fragment {
         mFragmentEyeBinding.imgEyePressBorder.setImageResource(R.drawable.img_scanner_press_border_default);
         mFragmentEyeBinding.imgEyePress.setImageResource(R.drawable.img_eye_press_default);
         mFragmentEyeBinding.tvScannerPress.setVisibility(View.VISIBLE);
-        mFragmentEyeBinding.tvScannerPress.setText("CLICK HERE");
+        mFragmentEyeBinding.tvScannerPress.setText(R.string.click_here);
         mFragmentEyeBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
 
         mFragmentEyeBinding.imgScannerResultBackgroundLight.setVisibility(View.GONE);
@@ -217,7 +196,7 @@ public class EyeFragment extends Fragment {
         mFragmentEyeBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mFragmentEyeBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_truth);
         mFragmentEyeBinding.imgEyeScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_truth);
-        mFragmentEyeBinding.tvEyeScreenScanner3.setText("YOU TELL THE TRUTH");
+        mFragmentEyeBinding.tvEyeScreenScanner3.setText(R.string.you_tell_the_truth);
         mFragmentEyeBinding.tvEyeScreenScanner3.setTextColor(getResources().getColor(R.color.truth));
         mFragmentEyeBinding.imgEyeAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
         mFragmentEyeBinding.imgEyeAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
@@ -227,7 +206,7 @@ public class EyeFragment extends Fragment {
         mFragmentEyeBinding.imgEyePressBorder.setImageResource(R.drawable.img_scanner_press_border_truth);
         mFragmentEyeBinding.imgEyePress.setImageResource(R.drawable.img_eye_press_truth);
         mFragmentEyeBinding.tvScannerPress.setVisibility(View.VISIBLE);
-        mFragmentEyeBinding.tvScannerPress.setText("TRY AGAIN");
+        mFragmentEyeBinding.tvScannerPress.setText(R.string.try_again_text);
         mFragmentEyeBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
     }
 
@@ -244,7 +223,7 @@ public class EyeFragment extends Fragment {
         mFragmentEyeBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mFragmentEyeBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_liar);
         mFragmentEyeBinding.imgEyeScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_liar);
-        mFragmentEyeBinding.tvEyeScreenScanner3.setText("YOU LIE");
+        mFragmentEyeBinding.tvEyeScreenScanner3.setText(R.string.you_lie);
         mFragmentEyeBinding.tvEyeScreenScanner3.setTextColor(getResources().getColor(R.color.liar));
         mFragmentEyeBinding.imgEyeAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
         mFragmentEyeBinding.imgEyeAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
@@ -254,7 +233,7 @@ public class EyeFragment extends Fragment {
         mFragmentEyeBinding.imgEyePressBorder.setImageResource(R.drawable.img_scanner_press_border_liar);
         mFragmentEyeBinding.imgEyePress.setImageResource(R.drawable.img_eye_press_liar);
         mFragmentEyeBinding.tvScannerPress.setVisibility(View.VISIBLE);
-        mFragmentEyeBinding.tvScannerPress.setText("TRY AGAIN");
+        mFragmentEyeBinding.tvScannerPress.setText(R.string.try_again_text);
         mFragmentEyeBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
     }
 

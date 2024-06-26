@@ -5,7 +5,6 @@ import static android.graphics.Color.TRANSPARENT;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -25,13 +24,8 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.vtdglobal.liedetector.R;
-import com.vtdglobal.liedetector.activity.EyeScannerActivity;
-import com.vtdglobal.liedetector.activity.FingerPrintScannerActivity;
 import com.vtdglobal.liedetector.activity.ScannerActivity;
-import com.vtdglobal.liedetector.activity.SettingActivity;
-import com.vtdglobal.liedetector.activity.SoundScannerActivity;
 import com.vtdglobal.liedetector.databinding.FragmentFingerPrintBinding;
 
 import java.io.IOException;
@@ -53,6 +47,7 @@ public class FingerPrintFragment extends Fragment {
                              Bundle savedInstanceState) {
         mFragmentFingerPrintBinding = FragmentFingerPrintBinding.inflate(inflater,container,false);
         runnablePressing = new Runnable() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void run() {
                 if (isButtonPressed) {
@@ -63,7 +58,7 @@ public class FingerPrintFragment extends Fragment {
                     mFragmentFingerPrintBinding.layoutFingerPrintScanningProgress.setVisibility(View.VISIBLE);
                     mFragmentFingerPrintBinding.tvScannerPress.setVisibility(View.GONE);
                     mFragmentFingerPrintBinding.imgScannerDirectUp.setVisibility(View.GONE);
-                    mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText("WAIT " + countdownPressing + " SECONDS TO SCAN");
+                    mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText(getString(R.string.wait) +" " + countdownPressing +" " + getString(R.string.seconds_to_scan));
                     if (countdownPressing > 0) {
                         handler.postDelayed(this, 1000);
                     } else {
@@ -87,6 +82,7 @@ public class FingerPrintFragment extends Fragment {
             }
         };
         runnableAnalyzing = new Runnable() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void run() {
                 countdownAnalyzing--;
@@ -94,26 +90,26 @@ public class FingerPrintFragment extends Fragment {
                     case 0:
                         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
                         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText("Analyzing...");
+                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.analyzing___);
                         break;
                     case 1:
                         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
                         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText("Analyzing..");
+                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.analyzing__);
                         break;
                     case 2:
                         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
                         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText("Analyzing.");
+                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.analyzing_);
                         break;
                     case 3:
                         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
                         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText("Analyzing");
+                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.analyzing);
                         break;
                 }
                 if (countdownAnalyzing==0){
-                    mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText("The Result is ready NOW");
+                    mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.the_result_is_ready_now);
                     handler.removeCallbacks(runnableAnalyzing);
                     showDialogResult();
                 }else
@@ -129,6 +125,7 @@ public class FingerPrintFragment extends Fragment {
     private void initListener() {
 
         mFragmentFingerPrintBinding.layoutFingerPrintPressButton2.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(isAnalyzing) return false;
@@ -143,7 +140,7 @@ public class FingerPrintFragment extends Fragment {
                         mFragmentFingerPrintBinding.tvScannerPress.setVisibility(View.GONE);
                         mFragmentFingerPrintBinding.imgScannerDirectUp.setVisibility(View.GONE);
                         loadGif();
-                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText("WAIT " + countdownPressing + " SECONDS TO SCAN");
+                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText(getString(R.string.wait) +" " + countdownPressing +" " + getString(R.string.seconds_to_scan));
                         handler.postDelayed(runnablePressing, 1000);
                         runAnimation();
                         if (mediaPlayer!=null){
@@ -152,7 +149,7 @@ public class FingerPrintFragment extends Fragment {
                         }
                         mediaPlayer = MediaPlayer.create(getContext(),R.raw.scansound_effect2);
                         mediaPlayer.start();
-                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText("WAIT " + countdownPressing + " SECONDS TO SCAN");
+                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText(getString(R.string.wait) +" " + countdownPressing +" " + getString(R.string.seconds_to_scan));
                         return true;
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
@@ -253,9 +250,9 @@ public class FingerPrintFragment extends Fragment {
         mFragmentFingerPrintBinding.layoutFingerPrintAnalyzingResult.setVisibility(View.GONE);
         mFragmentFingerPrintBinding.imgFingerPrintPressBorder.setImageResource(R.drawable.img_scanner_press_border_default);
         mFragmentFingerPrintBinding.imgFingerPrintPress.setImageResource(R.drawable.img_finger_print_press_default);
-        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText("Analyzing");
+        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.analyzing);
         mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setTextColor(getResources().getColor(R.color.white));
-        mFragmentFingerPrintBinding.tvScannerPress.setText("PRESS HERE");
+        mFragmentFingerPrintBinding.tvScannerPress.setText(R.string.press_here);
     }
 
     private void initUIGetTruth() {
@@ -269,7 +266,7 @@ public class FingerPrintFragment extends Fragment {
         mFragmentFingerPrintBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mFragmentFingerPrintBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_truth);
         mFragmentFingerPrintBinding.imgFingerPrintScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_truth);
-        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText("YOU TELL THE TRUTH");
+        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.you_tell_the_truth);
         mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setTextColor(getResources().getColor(R.color.truth));
         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
@@ -279,7 +276,7 @@ public class FingerPrintFragment extends Fragment {
         mFragmentFingerPrintBinding.imgFingerPrintPressBorder.setImageResource(R.drawable.img_scanner_press_border_truth);
         mFragmentFingerPrintBinding.imgFingerPrintPress.setImageResource(R.drawable.img_finger_print_press_truth);
         mFragmentFingerPrintBinding.tvScannerPress.setVisibility(View.VISIBLE);
-        mFragmentFingerPrintBinding.tvScannerPress.setText("TRY AGAIN");
+        mFragmentFingerPrintBinding.tvScannerPress.setText(R.string.try_again_text);
         mFragmentFingerPrintBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
     }
 
@@ -294,7 +291,7 @@ public class FingerPrintFragment extends Fragment {
         mFragmentFingerPrintBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mFragmentFingerPrintBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_liar);
         mFragmentFingerPrintBinding.imgFingerPrintScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_liar);
-        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText("YOU LIE");
+        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.you_lie);
         mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setTextColor(getResources().getColor(R.color.liar));
         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
         mFragmentFingerPrintBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
@@ -304,7 +301,7 @@ public class FingerPrintFragment extends Fragment {
         mFragmentFingerPrintBinding.imgFingerPrintPressBorder.setImageResource(R.drawable.img_scanner_press_border_liar);
         mFragmentFingerPrintBinding.imgFingerPrintPress.setImageResource(R.drawable.img_finger_print_press_liar);
         mFragmentFingerPrintBinding.tvScannerPress.setVisibility(View.VISIBLE);
-        mFragmentFingerPrintBinding.tvScannerPress.setText("TRY AGAIN");
+        mFragmentFingerPrintBinding.tvScannerPress.setText(R.string.try_again_text);
         mFragmentFingerPrintBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
     }
 

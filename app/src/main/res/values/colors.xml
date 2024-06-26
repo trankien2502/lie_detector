@@ -15,9 +15,9 @@
     <color name="truth">#01e98a</color>
     <color name="grayDefault">#969696</color>
 
-    <color name="switch_thumb_checked">#03D8DA</color> <!-- Màu đỏ khi bật -->
-    <color name="switch_thumb_unchecked">#767676</color> <!-- Màu xanh lá khi tắt -->
-    <color name="switch_track_checked">#80e2e3</color> <!-- Xanh dương bán trong suốt khi bật -->
-    <color name="switch_track_unchecked">#adadad</color> <!-- Xanh lá bán trong suốt khi tắt -->
+    <color name="switch_thumb_checked">#03D8DA</color>
+    <color name="switch_thumb_unchecked">#767676</color>
+    <color name="switch_track_checked">#80e2e3</color>
+    <color name="switch_track_unchecked">#adadad</color>
 
 </resources>

@@ -21,7 +21,7 @@
         android:textColor="@color/white"
         android:fontFamily="@font/druk_text_wide_medium_trial"
         android:textSize="13sp"
-        android:text="Version 1.0.0"/>
+        android:text="@string/version_1_0_0"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:textColor="@color/bubbleBlue"
         android:fontFamily="@font/druk_text_wide_medium_trial"
         android:textSize="20sp"
-        android:text="Privacy Policy"/>
+        android:text="@string/privacy_policy"/>
 
 
 </LinearLayout>

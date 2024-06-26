@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/druk_text_wide_medium_trial"
-            android:text="WAIT 5 SECONDS TO SCAN"
+            android:text="@string/wait_5_seconds_to_scan"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:visibility="visible" />
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:fontFamily="@font/druk_text_wide_medium_trial"
-                android:text="WAIT 5 SECONDS TO SCAN"
+                android:text="@string/wait_5_seconds_to_scan"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 android:visibility="visible" />
@@ -76,7 +76,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/druk_text_wide_medium_trial"
-                android:text="Analyzing"
+                android:text="@string/analyzing"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 android:visibility="visible" />
@@ -125,7 +125,7 @@
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/dark_dimension"
                     android:padding="10dp"
-                    android:text="THE TRUTH"
+                    android:text="@string/the_truth"
                     android:textColor="@color/grayDefault"
                     android:textSize="16sp" />
 
@@ -137,7 +137,7 @@
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/dark_dimension"
                     android:padding="10dp"
-                    android:text="THE LIAR "
+                    android:text="@string/the_liar"
                     android:textColor="@color/grayDefault"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -218,7 +218,7 @@
                     android:layout_marginTop="10dp"
                     android:textSize="12sp"
                     android:fontFamily="@font/druk_text_wide_medium_trial"
-                    android:text="PRESS HERE"
+                    android:text="@string/press_here"
                     android:textColor="@color/white" />
             </LinearLayout>
 

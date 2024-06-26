@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:fontFamily="@font/cabinet_grotesk_medium"
-            android:text="Next"
+            android:text="@string/next"
             android:padding="12dp"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"

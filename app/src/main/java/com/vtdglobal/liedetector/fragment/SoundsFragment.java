@@ -82,10 +82,10 @@ public class SoundsFragment extends Fragment {
 
     private void getListSoundFunny() {
         soundsList = new ArrayList<>();
-        soundsList.add(new Sound(Sound.SOUND_ID_17,"HAIR CLIPPER",R.drawable.img_clipper1));
-        soundsList.add(new Sound(Sound.SOUND_ID_18,"FUNNY",R.drawable.img_audio_wave));
-        soundsList.add(new Sound(Sound.SOUND_ID_19,"HILARIOUS",R.drawable.img_sound_wave1));
-        soundsList.add(new Sound(Sound.SOUND_ID_20,"FORTE PIANO",R.drawable.img_piano1));
+        soundsList.add(new Sound(Sound.SOUND_ID_17,getString(R.string.hair_clipper),R.drawable.img_clipper1));
+        soundsList.add(new Sound(Sound.SOUND_ID_18,getString(R.string.funny),R.drawable.img_audio_wave));
+        soundsList.add(new Sound(Sound.SOUND_ID_19,getString(R.string.hilarious),R.drawable.img_sound_wave1));
+        soundsList.add(new Sound(Sound.SOUND_ID_20,getString(R.string.forte_piano),R.drawable.img_piano1));
 
 
     }

@@ -2,18 +2,13 @@ package com.vtdglobal.liedetector.fragment;
 
 import static android.graphics.Color.TRANSPARENT;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -24,16 +19,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.vtdglobal.liedetector.R;
-import com.vtdglobal.liedetector.activity.EyeScannerActivity;
-import com.vtdglobal.liedetector.activity.FingerPrintScannerActivity;
-import com.vtdglobal.liedetector.activity.MainActivity;
-import com.vtdglobal.liedetector.activity.PermissionActivity;
 import com.vtdglobal.liedetector.activity.ScannerActivity;
-import com.vtdglobal.liedetector.activity.SettingActivity;
-import com.vtdglobal.liedetector.activity.SoundScannerActivity;
 import com.vtdglobal.liedetector.databinding.FragmentSoundBinding;
 
 import java.io.IOException;
@@ -85,6 +73,7 @@ public class SoundFragment extends Fragment {
             }
         };
         runnableAnalyzing = new Runnable() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void run() {
                 countdownAnalyzing--;
@@ -92,26 +81,26 @@ public class SoundFragment extends Fragment {
                     case 0:
                         mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
                         mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mFragmentSoundBinding.tvSoundScreenScanner3.setText("Analyzing...");
+                        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing___);
                         break;
                     case 1:
                         mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
                         mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mFragmentSoundBinding.tvSoundScreenScanner3.setText("Analyzing..");
+                        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing__);
                         break;
                     case 2:
                         mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
                         mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mFragmentSoundBinding.tvSoundScreenScanner3.setText("Analyzing.");
+                        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing_);
                         break;
                     case 3:
                         mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
                         mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mFragmentSoundBinding.tvSoundScreenScanner3.setText("Analyzing");
+                        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing);
                         break;
                 }
                 if (countdownAnalyzing == 0) {
-                    mFragmentSoundBinding.tvSoundScreenScanner3.setText("The result is ready NOW");
+                    mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.the_result_is_ready_now);
                     showDialogResult();
                 } else
                     handler.postDelayed(this, 500);
@@ -231,9 +220,9 @@ public class SoundFragment extends Fragment {
         mFragmentSoundBinding.layoutSoundAnalyzingResult.setVisibility(View.GONE);
         mFragmentSoundBinding.imgSoundPressBorder.setImageResource(R.drawable.img_scanner_press_border_default);
         mFragmentSoundBinding.imgSoundPress.setImageResource(R.drawable.img_sound_press_default);
-        mFragmentSoundBinding.tvSoundScreenScanner3.setText("Analyzing");
+        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing);
         mFragmentSoundBinding.tvSoundScreenScanner3.setTextColor(getResources().getColor(R.color.white));
-        mFragmentSoundBinding.tvScannerPress.setText("PRESS TO TALK");
+        mFragmentSoundBinding.tvScannerPress.setText(R.string.press_to_talk);
         mFragmentSoundBinding.tvSoundScreenScanner1.setVisibility(View.VISIBLE);
     }
 
@@ -248,7 +237,7 @@ public class SoundFragment extends Fragment {
         mFragmentSoundBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mFragmentSoundBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_truth);
         mFragmentSoundBinding.imgSoundScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_truth);
-        mFragmentSoundBinding.tvSoundScreenScanner3.setText("YOU TELL THE TRUTH");
+        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.you_tell_the_truth);
         mFragmentSoundBinding.tvSoundScreenScanner3.setTextColor(getResources().getColor(R.color.truth));
         mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
         mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
@@ -258,7 +247,7 @@ public class SoundFragment extends Fragment {
         mFragmentSoundBinding.imgSoundPressBorder.setImageResource(R.drawable.img_scanner_press_border_truth);
         mFragmentSoundBinding.imgSoundPress.setImageResource(R.drawable.img_sound_press_truth);
         mFragmentSoundBinding.tvScannerPress.setVisibility(View.VISIBLE);
-        mFragmentSoundBinding.tvScannerPress.setText("TRY AGAIN");
+        mFragmentSoundBinding.tvScannerPress.setText(R.string.try_again_text);
         mFragmentSoundBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
     }
 
@@ -273,7 +262,7 @@ public class SoundFragment extends Fragment {
         mFragmentSoundBinding.imgScannerResultBackgroundLight.setVisibility(View.VISIBLE);
         mFragmentSoundBinding.imgScannerResultBackgroundLight.setImageResource(R.drawable.img_scanner_result_background_light_liar);
         mFragmentSoundBinding.imgSoundScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_liar);
-        mFragmentSoundBinding.tvSoundScreenScanner3.setText("YOU LIE");
+        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.you_lie);
         mFragmentSoundBinding.tvSoundScreenScanner3.setTextColor(getResources().getColor(R.color.liar));
         mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
         mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
@@ -283,7 +272,7 @@ public class SoundFragment extends Fragment {
         mFragmentSoundBinding.imgSoundPressBorder.setImageResource(R.drawable.img_scanner_press_border_liar);
         mFragmentSoundBinding.imgSoundPress.setImageResource(R.drawable.img_sound_press_liar);
         mFragmentSoundBinding.tvScannerPress.setVisibility(View.VISIBLE);
-        mFragmentSoundBinding.tvScannerPress.setText("TRY AGAIN");
+        mFragmentSoundBinding.tvScannerPress.setText(R.string.try_again_text);
         mFragmentSoundBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
     }
 

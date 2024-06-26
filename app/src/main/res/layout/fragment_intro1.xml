@@ -24,10 +24,10 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="20dp"
-        android:text="FINGER PRINT"
+        android:text="@string/detect_true_or_lie"
         android:fontFamily="@font/druk_text_wide_medium_trial"
         android:textColor="@color/white"
-        android:textSize="26sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
@@ -38,7 +38,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/urbanist_medium"
-        android:text="You can easy find the lier with the finger print"
+        android:text="@string/easily_find_the_lier_with_fingerprint_detection"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="normal" />

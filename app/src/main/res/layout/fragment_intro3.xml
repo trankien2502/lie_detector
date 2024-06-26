@@ -24,9 +24,9 @@
         android:layout_marginEnd="15dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/druk_text_wide_medium_trial"
-        android:text="FUNNY SOUND"
+        android:text="@string/funny_sound"
         android:textColor="@color/white"
-        android:textSize="26sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/urbanist_medium"
-        android:text="Eye scanner will tell you the true"
+        android:text="@string/prank_sounds_list_makes_fun"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="normal" />

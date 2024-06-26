@@ -20,7 +20,7 @@
             android:textSize="20sp"
             android:padding="30dp"
             android:textColor="@color/white"
-            android:text="Scan successfully"
+            android:text="@string/scan_successfully"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/druk_text_wide_medium_trial"
             android:layout_gravity="center"/>

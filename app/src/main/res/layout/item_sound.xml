@@ -39,10 +39,10 @@
                 android:id="@+id/tv_sound_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AIR HORN"
+                android:text="@string/air_horn"
                 android:layout_marginTop="15dp"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="11sp"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/druk_text_wide_medium_trial"/>

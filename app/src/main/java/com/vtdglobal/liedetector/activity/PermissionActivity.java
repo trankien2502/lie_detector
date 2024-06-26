@@ -94,7 +94,7 @@ public class PermissionActivity extends BaseActivity {
                     editor.putBoolean("permissionMicro", true);
                     editor.apply();
                 } else {
-                    Toast.makeText(this, "Microphone permission denied. Please enable it in settings.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case CAMERA_PERMISSION_REQUEST_CODE:
@@ -106,7 +106,7 @@ public class PermissionActivity extends BaseActivity {
                     editor.putBoolean("permissionCamera", true);
                     editor.apply();
                 } else {
-                    Toast.makeText(this, "Camera permission denied. Please enable it in settings.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.denied_camera), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -134,7 +134,7 @@ public class PermissionActivity extends BaseActivity {
                     if (ActivityCompat.checkSelfPermission(PermissionActivity.this,
                             Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         mActivityPermissionBinding.swichCamera.setChecked(true);
-                        Toast.makeText(PermissionActivity.this, "Camera permission is already granted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PermissionActivity.this, getString(R.string.camera_permission_is_already_granted), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -150,7 +150,7 @@ public class PermissionActivity extends BaseActivity {
                     if (ActivityCompat.checkSelfPermission(PermissionActivity.this,
                             Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
                         mActivityPermissionBinding.swichMicro.setChecked(true);
-                        Toast.makeText(PermissionActivity.this, "Microphone permission is already granted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PermissionActivity.this, getString(R.string.microphone_permission_is_already_granted), Toast.LENGTH_SHORT).show();
                     }
                 }
             }

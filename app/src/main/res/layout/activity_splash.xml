@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/urbanist_medium"
-            android:text="LIE DETECTOR"
+            android:text="@string/lie_detector"
             android:textColor="@color/white"
             android:textSize="20sp" />
     </LinearLayout>
@@ -58,7 +58,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/urbanist_medium"
             android:gravity="center"
-            android:text="This action may contain advertising"
+            android:text="@string/this_action_may_contain_advertising"
             android:textColor="#8f8f8f"
             android:textSize="16sp" />
     </LinearLayout>
