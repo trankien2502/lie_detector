@@ -22,6 +22,7 @@ public class Language {
     private int id;
     private String name;
     private int image;
+    private boolean isActive;
 
     public Language(int id, String name, int image) {
         this.id = id;
@@ -51,5 +52,13 @@ public class Language {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

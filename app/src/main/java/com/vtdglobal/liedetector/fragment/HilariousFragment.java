@@ -64,7 +64,14 @@ public class HilariousFragment extends Fragment {
         soundList.add(new Sound(Sound.SOUND_ID_16,getString(R.string.sound_name_16),R.drawable.img_ghost,R.raw.ghost));
 
     }
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

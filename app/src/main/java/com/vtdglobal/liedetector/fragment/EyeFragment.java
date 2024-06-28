@@ -36,35 +36,84 @@ public class EyeFragment extends Fragment {
 //    private ProcessCameraProvider cameraProvider;
     private final Handler handler = new Handler();
     private Runnable runnableAnalyzing;
-    private int  countdownAnalyzing = 5;
+    private int  countdownAnalyzing = 10;
     private boolean  isResultScreen = false;
+    public static boolean isAnalyzing = false;
     MediaPlayer mediaPlayer;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mFragmentEyeBinding = FragmentEyeBinding.inflate(inflater,container,false);
         runnableAnalyzing = new Runnable() {
             @Override
             public void run() {
-                countdownAnalyzing--;
-                if (countdownAnalyzing > 0) {
-                    handler.postDelayed(this, 1000);
-                } else {
-                    if (mediaPlayer != null) {
-                        mediaPlayer.release();
-                    }
-                    mediaPlayer = MediaPlayer.create(getContext(), R.raw.get_result_sound);
-                    mediaPlayer.start();
+                if (!isAnalyzing){
                     handler.removeCallbacks(runnableAnalyzing);
-                    setVisibilityAnalyzingGone();
-                    showDialogResult();
+                    initUIDefault();
+                    if (mediaPlayer!=null){
+                        mediaPlayer.release();
+                        mediaPlayer = null;
+
+                    }
+                } else {
+                    countdownAnalyzing--;
+                    if (countdownAnalyzing > 0) {
+                        handler.postDelayed(this, 1000);
+                    } else {
+                        handler.removeCallbacks(runnableAnalyzing);
+                        if(mediaPlayer!= null){
+                            mediaPlayer.release();
+                            mediaPlayer = null;
+                        }
+                        if (ScannerActivity.isOpenDialog){
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(ScannerActivity.isOpenDialog) {
+                                        setVisibilityResultGone();
+                                        handler.postDelayed(this,1000);
+                                    }
+                                    else {
+                                        if (isAnalyzing){
+                                            if (mediaPlayer != null) {
+                                                mediaPlayer.release();
+                                            }
+                                            mediaPlayer = MediaPlayer.create(getContext(), R.raw.get_result_sound);
+                                            mediaPlayer.start();
+//                                            setVisibilityAnalyzingGone();
+                                            showDialogResult();
+                                        }
+                                        handler.removeCallbacks(this);
+                                    }
+                                }
+                            },1000);
+                        } else {
+                            if (mediaPlayer != null) {
+                                mediaPlayer.release();
+                            }
+                            mediaPlayer = MediaPlayer.create(getContext(), R.raw.get_result_sound);
+                            mediaPlayer.start();
+                            showDialogResult();
+                        }
+                        //
+
+                    }
                 }
+
 
             }
         };
         initUI();
         initListener();
         return mFragmentEyeBinding.getRoot();
+    }
+
+    public static boolean isAnalyzing() {
+        return isAnalyzing;
+    }
+
+    public static void setAnalyzing(boolean isAnalyzing) {
+        EyeFragment.isAnalyzing = isAnalyzing;
     }
 
     private void initListener() {
@@ -75,7 +124,8 @@ public class EyeFragment extends Fragment {
                     initUIDefault();
                     isResultScreen = false;
                 } else {
-                    countdownAnalyzing = 5;
+                    countdownAnalyzing = 10;
+                    isAnalyzing = true;
                     handler.postDelayed(runnableAnalyzing,1000);
                     setVisibilityAnalyzingVisible();
                 }
@@ -106,6 +156,7 @@ public class EyeFragment extends Fragment {
         mFragmentEyeBinding.imgEyeScanning.setVisibility(View.GONE);
     }
     private void showDialogResult() {
+        isAnalyzing = false;
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
@@ -128,9 +179,12 @@ public class EyeFragment extends Fragment {
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaPlayer.release();
-                mediaPlayer = null;
+                if (mediaPlayer!=null){
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
                 isResultScreen = true;
+                setVisibilityAnalyzingGone();
                 getResultScanner();
                 dialog.dismiss();
             }
@@ -248,7 +302,8 @@ public class EyeFragment extends Fragment {
                 ValueAnimator animator = ValueAnimator.ofFloat(0f, parentHeight - pressingLightHeight);
                 animator.setDuration(2500);
                 animator.setInterpolator(new LinearInterpolator());
-                animator.setRepeatCount(5000);
+                animator.setRepeatCount(3);
+
                 animator.setRepeatMode(ValueAnimator.REVERSE);
                 animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
@@ -261,6 +316,20 @@ public class EyeFragment extends Fragment {
                 mFragmentEyeBinding.layoutEyeScanning.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mediaPlayer!=null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        initUIDefault();
+        if (ScannerActivity.cameraProvider != null) {
+            ScannerActivity.cameraProvider.unbindAll();
+        }
+        handler.removeCallbacks(runnableAnalyzing);
     }
 
     @Override

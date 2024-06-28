@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark"
+    android:background="@color/darkHeavy"
     android:orientation="vertical"
     tools:context=".activity.IntroActivity">
 
@@ -25,15 +25,36 @@
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp">
 
-        <me.relex.circleindicator.CircleIndicator3
-            android:id="@+id/indicator_3"
+
+        <LinearLayout
+            android:id="@+id/ll_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            app:ci_drawable="@drawable/bg_blued_corner_8_width_10"
-            app:ci_drawable_unselected="@drawable/bg_gray_corner_8_width_10"
-             />
+            android:orientation="horizontal"
+            android:padding="6sp">
+
+            <ImageView
+                android:id="@+id/iv_circle_01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_intro_s" />
+
+            <ImageView
+                android:id="@+id/iv_circle_02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5sp"
+                android:src="@drawable/ic_intro_sn" />
+
+            <ImageView
+                android:id="@+id/iv_circle_03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_intro_sn" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/btn_next"

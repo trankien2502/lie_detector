@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/dark"
+    android:background="@color/darkHeavy"
     android:orientation="vertical"
     tools:context=".fragment.Intro2Fragment">
 
@@ -21,8 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:paddingTop="10dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/druk_text_wide_medium_trial"
         android:text="@string/eye_scanner"
         android:textColor="@color/white"

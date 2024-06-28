@@ -78,6 +78,14 @@ public class FunnyFragment extends Fragment {
 
     }
     @Override
+    public void onStop() {
+        super.onStop();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (mediaPlayer != null) {

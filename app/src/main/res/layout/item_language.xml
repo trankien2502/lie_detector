@@ -3,8 +3,8 @@
     android:id="@+id/layout_item_language"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:background="@drawable/bg_darklight_corner_8">
+    android:layout_margin="5dp"
+    android:background="@drawable/bg_dark_corner_8">
     <View
         android:id="@+id/view_foreground"
         android:layout_width="match_parent"

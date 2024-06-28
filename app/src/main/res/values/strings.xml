@@ -81,5 +81,19 @@
     <string name="wait">"WAIT "</string>
     <string name="seconds_to_scan">" SECONDS TO SCAN"</string>
     <string name="the_result_is_ready_now">The Result is ready NOW</string>
+    <string name="are_you_sure_want_to_quit_app">Are you sure want to quit app?</string>
+    <string name="quit">Quit</string>
+    <string name="more_app">More App</string>
+    <string name="view_result">View result</string>
+    <string name="low_permission">Permission</string>
+    <string name="low_lie_detector">\"Lie Detector\"</string>
+    <string name="grant_these_permissions_to_use">Grant these permissions to use</string>
+    <string name="note_you_can_also_grant_permission_in">Note: You can also grant permission in</string>
+    <string name="setting_app_lie_detector"><![CDATA[Setting -> App -> Lie Detector ->]]></string>
+    <string name="microphone">Microphone</string>
+    <string name="camera">Camera</string>
+    <string name="stop_scan">Stop Scan?</string>
+    <string name="are_you_sure_you_want_to_stop_the_scanning_progress">Are you sure you want to stop the scanning progress?</string>
+    <string name="continue1">Continue</string>
 
 </resources>

@@ -1,11 +1,15 @@
 package com.vtdglobal.liedetector.fragment;
 
+import static android.content.Context.VIBRATOR_SERVICE;
+
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +22,14 @@ public class HairClipperFragment extends Fragment {
     FragmentHairClipperBinding mFragmentHairClipperBinding;
     boolean isClipperOn = false;
     MediaPlayer mediaPlayer;
+    Vibrator vibrator;
     private int currentPosition;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mFragmentHairClipperBinding = FragmentHairClipperBinding.inflate(inflater,container,false);
         initListener();
+        vibrator = (Vibrator) requireContext().getSystemService(VIBRATOR_SERVICE);
         return mFragmentHairClipperBinding.getRoot();
     }
 
@@ -53,6 +59,9 @@ public class HairClipperFragment extends Fragment {
             mediaPlayer.seekTo(currentPosition);
             mediaPlayer.start();
         }
+        if (vibrator.hasVibrator()) {
+            vibrator.vibrate(new long[]{0,1000},0);
+        }
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -67,7 +76,23 @@ public class HairClipperFragment extends Fragment {
             mediaPlayer.pause();
             currentPosition = mediaPlayer.getCurrentPosition();
         }
+
+        vibrator.cancel();
+
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        if (isClipperOn)  vibrator.cancel();
+        isClipperOn = false;
+        mFragmentHairClipperBinding.imgClipper.setImageResource(R.drawable.img_clipper_off);
+    }
+
 
     @Override
     public void onDestroy() {
@@ -76,5 +101,6 @@ public class HairClipperFragment extends Fragment {
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        if (isClipperOn)  vibrator.cancel();
     }
 }

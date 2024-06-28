@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.FingerPrintFragment">
+
     <FrameLayout
         android:id="@+id/layout_finger_print_screen_scanner"
         android:layout_width="match_parent"
@@ -35,10 +36,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginStart="35dp"
-            android:gravity="center"
             android:layout_marginTop="35dp"
             android:layout_marginEnd="35dp"
             android:layout_marginBottom="40dp"
+            android:gravity="center"
             android:visibility="gone">
 
             <TextView
@@ -54,11 +55,11 @@
 
             <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/img_finger_print_scanning_process"
-                android:layout_width="250dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_finger_print_screen_scanner_2"
                 android:layout_centerHorizontal="true"
-                android:adjustViewBounds="true"
-                android:layout_below="@+id/tv_finger_print_screen_scanner_2" />
+                android:adjustViewBounds="true" />
 
         </RelativeLayout>
 
@@ -146,15 +147,16 @@
         </RelativeLayout>
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/img_scanner_result_background_light"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@drawable/img_scanner_result_background_light_truth" />
+            android:src="@drawable/img_scanner_result_background_light_truth"
+            android:visibility="gone" />
 
 
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -162,66 +164,90 @@
         android:layout_centerHorizontal="true">
 
         <FrameLayout
-            android:id="@+id/layout_finger_print_press_button"
+            android:id="@+id/layout_parent_scanning_pressing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:focusable="true">
+            android:layout_gravity="center">
 
             <ImageView
-                android:id="@+id/img_finger_print_press_border"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:src="@drawable/img_scanner_press_border_default" />
+                android:id="@+id/img_finger_print_pressing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:src="@drawable/img_finger_print_pressing"
+                android:visibility="visible"
+                app:tint="#00000000" />
 
-            <LinearLayout
-                android:id="@+id/layout_finger_print_press_button2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <FrameLayout
+                android:id="@+id/layout_finger_print_press_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:clickable="true"
+                android:focusable="true">
+
 
                 <ImageView
-                    android:id="@+id/img_finger_print_pressing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/img_finger_print_press_border"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:src="@drawable/img_finger_print_pressing"
-                    android:visibility="visible"
-                    app:tint="#00000000" />
-
-                <ImageView
-                    android:id="@+id/img_finger_print_press"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/img_finger_print_press_default" />
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_scanner_press_border_default" />
 
-                <ImageView
-                    android:id="@+id/img_scanner_direct_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/img_scanner_direct_up" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_finger_print_press_button2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:gravity="bottom">
 
-                <TextView
-                    android:id="@+id/tv_scanner_press"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/druk_text_wide_medium_trial"
-                    android:text="@string/press_here"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/img_finger_print_press"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/img_finger_print_press_default"
+                        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <ImageView
+                            android:id="@+id/img_scanner_direct_up"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/img_scanner_direct_up"
+                            app:tint="#00000000" />
+
+                        <TextView
+                            android:id="@+id/tv_scanner_press"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/druk_text_wide_medium_trial"
+                            android:padding="10dp"
+                            android:text="@string/press_here"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </FrameLayout>
         </FrameLayout>
 
     </FrameLayout>

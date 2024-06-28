@@ -3,136 +3,143 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkHeavy"
-    android:gravity="center"
-    android:layout_weight="3"
+    android:background="#02132d"
     tools:context=".activity.MainActivity">
-    <ImageView
-        android:id="@+id/img_home"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:src="@drawable/img_home_foreground"/>
-
-    <FrameLayout
-        android:layout_above="@id/layout_sounds"
-        android:id="@+id/layout_scanner"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="-20dp"
-        android:layout_height="wrap_content">
-
-        <ImageView
+        android:layout_height="match_parent">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:src="@drawable/img_button_border_home" />
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_home"
+                android:layout_marginTop="95dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/img_home_foreground"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:weightSum="7"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_marginStart="5dp"
-                android:layout_weight="2"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:padding="12dp"
-                    android:src="@drawable/imc_finger_print1" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="10dp"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:layout_marginEnd="10dp"
-                    android:fontFamily="@font/druk_text_wide_medium_trial"
-                    android:text="@string/scanner"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-    </FrameLayout>
-    <FrameLayout
-        android:id="@+id/layout_sounds"
-        android:layout_marginBottom="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:src="@drawable/img_button_border_home" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:weightSum="7"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_marginStart="5dp"
-                android:layout_height="match_parent">
+            <FrameLayout
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="430dp"
+                android:id="@+id/layout_scanner"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="-22dp"
+                android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:padding="12dp"
-                    android:src="@drawable/img_audio1" />
-            </RelativeLayout>
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/img_button_border_home" />
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="1dp"
-                android:layout_weight="5"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="10dp"
-                    android:fontFamily="@font/druk_text_wide_medium_trial"
-                    android:text="@string/sound"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </RelativeLayout>
-        </LinearLayout>
+                    android:weightSum="7"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-    </FrameLayout>
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="2"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/img_finger_print_home" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/druk_text_wide_medium_trial"
+                            android:gravity="center"
+                            android:text="@string/scanner"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/layout_sounds"
+                android:layout_marginBottom="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_below="@id/layout_scanner"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/img_button_border_home" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:weightSum="7"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_marginStart="5dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/img_sound_home" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_weight="5"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/druk_text_wide_medium_trial"
+                            android:text="@string/sound"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </FrameLayout>
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

@@ -24,12 +24,27 @@
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/druk_text_wide_medium_trial"
             android:layout_gravity="center"/>
-        <ImageView
-            android:id="@+id/btn_scanner_view_result"
+
+
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:src="@drawable/img_scanner_result_button_dialog"/>
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/btn_scanner_view_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_border_view_result"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_result"
+                android:textColor="@color/white"
+                android:fontFamily="@font/druk_text_wide_medium_trial"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+        </FrameLayout>
     </LinearLayout>
 
 

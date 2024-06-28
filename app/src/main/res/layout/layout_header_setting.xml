@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:padding="15dp"
-        android:layout_marginStart="10dp"
         android:src="@drawable/img_arrow_left"
         tools:ignore="ContentDescription" />
 

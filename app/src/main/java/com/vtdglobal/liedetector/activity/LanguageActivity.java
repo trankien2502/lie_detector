@@ -24,7 +24,9 @@ public class LanguageActivity extends BaseActivity {
     ActivityLanguageBinding mActivityLanguageBinding;
     List<Language> listLanguage;
     LanguageAdapter languageAdapter;
+    boolean isChoose = false;
     private String languageSelected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class LanguageActivity extends BaseActivity {
         if (check) {
             Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
             startActivity(intent);
-            finish();
+            finishAffinity();
         }
     }
 
@@ -51,14 +53,18 @@ public class LanguageActivity extends BaseActivity {
         mActivityLanguageBinding.imgTick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("selectedLanguage", true);
-                editor.putString("languageCurrent", languageSelected);
-                editor.apply();
-                Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
-                startActivity(intent);
-                finish();
+                if (isChoose) {
+                    SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("selectedLanguage",true);
+                    editor.putString("languageCurrent", languageSelected);
+                    editor.apply();
+                    Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
+                    startActivity(intent);
+                    finishAffinity();
+                } else {
+                    Toast.makeText(LanguageActivity.this, "Please select language!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -68,24 +74,23 @@ public class LanguageActivity extends BaseActivity {
         mActivityLanguageBinding.rcvLanguage.setLayoutManager(linearLayoutManager);
         languageAdapter = new LanguageAdapter(this, listLanguage, this::onSelected);
         mActivityLanguageBinding.rcvLanguage.setAdapter(languageAdapter);
-        languageAdapter.setSelectedPosition(Language.ENGLISH);
-        languageSelected = Language.LANGUAGE_0;
     }
 
     private void onSelected(Language language) {
+        isChoose = true;
         languageAdapter.setSelectedPosition(language.getId());
         languageSelected = language.getName();
     }
 
     private void getListLanguage() {
         listLanguage = new ArrayList<>();
-        listLanguage.add(new Language(Language.ENGLISH, Language.LANGUAGE_0, R.drawable.img_eng));
-        listLanguage.add(new Language(Language.FRENCH, Language.LANGUAGE_1, R.drawable.img_french));
-        listLanguage.add(new Language(Language.PORTUGUESE, Language.LANGUAGE_2, R.drawable.img_portuguese));
-        listLanguage.add(new Language(Language.GERMAN, Language.LANGUAGE_3, R.drawable.img_german));
-        listLanguage.add(new Language(Language.SPANISH, Language.LANGUAGE_4, R.drawable.img_spanish));
-        listLanguage.add(new Language(Language.HINDI, Language.LANGUAGE_5, R.drawable.img_hindi));
-        listLanguage.add(new Language(Language.INDONESIA, Language.LANGUAGE_6, R.drawable.img_indo));
-        listLanguage.add(new Language(Language.CHINA, Language.LANGUAGE_7, R.drawable.img_china));
+        listLanguage.add(new Language(Language.ENGLISH, Language.LANGUAGE_0, R.drawable.ic_lang_en));
+        listLanguage.add(new Language(Language.FRENCH, Language.LANGUAGE_1, R.drawable.ic_lang_fr));
+        listLanguage.add(new Language(Language.PORTUGUESE, Language.LANGUAGE_2, R.drawable.ic_lang_pt));
+        listLanguage.add(new Language(Language.GERMAN, Language.LANGUAGE_3, R.drawable.ic_lang_ge));
+        listLanguage.add(new Language(Language.SPANISH, Language.LANGUAGE_4, R.drawable.ic_lang_es));
+        listLanguage.add(new Language(Language.HINDI, Language.LANGUAGE_5, R.drawable.ic_lang_hi));
+        listLanguage.add(new Language(Language.INDONESIA, Language.LANGUAGE_6, R.drawable.ic_lang_in));
+        listLanguage.add(new Language(Language.CHINA, Language.LANGUAGE_7, R.drawable.ic_lang_zh));
     }
 }

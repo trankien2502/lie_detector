@@ -4,6 +4,7 @@ import static android.graphics.Color.TRANSPARENT;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ public class SoundFragment extends Fragment {
     private final Handler handler = new Handler();
     private Runnable runnablePressing, runnableAnalyzing;
     private int countdownPressing = 16, countdownAnalyzing = 0;
-    private boolean isButtonPressed = false, isAnalyzing = false;
+    public static boolean isButtonPressed = false, isAnalyzing = false;
     MediaPlayer mediaPlayer;
     GifDrawable gifDrawable;
     Random random = new Random();
@@ -43,7 +44,9 @@ public class SoundFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mFragmentSoundBinding = FragmentSoundBinding.inflate(inflater, container, false);
+        isAnalyzing = false;
         runnablePressing = new Runnable() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void run() {
                 if (isButtonPressed) {
@@ -51,23 +54,31 @@ public class SoundFragment extends Fragment {
                     countdownPressing--;
                     mFragmentSoundBinding.tvSoundScreenScanner1.setVisibility(View.GONE);
                     mFragmentSoundBinding.layoutSoundScanningProgress.setVisibility(View.VISIBLE);
-                    mFragmentSoundBinding.tvScannerPress.setVisibility(View.GONE);
-                    mFragmentSoundBinding.imgScannerDirectUp.setVisibility(View.GONE);
+                    mFragmentSoundBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.none));
+                    mFragmentSoundBinding.imgScannerDirectUp.clearColorFilter();
                     if (countdownPressing > 0) {
                         handler.postDelayed(this, 1000);
                     } else {
                         mFragmentSoundBinding.tvSoundScreenScanner1.setVisibility(View.GONE);
                         mFragmentSoundBinding.layoutSoundScanningProgress.setVisibility(View.GONE);
                         mFragmentSoundBinding.layoutSoundAnalyzing.setVisibility(View.VISIBLE);
-
                         if (mediaPlayer != null) {
                             mediaPlayer.release();
                         }
                         mediaPlayer = MediaPlayer.create(getContext(), R.raw.analyzing_sound);
                         mediaPlayer.start();
                         isAnalyzing = true;
+                        isButtonPressed = false;
                         countdownAnalyzing = (16 - countdownPressing) * 2 + random.nextInt(16);
                         handler.postDelayed(runnableAnalyzing, 500);
+
+                    }
+                } else {
+                    handler.removeCallbacks(runnablePressing);
+                    mFragmentSoundBinding.layoutSoundScanningProgress.setVisibility(View.GONE);
+                    if (mediaPlayer!=null){
+                        mediaPlayer.release();
+                        mediaPlayer = null;
                     }
                 }
             }
@@ -76,40 +87,87 @@ public class SoundFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void run() {
-                countdownAnalyzing--;
-                switch (countdownAnalyzing % 4) {
-                    case 0:
-                        mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing___);
-                        break;
-                    case 1:
-                        mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
-                        mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing__);
-                        break;
-                    case 2:
-                        mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
-                        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing_);
-                        break;
-                    case 3:
-                        mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
-                        mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
-                        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing);
-                        break;
+                if (!isAnalyzing){
+                    handler.removeCallbacks(runnableAnalyzing);
+                    initUIDefault();
+                    if (mediaPlayer!=null){
+                        mediaPlayer.release();
+                        mediaPlayer = null;
+
+                    }
+                } else {
+                    countdownAnalyzing--;
+                    switch (countdownAnalyzing % 4) {
+                        case 0:
+                            mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
+                            mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
+                            mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing___);
+                            break;
+                        case 1:
+                            mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
+                            mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
+                            mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing__);
+                            break;
+                        case 2:
+                            mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
+                            mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
+                            mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing_);
+                            break;
+                        case 3:
+                            mFragmentSoundBinding.imgSoundAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_truth);
+                            mFragmentSoundBinding.imgSoundAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_none);
+                            mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing);
+                            break;
+                    }
+                    if (countdownAnalyzing == 0) {
+                        mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.the_result_is_ready_now);
+                        handler.removeCallbacks(runnableAnalyzing);
+                        if(mediaPlayer!= null){
+                            mediaPlayer.release();
+                            mediaPlayer = null;
+                        }
+                        if (ScannerActivity.isOpenDialog){
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(ScannerActivity.isOpenDialog) handler.postDelayed(this,1000);
+                                    else {
+                                        if (isAnalyzing)
+                                            showDialogResult();
+                                        handler.removeCallbacks(this);
+
+                                    }
+                                }
+                            },1000);
+                        } else {
+                            showDialogResult();
+                        }
+                    } else
+                        handler.postDelayed(this, 500);
+
                 }
-                if (countdownAnalyzing == 0) {
-                    mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.the_result_is_ready_now);
-                    showDialogResult();
-                } else
-                    handler.postDelayed(this, 500);
 
             }
         };
         initUI();
         initListener();
         return mFragmentSoundBinding.getRoot();
+    }
+
+    public static boolean isButtonPressed() {
+        return isButtonPressed;
+    }
+
+    public static void setButtonPressed(boolean isButtonPressed) {
+        SoundFragment.isButtonPressed = isButtonPressed;
+    }
+
+    public static boolean isAnalyzing() {
+        return isAnalyzing;
+    }
+
+    public static void setAnalyzing(boolean isAnalyzing) {
+        SoundFragment.isAnalyzing = isAnalyzing;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -120,6 +178,7 @@ public class SoundFragment extends Fragment {
                 if (isAnalyzing) return false;
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        initUIDefault();
                         isButtonPressed = true;
                         countdownPressing = 16;
                         if (mediaPlayer != null) {
@@ -129,8 +188,8 @@ public class SoundFragment extends Fragment {
                         mFragmentSoundBinding.tvSoundScreenScanner1.setVisibility(View.GONE);
                         mFragmentSoundBinding.layoutSoundScanningProgress.setVisibility(View.VISIBLE);
                         loadGif();
-                        mFragmentSoundBinding.tvScannerPress.setVisibility(View.GONE);
-                        mFragmentSoundBinding.imgScannerDirectUp.setVisibility(View.GONE);
+                        mFragmentSoundBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.none));
+                        mFragmentSoundBinding.imgScannerDirectUp.clearColorFilter();
                         handler.postDelayed(runnablePressing, 1000);
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -138,8 +197,8 @@ public class SoundFragment extends Fragment {
                         isButtonPressed = false;
                         if (countdownPressing > 14) {
                             initUIDefault();
-                            mFragmentSoundBinding.tvScannerPress.setVisibility(View.VISIBLE);
-                            mFragmentSoundBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
+                            mFragmentSoundBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.white));
+                            mFragmentSoundBinding.imgScannerDirectUp.setColorFilter(Color.TRANSPARENT);
                             mFragmentSoundBinding.layoutSoundScanningProgress.setVisibility(View.GONE);
                         } else {
                             handler.removeCallbacks(runnablePressing);
@@ -156,10 +215,7 @@ public class SoundFragment extends Fragment {
                             mediaPlayer = MediaPlayer.create(getContext(), R.raw.analyzing_sound);
                             mediaPlayer.start();
                             isAnalyzing = true;
-
                         }
-
-
                         return true;
                 }
                 return false;
@@ -168,6 +224,7 @@ public class SoundFragment extends Fragment {
     }
 
     private void showDialogResult() {
+        isAnalyzing = false;
         handler.removeCallbacks(runnableAnalyzing);
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -192,8 +249,10 @@ public class SoundFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 isAnalyzing = false;
-                mediaPlayer.release();
-                mediaPlayer = null;
+                if (mediaPlayer!=null){
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
                 getResultScanner();
                 dialog.dismiss();
             }
@@ -214,6 +273,7 @@ public class SoundFragment extends Fragment {
     private void initUIDefault() {
         ScannerActivity.mType = ScannerActivity.TYPE_DEFAULT;
         ScannerActivity.initUIFooter();
+        mFragmentSoundBinding.tvSoundScreenScanner1.setVisibility(View.VISIBLE);
         mFragmentSoundBinding.imgScannerResultBackgroundLight.setVisibility(View.GONE);
         mFragmentSoundBinding.imgSoundScreenScanner.setImageResource(R.drawable.img_scanner_screen_scanner_default);
         mFragmentSoundBinding.layoutSoundAnalyzing.setVisibility(View.GONE);
@@ -223,7 +283,9 @@ public class SoundFragment extends Fragment {
         mFragmentSoundBinding.tvSoundScreenScanner3.setText(R.string.analyzing);
         mFragmentSoundBinding.tvSoundScreenScanner3.setTextColor(getResources().getColor(R.color.white));
         mFragmentSoundBinding.tvScannerPress.setText(R.string.press_to_talk);
-        mFragmentSoundBinding.tvSoundScreenScanner1.setVisibility(View.VISIBLE);
+        mFragmentSoundBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.white));
+        mFragmentSoundBinding.imgScannerDirectUp.setColorFilter(TRANSPARENT);
+        mFragmentSoundBinding.layoutSoundScanningProgress.setVisibility(View.GONE);
     }
 
     private void initUIGetTruth() {
@@ -246,9 +308,9 @@ public class SoundFragment extends Fragment {
         mFragmentSoundBinding.tvSoundAnalyzingLiar.setTextColor(getResources().getColor(R.color.grayDefault));
         mFragmentSoundBinding.imgSoundPressBorder.setImageResource(R.drawable.img_scanner_press_border_truth);
         mFragmentSoundBinding.imgSoundPress.setImageResource(R.drawable.img_sound_press_truth);
-        mFragmentSoundBinding.tvScannerPress.setVisibility(View.VISIBLE);
+        mFragmentSoundBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.white));
         mFragmentSoundBinding.tvScannerPress.setText(R.string.try_again_text);
-        mFragmentSoundBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
+        mFragmentSoundBinding.imgScannerDirectUp.setColorFilter(TRANSPARENT);
     }
 
     private void initUIGetLiar() {
@@ -271,9 +333,9 @@ public class SoundFragment extends Fragment {
         mFragmentSoundBinding.tvSoundAnalyzingLiar.setTextColor(getResources().getColor(R.color.liar));
         mFragmentSoundBinding.imgSoundPressBorder.setImageResource(R.drawable.img_scanner_press_border_liar);
         mFragmentSoundBinding.imgSoundPress.setImageResource(R.drawable.img_sound_press_liar);
-        mFragmentSoundBinding.tvScannerPress.setVisibility(View.VISIBLE);
+        mFragmentSoundBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.white));
         mFragmentSoundBinding.tvScannerPress.setText(R.string.try_again_text);
-        mFragmentSoundBinding.imgScannerDirectUp.setVisibility(View.VISIBLE);
+        mFragmentSoundBinding.imgScannerDirectUp.setColorFilter(TRANSPARENT);
     }
 
 
@@ -295,10 +357,24 @@ public class SoundFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        handler.removeCallbacks(runnableAnalyzing);
+        handler.removeCallbacks(runnablePressing);
+        isAnalyzing = false;
+        initUIDefault();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(runnableAnalyzing);
         handler.removeCallbacks(runnablePressing);
+        isAnalyzing = false;
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;

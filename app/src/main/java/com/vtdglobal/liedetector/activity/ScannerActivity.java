@@ -1,5 +1,11 @@
 package com.vtdglobal.liedetector.activity;
 
+import static android.graphics.Color.TRANSPARENT;
+
+
+import static com.vtdglobal.liedetector.activity.PermissionActivity.CAMERA_PERMISSION_REQUEST_CODE;
+import static com.vtdglobal.liedetector.activity.PermissionActivity.MICRO_PERMISSION_REQUEST_CODE;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
@@ -13,24 +19,33 @@ import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.databinding.ActivityScannerBinding;
+import com.vtdglobal.liedetector.databinding.FragmentFingerPrintBinding;
 import com.vtdglobal.liedetector.fragment.EyeFragment;
 import com.vtdglobal.liedetector.fragment.FingerPrintFragment;
 import com.vtdglobal.liedetector.fragment.SoundFragment;
 import com.vtdglobal.liedetector.fragment.SoundsFragment;
 
-public class ScannerActivity extends AppCompatActivity {
+public class ScannerActivity extends BaseActivity {
 
     @SuppressLint("StaticFieldLeak")
     static ActivityScannerBinding mActivityScannerBinding;
@@ -38,6 +53,9 @@ public class ScannerActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     public static ProcessCameraProvider cameraProvider;
     private boolean isPermissionMicro,isPermissionCamera;
+    private static final String PREFS_NAME = "PermissionPrefs";
+    private static final String PREF_KEY_DENY_COUNT_MIC = "denyCountMic";
+    private static final String PREF_KEY_DENY_COUNT_CAM = "denyCountCam";
 
     public static final int TYPE_FINGER_PRINT = 1;
     public static final int TYPE_SOUND = 2;
@@ -49,6 +67,7 @@ public class ScannerActivity extends AppCompatActivity {
 
     public static int mTypeScanner = TYPE_FINGER_PRINT;
     public static int mType = TYPE_DEFAULT;
+    public static boolean isOpenDialog = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +79,9 @@ public class ScannerActivity extends AppCompatActivity {
         initListenerFooter();
     }
     private void initUI() {
+        mTypeScanner = TYPE_FINGER_PRINT;
         replaceFragment(new FingerPrintFragment());
+        initUIFooter();
         checkCameraPermission();
         checkMicroPermission();
     }
@@ -81,6 +102,35 @@ public class ScannerActivity extends AppCompatActivity {
             }
         });
     }
+    private void openSoundScanner(){
+        checkMicroPermission();
+        if (isPermissionMicro){
+            replaceFragment(new SoundFragment());
+            mTypeScanner = TYPE_SOUND;
+            initUIFooter();
+            initListenerFooter();
+        } else {
+            requestPermissionMicro();
+        }
+    }
+    private void openEyeScanner(){
+        checkCameraPermission();
+        if (isPermissionCamera){
+            startCamera();
+            replaceFragment(new EyeFragment());
+            mTypeScanner = TYPE_EYES;
+            initUIFooter();
+            initListenerFooter();
+        } else {
+            requestPermissionCamera();
+        }
+    }
+    private void openFingerPrintScanner(){
+        replaceFragment(new FingerPrintFragment());
+        mTypeScanner = TYPE_FINGER_PRINT;
+        initUIFooter();
+        initListenerFooter();
+    }
     private void initListenerFooter(){
         mType = TYPE_DEFAULT;
         switch (mTypeScanner){
@@ -88,27 +138,25 @@ public class ScannerActivity extends AppCompatActivity {
                 mActivityScannerBinding.layoutScannerButtonLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (isPermissionMicro){
-                            replaceFragment(new SoundFragment());
-                            mTypeScanner = TYPE_SOUND;
-                            initUIFooter();
-                            initListenerFooter();
+                        boolean isAnalyzing = FingerPrintFragment.isAnalyzing();
+                        boolean isPressing = FingerPrintFragment.isButtonPressed();
+                        if (isAnalyzing || isPressing){
+                            showDialogStopScan(TYPE_SOUND);
                         } else {
-                            requestPermissionMicro();
+                            openSoundScanner();
                         }
+
                     }
                 });
                 mActivityScannerBinding.layoutScannerButtonRight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (isPermissionCamera){
-                            startCamera();
-                            replaceFragment(new EyeFragment());
-                            mTypeScanner = TYPE_EYES;
-                            initUIFooter();
-                            initListenerFooter();
+                        boolean isAnalyzing = FingerPrintFragment.isAnalyzing();
+                        boolean isPressing = FingerPrintFragment.isButtonPressed();
+                        if (isAnalyzing || isPressing){
+                            showDialogStopScan(TYPE_EYES);
                         } else {
-                            requestPermissionCamera();
+                            openEyeScanner();
                         }
                     }
                 });
@@ -117,23 +165,24 @@ public class ScannerActivity extends AppCompatActivity {
                 mActivityScannerBinding.layoutScannerButtonLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        replaceFragment(new FingerPrintFragment());
-                        mTypeScanner = TYPE_FINGER_PRINT;
-                        initUIFooter();
-                        initListenerFooter();
+                        boolean isAnalyzing = SoundFragment.isAnalyzing();
+                        boolean isPressing = SoundFragment.isButtonPressed();
+                        if (isAnalyzing || isPressing){
+                            showDialogStopScan(TYPE_FINGER_PRINT);
+                        } else {
+                            openFingerPrintScanner();
+                        }
                     }
                 });
                 mActivityScannerBinding.layoutScannerButtonRight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (isPermissionCamera){
-                            startCamera();
-                            replaceFragment(new EyeFragment());
-                            mTypeScanner = TYPE_EYES;
-                            initUIFooter();
-                            initListenerFooter();
+                        boolean isAnalyzing = SoundFragment.isAnalyzing();
+                        boolean isPressing = SoundFragment.isButtonPressed();
+                        if (isAnalyzing || isPressing){
+                            showDialogStopScan(TYPE_EYES);
                         } else {
-                            requestPermissionCamera();
+                            openEyeScanner();
                         }
                     }
                 });
@@ -142,23 +191,23 @@ public class ScannerActivity extends AppCompatActivity {
                 mActivityScannerBinding.layoutScannerButtonLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (isPermissionMicro){
-                            replaceFragment(new SoundFragment());
-                            mTypeScanner = TYPE_SOUND;
-                            initUIFooter();
-                            initListenerFooter();
+                        boolean isAnalyzing = EyeFragment.isAnalyzing();
+                        if (isAnalyzing){
+                            showDialogStopScan(TYPE_SOUND);
                         } else {
-                            requestPermissionMicro();
+                            openSoundScanner();
                         }
                     }
                 });
                 mActivityScannerBinding.layoutScannerButtonRight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        replaceFragment(new FingerPrintFragment());
-                        mTypeScanner = TYPE_FINGER_PRINT;
-                        initUIFooter();
-                        initListenerFooter();
+                        boolean isAnalyzing = EyeFragment.isAnalyzing();
+                        if (isAnalyzing){
+                            showDialogStopScan(TYPE_FINGER_PRINT);
+                        } else {
+                            openFingerPrintScanner();
+                        }
                     }
                 });
                 break;
@@ -272,7 +321,7 @@ public class ScannerActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case PermissionActivity.MICRO_PERMISSION_REQUEST_CODE:
+            case MICRO_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     isPermissionMicro = true;
                     replaceFragment(new SoundFragment());
@@ -280,10 +329,25 @@ public class ScannerActivity extends AppCompatActivity {
                     initUIFooter();
                     initListenerFooter();
                 } else {
-                    Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                        int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_MIC, 0);
+                        denyCount++;
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt(PREF_KEY_DENY_COUNT_MIC, denyCount);
+                        editor.apply();
+                        if (shouldShowRequestPermissionRationale(permissions[0])){
+                            if (denyCount>2) showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
+                        }else {
+                            showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
+                        }
+
+                    }
+                    else Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case PermissionActivity.CAMERA_PERMISSION_REQUEST_CODE:
+            case CAMERA_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     isPermissionCamera = true;
                     startCamera();
@@ -292,14 +356,38 @@ public class ScannerActivity extends AppCompatActivity {
                     initUIFooter();
                     initListenerFooter();
                 } else {
-                    Toast.makeText(this, getString(R.string.denied_camera), Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                        int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_CAM, 0);
+                        denyCount++;
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt(PREF_KEY_DENY_COUNT_CAM, denyCount);
+                        editor.apply();
+                        if (shouldShowRequestPermissionRationale(permissions[0])){
+                            if (denyCount>2) showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
+                        }else {
+                            showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
+                        }
+
+                    }
+                    else
+                        Toast.makeText(this, getString(R.string.denied_camera), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
     private void requestPermissionMicro() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.RECORD_AUDIO}, PermissionActivity.MICRO_PERMISSION_REQUEST_CODE);
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_MIC, 0);
+        if (denyCount<2){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO}, MICRO_PERMISSION_REQUEST_CODE);
+        }
+        else {
+            showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
+        }
+
     }
 
     private void checkMicroPermission() {
@@ -308,8 +396,15 @@ public class ScannerActivity extends AppCompatActivity {
     }
 
     private void requestPermissionCamera() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CAMERA},PermissionActivity.CAMERA_PERMISSION_REQUEST_CODE);
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_CAM, 0);
+        if (denyCount<2){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
+        } else {
+            showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
+        }
+
     }
 
     private void checkCameraPermission() {
@@ -317,7 +412,101 @@ public class ScannerActivity extends AppCompatActivity {
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
+    private void showDialogPermissionGuide(int perId) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_permission_guide);
 
+        Window window = dialog.getWindow();
+        assert window != null;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
+
+        dialog.setCancelable(false);
+        // Set up the buttons
+        TextView tvPermission = dialog.findViewById(R.id.tv_permission);
+        TextView buttonOK = dialog.findViewById(R.id.btn_ok_guild);
+        TextView buttonCancel = dialog.findViewById(R.id.btn_cancel_guild);
+
+        if (perId == MICRO_PERMISSION_REQUEST_CODE) tvPermission.setText(R.string.microphone);
+        if (perId == CAMERA_PERMISSION_REQUEST_CODE) tvPermission.setText(R.string.camera);
+
+        buttonOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        // Show the dialog
+        dialog.show();
+    }
+    private void showDialogStopScan(int perId) {
+        isOpenDialog = true;
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_stop_scan);
+
+        Window window = dialog.getWindow();
+        assert window != null;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
+
+        dialog.setCancelable(false);
+        // Set up the buttons
+        TextView buttonStop = dialog.findViewById(R.id.btn_stop_scan);
+        TextView buttonContinue = dialog.findViewById(R.id.btn_continue_scan);
+
+        buttonStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                isOpenDialog = false;
+                if (perId == TYPE_FINGER_PRINT){
+                    EyeFragment.setAnalyzing(false);
+                    SoundFragment.setAnalyzing(false);
+                    SoundFragment.setButtonPressed(false);
+                    openFingerPrintScanner();
+                }
+                if (perId == TYPE_SOUND){
+                    FingerPrintFragment.setAnalyzing(false);
+                    FingerPrintFragment.setButtonPressed(false);
+                    EyeFragment.setAnalyzing(false);
+                    openSoundScanner();
+                }
+                if (perId == TYPE_EYES){
+                    FingerPrintFragment.setAnalyzing(false);
+                    FingerPrintFragment.setButtonPressed(false);
+                    SoundFragment.setAnalyzing(false);
+                    SoundFragment.setButtonPressed(false);
+                    openEyeScanner();
+                }
+
+            }
+        });
+
+        buttonContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                isOpenDialog = false;
+            }
+        });
+
+        // Show the dialog
+        dialog.show();
+    }
 
 
     }

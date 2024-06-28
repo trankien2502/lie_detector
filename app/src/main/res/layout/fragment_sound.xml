@@ -164,18 +164,17 @@
                 android:id="@+id/img_sound_press_border"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 android:src="@drawable/img_scanner_press_border_default" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_sound_press_button2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
+                android:gravity="center_horizontal">
 
 
                 <ImageView
@@ -183,28 +182,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/img_sound_press_default" />
+                    android:src="@drawable/img_sound_press_default"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/img_scanner_direct_up"
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:src="@drawable/img_scanner_direct_up" />
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                <TextView
-                    android:id="@+id/tv_scanner_press"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_margin="10dp"
-                    android:fontFamily="@font/druk_text_wide_medium_trial"
-                    android:text="@string/press_to_talk"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/img_scanner_direct_up"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/img_scanner_direct_up"
+                        app:tint="#00000000" />
+
+                    <TextView
+                        android:id="@+id/tv_scanner_press"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/druk_text_wide_medium_trial"
+                        android:padding="10dp"
+                        android:text="@string/press_to_talk"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
 

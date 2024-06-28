@@ -14,8 +14,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +35,9 @@ public class PermissionActivity extends BaseActivity {
     ActivityPermissionBinding mActivityPermissionBinding;
     public static boolean isPermissionCamera ;
     public static boolean isPermissionMicro ;
+    private static final String PREFS_NAME = "PermissionPrefs";
+    private static final String PREF_KEY_DENY_COUNT_MIC = "denyCountMic";
+    private static final String PREF_KEY_DENY_COUNT_CAM = "denyCountCam";
 
     public static final int MICRO_PERMISSION_REQUEST_CODE = 2;
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 3;
@@ -53,9 +58,6 @@ public class PermissionActivity extends BaseActivity {
     }
 
     private boolean checkAllPermission() {
-//        SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("permissionData", Context.MODE_PRIVATE);
-//        isPermissionMicro = sharedPreferences.getBoolean("permissionMicro", Boolean.valueOf(String.valueOf(Context.MODE_PRIVATE)));
-//        isPermissionCamera = sharedPreferences.getBoolean("permissionCamera", Boolean.valueOf(String.valueOf(Context.MODE_PRIVATE)));
         checkCameraPermission();
         checkMicroPermission();
         return  isPermissionCamera && isPermissionMicro;
@@ -94,7 +96,21 @@ public class PermissionActivity extends BaseActivity {
                     editor.putBoolean("permissionMicro", true);
                     editor.apply();
                 } else {
-                    Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                        int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_MIC, 0);
+                        denyCount++;
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt(PREF_KEY_DENY_COUNT_MIC, denyCount);
+                        editor.apply();
+                        if (shouldShowRequestPermissionRationale(permissions[0])){
+                            if (denyCount>2) showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
+                        }else {
+                            showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
+                        }
+                    }
+                    else Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case CAMERA_PERMISSION_REQUEST_CODE:
@@ -106,7 +122,23 @@ public class PermissionActivity extends BaseActivity {
                     editor.putBoolean("permissionCamera", true);
                     editor.apply();
                 } else {
-                    Toast.makeText(this, getString(R.string.denied_camera), Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                        int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_CAM, 0);
+                        denyCount++;
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putInt(PREF_KEY_DENY_COUNT_CAM, denyCount);
+                        editor.apply();
+                        if (shouldShowRequestPermissionRationale(permissions[0])){
+                            if (denyCount>2) showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
+                        }else {
+                            showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
+                        }
+
+                    }
+                    else
+                        Toast.makeText(this, getString(R.string.denied_camera), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -127,7 +159,10 @@ public class PermissionActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 checkCameraPermission();
-                if (!isPermissionCamera) requestPermissionCamera();
+                SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_CAM, 0);
+                if (!isPermissionCamera && denyCount<2) requestPermissionCamera();
+                else if (!isPermissionCamera) showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
                 if (b) {
                     mActivityPermissionBinding.swichCamera.setChecked(isPermissionCamera);
                 } else {
@@ -143,7 +178,10 @@ public class PermissionActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 checkMicroPermission();
-                if (!isPermissionMicro) requestPermissionMicro();
+                SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_MIC, 0);
+                if (!isPermissionMicro && denyCount<2) requestPermissionMicro();
+                else if (!isPermissionMicro) showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
                 if (b) {
                     mActivityPermissionBinding.swichMicro.setChecked(isPermissionMicro);
                 } else {
@@ -196,6 +234,45 @@ public class PermissionActivity extends BaseActivity {
         // Show the dialog
         dialog.show();
     }
+    private void showDialogPermissionGuide(int perId) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_permission_guide);
+
+        Window window = dialog.getWindow();
+        assert window != null;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
+
+        dialog.setCancelable(false);
+        // Set up the buttons
+        TextView tvPermission = dialog.findViewById(R.id.tv_permission);
+        TextView buttonOK = dialog.findViewById(R.id.btn_ok_guild);
+        TextView buttonCancel = dialog.findViewById(R.id.btn_cancel_guild);
+
+        if (perId == MICRO_PERMISSION_REQUEST_CODE) tvPermission.setText(R.string.microphone);
+        if (perId == CAMERA_PERMISSION_REQUEST_CODE) tvPermission.setText(R.string.camera);
+        buttonOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        // Show the dialog
+        dialog.show();
+    }
 
     private void initUI() {
         if (isPermissionMicro) {
@@ -206,4 +283,11 @@ public class PermissionActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkMicroPermission();
+        checkCameraPermission();
+        initUI();
+    }
 }

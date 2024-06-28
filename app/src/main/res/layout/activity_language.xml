@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark"
+    android:background="@color/darkHeavy"
     android:orientation="vertical"
     tools:context=".activity.LanguageActivity">
 
@@ -15,11 +15,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_margin="20dp"
-            android:text="@string/language"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
             android:fontFamily="@font/druk_text_wide_medium_trial"
+            android:text="@string/language"
             android:textColor="@color/white"
-            android:textSize="26sp" />
+            android:textSize="22sp" />
 
         <ImageView
             android:id="@+id/img_tick"
@@ -28,20 +31,19 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="25dp"
-            android:src="@drawable/img_tick3" />
+            android:src="@drawable/ic_tick1" />
 
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginTop="15dp"
         android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_language"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp" />
+            android:layout_margin="10dp" />
     </ScrollView>
 
 

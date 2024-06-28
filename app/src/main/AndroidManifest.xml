@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-configuration android:name="android.pemission.INTERNET" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -26,16 +26,6 @@
             android:name=".activity.ScannerActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.EyeScannerActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="false" />
-        <activity
-            android:name=".activity.SoundScannerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.FingerPrintScannerActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.SettingActivity"
             android:exported="false" />
         <activity
@@ -46,6 +36,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
+            android:theme="@style/SpecialActivityTheme"
             android:exported="false" />
         <activity
             android:name=".activity.LanguageActivity"
