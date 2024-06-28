@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkHeavy"
+    tools:context=".activity.ScannerActivity">
+    <ImageView
+        android:id="@+id/img_background_scanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:adjustViewBounds="true"
+        android:src="@drawable/img_background_home" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/header"
+            layout="@layout/layout_header" />
+        <FrameLayout
+            android:id="@+id/content_frame_eye"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_below="@+id/header">
+            <androidx.camera.view.PreviewView
+                android:id="@+id/previewView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:layout_below="@id/header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom">
+                <FrameLayout
+                    android:id="@+id/content_frame_print_sound"
+                    android:layout_width="match_parent"
+                    android:layout_above="@id/layout_scanner_button_bottom"
+                    android:layout_height="match_parent">
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/layout_scanner_button_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true">
+
+                    <ImageView
+                        android:id="@+id/img_scanner_finger_print_bottom_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/img_finger_print_bottom_button_default" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:id="@+id/layout_scanner_button_left"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/img_button_left"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_above="@id/tv_button_left"
+                                    android:src="@drawable/img_sound_button_default"
+                                    app:layout_constraintBottom_toTopOf="@+id/tv_button_left"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tv_button_left"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:fontFamily="@font/druk_text_wide_medium_trial"
+                                    android:text="@string/sound"
+                                    android:textColor="#c1bdbd"
+                                    android:padding="10dp"
+                                    android:textSize="12sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/layout_scanner_button_center"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="20dp"
+                            android:layout_weight="1" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_scanner_button_right"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1" >
+
+                            <ImageView
+                                android:id="@+id/img_button_right"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/img_eye_button_default"
+                                app:layout_constraintBottom_toTopOf="@+id/tv_button_right"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_button_right"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/druk_text_wide_medium_trial"
+                                android:text="@string/eyes"
+                                android:textColor="#c1bdbd"
+                                android:padding="10dp"
+                                android:textSize="12sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </FrameLayout>
+
+
+            </RelativeLayout>
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

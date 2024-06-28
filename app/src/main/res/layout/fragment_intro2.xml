@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/darkHeavy"
+    android:orientation="vertical"
+    tools:context=".fragment.Intro2Fragment">
+
+    <ImageView
+        android:id="@+id/img_intro2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img_intro2" />
+
+    <TextView
+        android:id="@+id/tv_intro2"
+        android:layout_below="@+id/img_intro2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:paddingTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/druk_text_wide_medium_trial"
+        android:text="@string/eye_scanner"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_below="@+id/tv_intro2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/urbanist_medium"
+        android:text="@string/scanning_eye_will_tell_you_the_truth"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+
+</RelativeLayout>
