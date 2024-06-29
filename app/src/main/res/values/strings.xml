@@ -95,5 +95,15 @@
     <string name="stop_scan">Stop Scan?</string>
     <string name="are_you_sure_you_want_to_stop_the_scanning_progress">Are you sure you want to stop the scanning progress?</string>
     <string name="continue1">Continue</string>
+    <string name="eyes_scan">EYES SCAN</string>
+    <string name="sound_scan2">SOUND SCAN</string>
+    <string name="finger_scan">FINGER SCAN</string>
+    <string name="truth">TRUTH</string>
+    <string name="lie">LIE</string>
+    <string name="lie_detector1">Lie Detector</string>
+    <string name="text_splash">Prank your friends with a various type of tests and many funny sounds. Create funny moment now!</string>
+    <string name="todo">TODO</string>
+    <string name="start1">Start</string>
+    <string name="please_select_language">Please select language!</string>
 
 </resources>

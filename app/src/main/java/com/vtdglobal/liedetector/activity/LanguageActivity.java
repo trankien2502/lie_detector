@@ -1,8 +1,5 @@
 package com.vtdglobal.liedetector.activity;
 
-import static android.app.PendingIntent.getActivity;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Context;
@@ -41,7 +38,7 @@ public class LanguageActivity extends BaseActivity {
 
     private void checkLanguage() {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
-        boolean check = sharedPreferences.getBoolean("selectedLanguage", Boolean.valueOf(String.valueOf(Context.MODE_PRIVATE)));
+        boolean check = sharedPreferences.getBoolean("selectedLanguage", Boolean.parseBoolean(String.valueOf(Context.MODE_PRIVATE)));
         if (check) {
             Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
             startActivity(intent);
@@ -54,16 +51,16 @@ public class LanguageActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (isChoose) {
-                    SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("selectedLanguage",true);
+                    editor.putBoolean("selectedLanguage", true);
                     editor.putString("languageCurrent", languageSelected);
                     editor.apply();
                     Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
                     startActivity(intent);
                     finishAffinity();
                 } else {
-                    Toast.makeText(LanguageActivity.this, "Please select language!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LanguageActivity.this, getString(R.string.please_select_language), Toast.LENGTH_SHORT).show();
                 }
             }
         });

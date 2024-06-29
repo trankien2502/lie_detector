@@ -1,19 +1,14 @@
 package com.vtdglobal.liedetector.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
+import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.vtdglobal.liedetector.R;
-import com.vtdglobal.liedetector.adapter.IntroAdapter;
 import com.vtdglobal.liedetector.adapter.IntroViewPagerAdapter;
 import com.vtdglobal.liedetector.databinding.ActivityIntroBinding;
-import com.vtdglobal.liedetector.util.SharePrefUtils;
 
 public class IntroActivity extends BaseActivity {
     ActivityIntroBinding mActivityIntroBinding;
@@ -72,13 +67,15 @@ public class IntroActivity extends BaseActivity {
         });
 
     }
-    public void goToNextScreen() {
-        if (SharePrefUtils.getCountOpenApp(this) > 1) {
-            startNextActivity(MainActivity.class, null);
-        } else {
-            startNextActivity(PermissionActivity.class, null);
-        }
-    }
+
+//    public void goToNextScreen() {
+//        if (SharePrefUtils.getCountOpenApp(this) > 1) {
+//            startNextActivity(MainActivity.class, null);
+//        } else {
+//            startNextActivity(PermissionActivity.class, null);
+//        }
+//    }
+
     private void changeContentInit(int position) {
         for (int i = 0; i < 3; i++) {
             if (i == position) dots[i].setImageResource(R.drawable.ic_intro_s);
@@ -90,7 +87,7 @@ public class IntroActivity extends BaseActivity {
                 mActivityIntroBinding.btnNext.setText(R.string.next);
                 break;
             case 2:
-                mActivityIntroBinding.btnNext.setText("Start");
+                mActivityIntroBinding.btnNext.setText(R.string.start1);
                 break;
         }
     }

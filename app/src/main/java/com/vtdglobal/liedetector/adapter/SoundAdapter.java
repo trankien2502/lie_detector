@@ -26,9 +26,12 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.SoundViewHol
     private Runnable runnable;
 
 
+    public interface IOnClickSoundListener {
+        void onClickSoundListener(Sound sound);
+    }
 
-    public interface IOnClickSoundListener { void onClickSoundListener (Sound sound);}
     IOnClickSoundListener iOnClickSoundListener;
+
     public SoundAdapter(Context context, List<Sound> soundList, IOnClickSoundListener iOnClickSoundListener) {
         this.context = context;
         this.soundList = soundList;
@@ -38,14 +41,14 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.SoundViewHol
     @NonNull
     @Override
     public SoundViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemSoundBinding itemSoundBinding = ItemSoundBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        ItemSoundBinding itemSoundBinding = ItemSoundBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new SoundViewHolder(itemSoundBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SoundViewHolder holder, int position) {
         Sound sound = soundList.get(position);
-        if (sound==null) return;
+        if (sound == null) return;
         holder.itemSoundBinding.imgSound.setImageResource(sound.getImage());
         holder.itemSoundBinding.tvSoundName.setText(sound.getName());
         holder.itemSoundBinding.layoutSound.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +58,7 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.SoundViewHol
                 holder.itemSoundBinding.imgSoundButton.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        handler.postDelayed(this,200);
+                        handler.postDelayed(this, 200);
                         holder.itemSoundBinding.imgSoundButton.setBackgroundResource(R.drawable.bg_dark_heavy_corner_16);
                     }
                 }, 200);
@@ -66,7 +69,7 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.SoundViewHol
 
     @Override
     public int getItemCount() {
-        return soundList==null?0:soundList.size();
+        return soundList == null ? 0 : soundList.size();
     }
 
     public static class SoundViewHolder extends RecyclerView.ViewHolder {
@@ -77,7 +80,8 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.SoundViewHol
             this.itemSoundBinding = itemSoundBinding;
         }
     }
-    private void onClickButton(View myButton){
+
+    private void onClickButton(View myButton) {
         int colorFrom = context.getResources().getColor(R.color.darkHeavy);
         int colorTo = context.getResources().getColor(R.color.darkLight);
 

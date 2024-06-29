@@ -52,7 +52,7 @@ public class ScannerActivity extends BaseActivity {
     public static ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     @SuppressLint("StaticFieldLeak")
     public static ProcessCameraProvider cameraProvider;
-    private boolean isPermissionMicro,isPermissionCamera;
+    private boolean isPermissionMicro, isPermissionCamera;
     private static final String PREFS_NAME = "PermissionPrefs";
     private static final String PREF_KEY_DENY_COUNT_MIC = "denyCountMic";
     private static final String PREF_KEY_DENY_COUNT_CAM = "denyCountCam";
@@ -60,6 +60,7 @@ public class ScannerActivity extends BaseActivity {
     public static final int TYPE_FINGER_PRINT = 1;
     public static final int TYPE_SOUND = 2;
     public static final int TYPE_EYES = 3;
+    public static final int TYPE_SETTING_HEADER = 4;
 
     public static final int TYPE_TRUE = 1;
     public static final int TYPE_FALSE = 0;
@@ -68,6 +69,7 @@ public class ScannerActivity extends BaseActivity {
     public static int mTypeScanner = TYPE_FINGER_PRINT;
     public static int mType = TYPE_DEFAULT;
     public static boolean isOpenDialog = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,7 @@ public class ScannerActivity extends BaseActivity {
         initUIFooter();
         initListenerFooter();
     }
+
     private void initUI() {
         mTypeScanner = TYPE_FINGER_PRINT;
         replaceFragment(new FingerPrintFragment());
@@ -85,6 +88,7 @@ public class ScannerActivity extends BaseActivity {
         checkCameraPermission();
         checkMicroPermission();
     }
+
     public void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame_print_sound, fragment);
@@ -92,19 +96,37 @@ public class ScannerActivity extends BaseActivity {
         transaction.commit();
 
     }
+
     private void initListenerHeader() {
         mActivityScannerBinding.header.imgLeft.setOnClickListener(view -> finish());
         mActivityScannerBinding.header.imgSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ScannerActivity.this, SettingActivity.class);
-                startActivity(intent);
+                boolean isAnalyzingFinger = FingerPrintFragment.isAnalyzing();
+                boolean isPressingFinger = FingerPrintFragment.isButtonPressed();
+                boolean isAnalyzing = SoundFragment.isAnalyzing();
+                boolean isPressing = SoundFragment.isButtonPressed();
+                boolean isAnalyzingEye = EyeFragment.isAnalyzing();
+                if (isAnalyzingEye || isAnalyzingFinger || isAnalyzing || isPressingFinger || isPressing) {
+                    showDialogStopScan(TYPE_SETTING_HEADER);
+                } else
+                    openSetting();
             }
         });
     }
-    private void openSoundScanner(){
+
+    private void openSetting() {
+        if (mTypeScanner == TYPE_SOUND) {
+            openFingerPrintScanner();
+            openSoundScanner();
+        }
+        Intent intent = new Intent(ScannerActivity.this, SettingActivity.class);
+        startActivity(intent);
+    }
+
+    private void openSoundScanner() {
         checkMicroPermission();
-        if (isPermissionMicro){
+        if (isPermissionMicro) {
             replaceFragment(new SoundFragment());
             mTypeScanner = TYPE_SOUND;
             initUIFooter();
@@ -113,9 +135,10 @@ public class ScannerActivity extends BaseActivity {
             requestPermissionMicro();
         }
     }
-    private void openEyeScanner(){
+
+    private void openEyeScanner() {
         checkCameraPermission();
-        if (isPermissionCamera){
+        if (isPermissionCamera) {
             startCamera(this);
             replaceFragment(new EyeFragment());
             mTypeScanner = TYPE_EYES;
@@ -125,171 +148,150 @@ public class ScannerActivity extends BaseActivity {
             requestPermissionCamera();
         }
     }
-    private void openFingerPrintScanner(){
+
+    private void openFingerPrintScanner() {
         replaceFragment(new FingerPrintFragment());
         mTypeScanner = TYPE_FINGER_PRINT;
         initUIFooter();
         initListenerFooter();
     }
-    private void initListenerFooter(){
-        mType = TYPE_DEFAULT;
-        switch (mTypeScanner){
-            case TYPE_FINGER_PRINT:
-                mActivityScannerBinding.layoutScannerButtonLeft.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        boolean isAnalyzing = FingerPrintFragment.isAnalyzing();
-                        boolean isPressing = FingerPrintFragment.isButtonPressed();
-                        if (isAnalyzing || isPressing){
-                            showDialogStopScan(TYPE_SOUND);
-                        } else {
-                            openSoundScanner();
-                        }
 
+    private void initListenerFooter() {
+        mType = TYPE_DEFAULT;
+        mActivityScannerBinding.layoutScannerButtonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mTypeScanner == TYPE_FINGER_PRINT) return;
+                if (mTypeScanner == TYPE_SOUND) {
+                    boolean isAnalyzing = SoundFragment.isAnalyzing();
+                    boolean isPressing = SoundFragment.isButtonPressed();
+                    if (isAnalyzing || isPressing) {
+                        showDialogStopScan(TYPE_FINGER_PRINT);
+                    } else {
+                        openFingerPrintScanner();
                     }
-                });
-                mActivityScannerBinding.layoutScannerButtonRight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        boolean isAnalyzing = FingerPrintFragment.isAnalyzing();
-                        boolean isPressing = FingerPrintFragment.isButtonPressed();
-                        if (isAnalyzing || isPressing){
-                            showDialogStopScan(TYPE_EYES);
-                        } else {
-                            openEyeScanner();
-                        }
+                }
+                if (mTypeScanner == TYPE_EYES) {
+                    boolean isAnalyzing = EyeFragment.isAnalyzing();
+                    if (isAnalyzing) {
+                        showDialogStopScan(TYPE_FINGER_PRINT);
+                    } else {
+                        openFingerPrintScanner();
                     }
-                });
+                }
+            }
+        });
+        mActivityScannerBinding.layoutScannerButtonRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mTypeScanner == TYPE_EYES) return;
+                if (mTypeScanner == TYPE_FINGER_PRINT) {
+                    boolean isAnalyzing = FingerPrintFragment.isAnalyzing();
+                    boolean isPressing = FingerPrintFragment.isButtonPressed();
+                    if (isAnalyzing || isPressing) {
+                        showDialogStopScan(TYPE_EYES);
+                    } else {
+                        openEyeScanner();
+                    }
+                }
+                if (mTypeScanner == TYPE_SOUND) {
+                    boolean isAnalyzing = SoundFragment.isAnalyzing();
+                    boolean isPressing = SoundFragment.isButtonPressed();
+                    if (isAnalyzing || isPressing) {
+                        showDialogStopScan(TYPE_EYES);
+                    } else {
+                        openEyeScanner();
+                    }
+                }
+
+            }
+        });
+        mActivityScannerBinding.layoutScannerButtonCenter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mTypeScanner == TYPE_SOUND) return;
+                if (mTypeScanner == TYPE_EYES) {
+                    boolean isAnalyzing = EyeFragment.isAnalyzing();
+                    if (isAnalyzing) {
+                        showDialogStopScan(TYPE_SOUND);
+                    } else {
+                        openSoundScanner();
+                    }
+                }
+                if (mTypeScanner == TYPE_FINGER_PRINT) {
+                    boolean isAnalyzing = FingerPrintFragment.isAnalyzing();
+                    boolean isPressing = FingerPrintFragment.isButtonPressed();
+                    if (isAnalyzing || isPressing) {
+                        showDialogStopScan(TYPE_SOUND);
+                    } else {
+                        openSoundScanner();
+                    }
+                }
+
+
+            }
+        });
+    }
+
+    public static void initUIFooter() {
+        mActivityScannerBinding.layoutEyeSelected.setVisibility(View.GONE);
+        mActivityScannerBinding.layoutFingerSelected.setVisibility(View.GONE);
+        mActivityScannerBinding.layoutSoundSelected.setVisibility(View.GONE);
+        switch (mType) {
+            case TYPE_DEFAULT:
                 break;
-            case TYPE_SOUND:
-                mActivityScannerBinding.layoutScannerButtonLeft.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        boolean isAnalyzing = SoundFragment.isAnalyzing();
-                        boolean isPressing = SoundFragment.isButtonPressed();
-                        if (isAnalyzing || isPressing){
-                            showDialogStopScan(TYPE_FINGER_PRINT);
-                        } else {
-                            openFingerPrintScanner();
-                        }
-                    }
-                });
-                mActivityScannerBinding.layoutScannerButtonRight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        boolean isAnalyzing = SoundFragment.isAnalyzing();
-                        boolean isPressing = SoundFragment.isButtonPressed();
-                        if (isAnalyzing || isPressing){
-                            showDialogStopScan(TYPE_EYES);
-                        } else {
-                            openEyeScanner();
-                        }
-                    }
-                });
+            case TYPE_TRUE:
                 break;
-            case TYPE_EYES:
-                mActivityScannerBinding.layoutScannerButtonLeft.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        boolean isAnalyzing = EyeFragment.isAnalyzing();
-                        if (isAnalyzing){
-                            showDialogStopScan(TYPE_SOUND);
-                        } else {
-                            openSoundScanner();
-                        }
-                    }
-                });
-                mActivityScannerBinding.layoutScannerButtonRight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        boolean isAnalyzing = EyeFragment.isAnalyzing();
-                        if (isAnalyzing){
-                            showDialogStopScan(TYPE_FINGER_PRINT);
-                        } else {
-                            openFingerPrintScanner();
-                        }
-                    }
-                });
+            case TYPE_FALSE:
                 break;
         }
-    }
-    public static void initUIFooter() {
-        switch (mTypeScanner){
+        switch (mTypeScanner) {
             case TYPE_FINGER_PRINT:
+                mActivityScannerBinding.header.tvTitle.setText(R.string.finger_scan);
+                mActivityScannerBinding.layoutFingerSelected.setVisibility(View.VISIBLE);
                 mActivityScannerBinding.contentFrameEye.setVisibility(View.GONE);
                 mActivityScannerBinding.imgBackgroundScanner.setVisibility(View.VISIBLE);
                 switch (mType) {
                     case TYPE_DEFAULT:
-                        mActivityScannerBinding.imgScannerFingerPrintBottomButton.setImageResource(R.drawable.img_finger_print_bottom_button_default);
-                        mActivityScannerBinding.imgButtonLeft.setImageResource(R.drawable.img_sound_button_default);
-                        mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_eye_button_default);
                         break;
                     case TYPE_TRUE:
-                        mActivityScannerBinding.imgScannerFingerPrintBottomButton.setImageResource(R.drawable.img_finger_print_bottom_button_truth);
-                        mActivityScannerBinding.imgButtonLeft.setImageResource(R.drawable.img_sound_button_truth);
-                        mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_eye_button_truth);
                         break;
                     case TYPE_FALSE:
-                        mActivityScannerBinding.imgScannerFingerPrintBottomButton.setImageResource(R.drawable.img_finger_print_bottom_button_liar);
-                        mActivityScannerBinding.imgButtonLeft.setImageResource(R.drawable.img_sound_button_liar);
-                        mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_eye_button_liar);
                         break;
                 }
-                mActivityScannerBinding.tvButtonLeft.setText(R.string.sound);
-                mActivityScannerBinding.tvButtonRight.setText(R.string.eyes);
                 break;
             case TYPE_SOUND:
+                mActivityScannerBinding.header.tvTitle.setText(R.string.sound_scan2);
+                mActivityScannerBinding.layoutSoundSelected.setVisibility(View.VISIBLE);
                 mActivityScannerBinding.contentFrameEye.setVisibility(View.GONE);
                 mActivityScannerBinding.imgBackgroundScanner.setVisibility(View.VISIBLE);
                 switch (mType) {
                     case TYPE_DEFAULT:
-                        mActivityScannerBinding.imgScannerFingerPrintBottomButton.setImageResource(R.drawable.img_sound_bottom_button_default);
-                        mActivityScannerBinding.imgButtonLeft.setImageResource(R.drawable.img_finger_print_button_default);
-                        mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_eye_button_default);
                         break;
                     case TYPE_TRUE:
-                        mActivityScannerBinding.imgScannerFingerPrintBottomButton.setImageResource(R.drawable.img_sound_bottom_button_truth);
-                        mActivityScannerBinding.imgButtonLeft.setImageResource(R.drawable.img_finger_print_button_truth);
-                        mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_eye_button_truth);
                         break;
                     case TYPE_FALSE:
-                        mActivityScannerBinding.imgScannerFingerPrintBottomButton.setImageResource(R.drawable.img_sound_bottom_button_liar);
-                        mActivityScannerBinding.imgButtonLeft.setImageResource(R.drawable.img_finger_print_button_liar);
-                        mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_eye_button_liar);
                         break;
                 }
-                mActivityScannerBinding.tvButtonLeft.setText(R.string.finger);
-                mActivityScannerBinding.tvButtonRight.setText(R.string.eyes);
                 break;
             case TYPE_EYES:
+                mActivityScannerBinding.layoutEyeSelected.setVisibility(View.VISIBLE);
+                mActivityScannerBinding.header.tvTitle.setText(R.string.eyes_scan);
                 switch (mType) {
                     case TYPE_DEFAULT:
-                        mActivityScannerBinding.imgScannerFingerPrintBottomButton.setImageResource(R.drawable.img_eye_bottom_button_default);
-                        mActivityScannerBinding.imgButtonLeft.setImageResource(R.drawable.img_sound_button_default);
-                        mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_finger_print_button_default);
                         mActivityScannerBinding.imgBackgroundScanner.setVisibility(View.GONE);
                         mActivityScannerBinding.contentFrameEye.setVisibility(View.VISIBLE);
                         break;
                     case TYPE_TRUE:
-                        mActivityScannerBinding.imgScannerFingerPrintBottomButton.setImageResource(R.drawable.img_eye_bottom_button_truth);
-                        mActivityScannerBinding.imgButtonLeft.setImageResource(R.drawable.img_sound_button_truth);
-                        mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_finger_print_button_truth);
-                        mActivityScannerBinding.imgBackgroundScanner.setVisibility(View.VISIBLE);
-                        mActivityScannerBinding.contentFrameEye.setVisibility(View.GONE);
-                        break;
                     case TYPE_FALSE:
-                        mActivityScannerBinding.imgScannerFingerPrintBottomButton.setImageResource(R.drawable.img_eye_bottom_button_liar);
-                        mActivityScannerBinding.imgButtonLeft.setImageResource(R.drawable.img_sound_button_liar);
-                        mActivityScannerBinding.imgButtonRight.setImageResource(R.drawable.img_finger_print_button_liar);
                         mActivityScannerBinding.imgBackgroundScanner.setVisibility(View.VISIBLE);
                         mActivityScannerBinding.contentFrameEye.setVisibility(View.GONE);
                         break;
                 }
-                mActivityScannerBinding.tvButtonLeft.setText(R.string.sound);
-                mActivityScannerBinding.tvButtonRight.setText(R.string.finger);
                 break;
         }
     }
+
     private static void bindPreview(ProcessCameraProvider cameraProvider, Context context) {
         Preview preview = new Preview.Builder().build();
         CameraSelector cameraSelector = new CameraSelector.Builder()
@@ -301,6 +303,7 @@ public class ScannerActivity extends BaseActivity {
         cameraProvider.bindToLifecycle((LifecycleOwner) context, cameraSelector, preview);
 
     }
+
     public static void startCamera(Context context) {
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(context);
@@ -309,7 +312,7 @@ public class ScannerActivity extends BaseActivity {
             public void run() {
                 try {
                     cameraProvider = cameraProviderFuture.get();
-                    bindPreview(cameraProvider,context);
+                    bindPreview(cameraProvider, context);
                 } catch (Exception e) {
                     Log.e("CameraXApp", "Error: ", e);
                 }
@@ -337,14 +340,9 @@ public class ScannerActivity extends BaseActivity {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt(PREF_KEY_DENY_COUNT_MIC, denyCount);
                         editor.apply();
-                        if (shouldShowRequestPermissionRationale(permissions[0])){
-                            if (denyCount>2) showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
-                        }else {
-                            showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
-                        }
 
-                    }
-                    else Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case CAMERA_PERMISSION_REQUEST_CODE:
@@ -364,27 +362,20 @@ public class ScannerActivity extends BaseActivity {
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt(PREF_KEY_DENY_COUNT_CAM, denyCount);
                         editor.apply();
-                        if (shouldShowRequestPermissionRationale(permissions[0])){
-                            if (denyCount>2) showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
-                        }else {
-                            showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
-                        }
-
-                    }
-                    else
+                    } else
                         Toast.makeText(this, getString(R.string.denied_camera), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
+
     private void requestPermissionMicro() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_MIC, 0);
-        if (denyCount<2){
+        if (denyCount < 2) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECORD_AUDIO}, MICRO_PERMISSION_REQUEST_CODE);
-        }
-        else {
+        } else {
             showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
         }
 
@@ -398,7 +389,7 @@ public class ScannerActivity extends BaseActivity {
     private void requestPermissionCamera() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_CAM, 0);
-        if (denyCount<2){
+        if (denyCount < 2) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
         } else {
@@ -452,6 +443,7 @@ public class ScannerActivity extends BaseActivity {
         // Show the dialog
         dialog.show();
     }
+
     private void showDialogStopScan(int perId) {
         isOpenDialog = true;
         final Dialog dialog = new Dialog(this);
@@ -472,25 +464,38 @@ public class ScannerActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+//                FingerPrintFragment.setAnalyzing(false);
+//                FingerPrintFragment.setButtonPressed(false);
+//                SoundFragment.setAnalyzing(false);
+//                SoundFragment.setButtonPressed(false);
+//                EyeFragment.setAnalyzing(false);
                 isOpenDialog = false;
-                if (perId == TYPE_FINGER_PRINT){
+                if (perId == TYPE_FINGER_PRINT) {
                     EyeFragment.setAnalyzing(false);
                     SoundFragment.setAnalyzing(false);
                     SoundFragment.setButtonPressed(false);
                     openFingerPrintScanner();
                 }
-                if (perId == TYPE_SOUND){
+                if (perId == TYPE_SOUND) {
                     FingerPrintFragment.setAnalyzing(false);
                     FingerPrintFragment.setButtonPressed(false);
                     EyeFragment.setAnalyzing(false);
                     openSoundScanner();
                 }
-                if (perId == TYPE_EYES){
+                if (perId == TYPE_EYES) {
                     FingerPrintFragment.setAnalyzing(false);
                     FingerPrintFragment.setButtonPressed(false);
                     SoundFragment.setAnalyzing(false);
                     SoundFragment.setButtonPressed(false);
                     openEyeScanner();
+                }
+                if (perId == TYPE_SETTING_HEADER) {
+                    FingerPrintFragment.setAnalyzing(false);
+                    FingerPrintFragment.setButtonPressed(false);
+                    SoundFragment.setAnalyzing(false);
+                    SoundFragment.setButtonPressed(false);
+                    EyeFragment.setAnalyzing(false);
+                    openSetting();
                 }
 
             }
@@ -509,4 +514,4 @@ public class ScannerActivity extends BaseActivity {
     }
 
 
-    }
+}

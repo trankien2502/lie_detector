@@ -19,7 +19,7 @@ public class IntroViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         if (position == 0) {
             return new Intro1Fragment();
-        } else if (position==1) {
+        } else if (position == 1) {
             return new Intro2Fragment();
         }
         return new Intro3Fragment();

@@ -14,6 +14,7 @@ import com.vtdglobal.liedetector.databinding.FragmentAboutBinding;
 
 public class AboutFragment extends Fragment {
     FragmentAboutBinding mFragmentAboutBinding;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

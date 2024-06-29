@@ -74,6 +74,7 @@ public class SoundFragment extends Fragment {
 
                     }
                 } else {
+                    isAnalyzing = false;
                     handler.removeCallbacks(runnablePressing);
                     mFragmentSoundBinding.layoutSoundScanningProgress.setVisibility(View.GONE);
                     if (mediaPlayer!=null){
@@ -363,26 +364,27 @@ public class SoundFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        handler.removeCallbacks(runnableAnalyzing);
-        handler.removeCallbacks(runnablePressing);
-        isAnalyzing = false;
-        initUIDefault();
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        isAnalyzing = false;
+        isButtonPressed = false;
+        initUIDefault();
+        handler.removeCallbacks(runnableAnalyzing);
+        handler.removeCallbacks(runnablePressing);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(runnableAnalyzing);
-        handler.removeCallbacks(runnablePressing);
-        isAnalyzing = false;
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
-
+        isAnalyzing = false;
+        isButtonPressed = false;
+        handler.removeCallbacks(runnableAnalyzing);
+        handler.removeCallbacks(runnablePressing);
     }
 }

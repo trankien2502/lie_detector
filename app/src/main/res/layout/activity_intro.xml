@@ -11,65 +11,58 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager_2_intro"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/layout_next"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
-    <RelativeLayout
-        android:id="@+id/layout_next"
+
+    <LinearLayout
+        android:id="@+id/ll_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewpager_2_intro"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        android:padding="6sp">
+
+        <ImageView
+            android:id="@+id/iv_circle_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_intro_s" />
+
+        <ImageView
+            android:id="@+id/iv_circle_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5sp"
+            android:src="@drawable/ic_intro_sn" />
+
+        <ImageView
+            android:id="@+id/iv_circle_03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_intro_sn" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp">
-
-
-        <LinearLayout
-            android:id="@+id/ll_circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal"
-            android:padding="6sp">
-
-            <ImageView
-                android:id="@+id/iv_circle_01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_intro_s" />
-
-            <ImageView
-                android:id="@+id/iv_circle_02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5sp"
-                android:src="@drawable/ic_intro_sn" />
-
-            <ImageView
-                android:id="@+id/iv_circle_03"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_intro_sn" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:fontFamily="@font/cabinet_grotesk_medium"
-            android:text="@string/next"
-            android:padding="12dp"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_blue_corner_90"
+        android:fontFamily="@font/urbanist_medium"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/next"
+        android:textColor="#2e2e2e"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

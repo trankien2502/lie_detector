@@ -22,8 +22,12 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langua
     private final Context context;
     private boolean isSettingMode = false;
 
-    public interface IOnClickLanguage { void onClickLanguageListener (Language language);}
+    public interface IOnClickLanguage {
+        void onClickLanguageListener(Language language);
+    }
+
     IOnClickLanguage iOnClickLanguage;
+
     public LanguageAdapter(Context context, List<Language> listLanguage, IOnClickLanguage iOnClickLanguage) {
         this.context = context;
         this.listLanguage = listLanguage;
@@ -33,7 +37,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langua
     @NonNull
     @Override
     public LanguageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemLanguageBinding itemLanguageBinding = ItemLanguageBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        ItemLanguageBinding itemLanguageBinding = ItemLanguageBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new LanguageViewHolder(itemLanguageBinding);
     }
 
@@ -41,13 +45,14 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langua
     @Override
     public void onBindViewHolder(@NonNull LanguageViewHolder holder, int position) {
         Language language = listLanguage.get(position);
-        if (language==null) return;
+        if (language == null) return;
         Typeface fontLanguageSetting = Typeface.createFromAsset(context.getAssets(), "font/druk_text_wide_medium_trial.otf");
         holder.itemLanguageBinding.imgLanguage.setImageResource(language.getImage());
         holder.itemLanguageBinding.tvNameLanguage.setText(language.getName());
-        if (isSettingMode) holder.itemLanguageBinding.tvNameLanguage.setTypeface(fontLanguageSetting);
+        if (isSettingMode)
+            holder.itemLanguageBinding.tvNameLanguage.setTypeface(fontLanguageSetting);
         holder.itemLanguageBinding.layoutItemLanguage.setOnClickListener(view -> iOnClickLanguage.onClickLanguageListener(language));
-        if (position == selectedPosition){
+        if (position == selectedPosition) {
             holder.itemLanguageBinding.tvNameLanguage.setTextColor(context.getResources().getColor(R.color.blueLight));
             holder.itemLanguageBinding.viewForeground.setVisibility(View.VISIBLE);
             holder.itemLanguageBinding.layoutItemLanguage.setBackgroundResource(R.drawable.bg_darklight_blue_border_corner_8);
@@ -65,6 +70,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langua
 
     public static class LanguageViewHolder extends RecyclerView.ViewHolder {
         private final ItemLanguageBinding itemLanguageBinding;
+
         public LanguageViewHolder(ItemLanguageBinding itemLanguageBinding) {
             super(itemLanguageBinding.getRoot());
             this.itemLanguageBinding = itemLanguageBinding;

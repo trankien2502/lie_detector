@@ -33,15 +33,14 @@ import com.vtdglobal.liedetector.databinding.ActivityPermissionBinding;
 
 public class PermissionActivity extends BaseActivity {
     ActivityPermissionBinding mActivityPermissionBinding;
-    public static boolean isPermissionCamera ;
-    public static boolean isPermissionMicro ;
+    public static boolean isPermissionCamera;
+    public static boolean isPermissionMicro;
     private static final String PREFS_NAME = "PermissionPrefs";
     private static final String PREF_KEY_DENY_COUNT_MIC = "denyCountMic";
     private static final String PREF_KEY_DENY_COUNT_CAM = "denyCountCam";
 
     public static final int MICRO_PERMISSION_REQUEST_CODE = 2;
     public static final int CAMERA_PERMISSION_REQUEST_CODE = 3;
-
 
 
     @Override
@@ -51,7 +50,7 @@ public class PermissionActivity extends BaseActivity {
         setContentView(mActivityPermissionBinding.getRoot());
 
 
-        if(checkAllPermission()) goToMainActivity();
+        if (checkAllPermission()) goToMainActivity();
 
         initUI();
         initListener();
@@ -60,7 +59,7 @@ public class PermissionActivity extends BaseActivity {
     private boolean checkAllPermission() {
         checkCameraPermission();
         checkMicroPermission();
-        return  isPermissionCamera && isPermissionMicro;
+        return isPermissionCamera && isPermissionMicro;
     }
 
     private void requestPermissionMicro() {
@@ -101,8 +100,8 @@ public class PermissionActivity extends BaseActivity {
                         editor.putInt(PREF_KEY_DENY_COUNT_MIC, denyCount);
                         editor.apply();
                         //if (denyCount>2) showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
-                    }
-                    else Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case CAMERA_PERMISSION_REQUEST_CODE:
@@ -120,8 +119,7 @@ public class PermissionActivity extends BaseActivity {
                         editor.apply();
                         //if (denyCount>2) showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
 
-                    }
-                    else
+                    } else
                         Toast.makeText(this, getString(R.string.denied_camera), Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -132,7 +130,7 @@ public class PermissionActivity extends BaseActivity {
         mActivityPermissionBinding.btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkAllPermission()){
+                if (checkAllPermission()) {
                     goToMainActivity();
                 } else
                     showDialogWarning();
@@ -145,8 +143,9 @@ public class PermissionActivity extends BaseActivity {
                 checkCameraPermission();
                 SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                 int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_CAM, 0);
-                if (!isPermissionCamera && denyCount<2) requestPermissionCamera();
-                else if (!isPermissionCamera) showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
+                if (!isPermissionCamera && denyCount < 2) requestPermissionCamera();
+                else if (!isPermissionCamera)
+                    showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
                 if (b) {
                     mActivityPermissionBinding.swichCamera.setChecked(isPermissionCamera);
                 } else {
@@ -164,8 +163,9 @@ public class PermissionActivity extends BaseActivity {
                 checkMicroPermission();
                 SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                 int denyCount = prefs.getInt(PREF_KEY_DENY_COUNT_MIC, 0);
-                if (!isPermissionMicro && denyCount<2) requestPermissionMicro();
-                else if (!isPermissionMicro) showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
+                if (!isPermissionMicro && denyCount < 2) requestPermissionMicro();
+                else if (!isPermissionMicro)
+                    showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
                 if (b) {
                     mActivityPermissionBinding.swichMicro.setChecked(isPermissionMicro);
                 } else {
@@ -218,6 +218,7 @@ public class PermissionActivity extends BaseActivity {
         // Show the dialog
         dialog.show();
     }
+
     private void showDialogPermissionGuide(int perId) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

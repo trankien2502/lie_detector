@@ -37,20 +37,16 @@ public class SettingActivity extends BaseActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Thực hiện hành động tùy chỉnh khi nút back được nhấn
-                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                    onClickBackButton();
-                } else {
-                    // Nếu không có fragment nào trong back stack, thực hiện hành động mặc định
-                    finish();
-                }
+                onClickBackButton();
             }
         });
         setContentView(mActivitySettingBinding.getRoot());
     }
+
     private void initUI() {
         replaceFragment(new SettingFragment());
     }
+
     private void initHeaderListener() {
         mActivitySettingBinding.headerSetting.imgLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,10 +57,10 @@ public class SettingActivity extends BaseActivity {
         mActivitySettingBinding.headerSetting.imgTick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPreferences =getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("selectedLanguage",true);
-                editor.putString("languageCurrent",  LanguageFragment.languageSelected);
+                editor.putBoolean("selectedLanguage", true);
+                editor.putString("languageCurrent", LanguageFragment.languageSelected);
                 editor.apply();
                 onClickBackButton();
 
@@ -73,7 +69,7 @@ public class SettingActivity extends BaseActivity {
     }
 
     private void onClickBackButton() {
-        if (mType==TYPE_SETTING){
+        if (mType == TYPE_SETTING) {
             finish();
         } else {
             replaceFragment(new SettingFragment());
@@ -81,6 +77,7 @@ public class SettingActivity extends BaseActivity {
             initHeaderUI();
         }
     }
+
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.layout_setting_content, fragment);
@@ -88,8 +85,9 @@ public class SettingActivity extends BaseActivity {
         transaction.commit();
 
     }
-    public static void initHeaderUI(){
-        switch (mType){
+
+    public static void initHeaderUI() {
+        switch (mType) {
             case TYPE_SETTING:
                 mActivitySettingBinding.headerSetting.tvTitle.setText(R.string.setting);
                 mActivitySettingBinding.headerSetting.imgTick.setVisibility(View.GONE);

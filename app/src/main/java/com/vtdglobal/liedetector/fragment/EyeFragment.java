@@ -30,27 +30,26 @@ import java.util.Random;
 
 public class EyeFragment extends Fragment {
 
-   FragmentEyeBinding mFragmentEyeBinding;
+    FragmentEyeBinding mFragmentEyeBinding;
 
-//    private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-//    private ProcessCameraProvider cameraProvider;
     private final Handler handler = new Handler();
     private Runnable runnableAnalyzing;
-    private int  countdownAnalyzing = 10;
-    private boolean  isResultScreen = false;
+    private int countdownAnalyzing = 10;
+    private boolean isResultScreen = false;
     public static boolean isAnalyzing = false;
     MediaPlayer mediaPlayer;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mFragmentEyeBinding = FragmentEyeBinding.inflate(inflater,container,false);
+        mFragmentEyeBinding = FragmentEyeBinding.inflate(inflater, container, false);
         runnableAnalyzing = new Runnable() {
             @Override
             public void run() {
-                if (!isAnalyzing){
+                if (!isAnalyzing) {
                     handler.removeCallbacks(runnableAnalyzing);
                     initUIDefault();
-                    if (mediaPlayer!=null){
+                    if (mediaPlayer != null) {
                         mediaPlayer.release();
                         mediaPlayer = null;
 
@@ -61,20 +60,19 @@ public class EyeFragment extends Fragment {
                         handler.postDelayed(this, 1000);
                     } else {
                         handler.removeCallbacks(runnableAnalyzing);
-                        if(mediaPlayer!= null){
+                        if (mediaPlayer != null) {
                             mediaPlayer.release();
                             mediaPlayer = null;
                         }
-                        if (ScannerActivity.isOpenDialog){
+                        if (ScannerActivity.isOpenDialog) {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(ScannerActivity.isOpenDialog) {
+                                    if (ScannerActivity.isOpenDialog) {
                                         setVisibilityResultGone();
-                                        handler.postDelayed(this,1000);
-                                    }
-                                    else {
-                                        if (isAnalyzing){
+                                        handler.postDelayed(this, 1000);
+                                    } else {
+                                        if (isAnalyzing) {
                                             if (mediaPlayer != null) {
                                                 mediaPlayer.release();
                                             }
@@ -86,7 +84,7 @@ public class EyeFragment extends Fragment {
                                         handler.removeCallbacks(this);
                                     }
                                 }
-                            },1000);
+                            }, 1000);
                         } else {
                             if (mediaPlayer != null) {
                                 mediaPlayer.release();
@@ -120,13 +118,13 @@ public class EyeFragment extends Fragment {
         mFragmentEyeBinding.layoutEyePressButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isResultScreen){
+                if (isResultScreen) {
                     initUIDefault();
                     isResultScreen = false;
                 } else {
                     countdownAnalyzing = 10;
                     isAnalyzing = true;
-                    handler.postDelayed(runnableAnalyzing,1000);
+                    handler.postDelayed(runnableAnalyzing, 1000);
                     setVisibilityAnalyzingVisible();
                 }
             }
@@ -136,25 +134,28 @@ public class EyeFragment extends Fragment {
     private void initUI() {
         initUIDefault();
     }
-    private void setVisibilityAnalyzingVisible(){
+
+    private void setVisibilityAnalyzingVisible() {
         mFragmentEyeBinding.layoutEyeScanning.setVisibility(View.VISIBLE);
         mFragmentEyeBinding.imgEyeScanningLeft.setVisibility(View.VISIBLE);
         mFragmentEyeBinding.imgEyeScanningRight.setVisibility(View.VISIBLE);
         mFragmentEyeBinding.imgEyeScanning.setVisibility(View.VISIBLE);
         mFragmentEyeBinding.layoutEyePressButton.setVisibility(View.GONE);
-        if (mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        mediaPlayer = MediaPlayer.create(getContext(),R.raw.eyescansound_effect2);
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.eyescansound_effect2);
         mediaPlayer.start();
         runAnimation();
     }
-    private void setVisibilityAnalyzingGone(){
+
+    private void setVisibilityAnalyzingGone() {
         mFragmentEyeBinding.layoutEyeScanning.setVisibility(View.GONE);
         mFragmentEyeBinding.imgEyeScanningLeft.setVisibility(View.GONE);
         mFragmentEyeBinding.imgEyeScanningRight.setVisibility(View.GONE);
         mFragmentEyeBinding.imgEyeScanning.setVisibility(View.GONE);
     }
+
     private void showDialogResult() {
         isAnalyzing = false;
         if (mediaPlayer != null) {
@@ -179,7 +180,7 @@ public class EyeFragment extends Fragment {
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mediaPlayer!=null){
+                if (mediaPlayer != null) {
                     mediaPlayer.release();
                     mediaPlayer = null;
                 }
@@ -321,7 +322,7 @@ public class EyeFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
@@ -336,7 +337,7 @@ public class EyeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }

@@ -23,6 +23,7 @@ public class SoundsActivity extends BaseActivity {
     public static final int TYPE_FORTE_PIANO = 5;
 
     public static int mTypeSound = TYPE_SOUNDS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,7 @@ public class SoundsActivity extends BaseActivity {
     private void initUI() {
         replaceFragment(new SoundsFragment());
     }
+
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.layout_sounds_content, fragment);
@@ -65,7 +67,8 @@ public class SoundsActivity extends BaseActivity {
         transaction.commit();
 
     }
-    private void onClickBackButton(){
+
+    private void onClickBackButton() {
         if (mTypeSound == TYPE_SOUNDS) finish();
         else {
             replaceFragment(new SoundsFragment());
@@ -73,8 +76,9 @@ public class SoundsActivity extends BaseActivity {
             initHeaderUI();
         }
     }
-    public static void initHeaderUI(){
-        switch (mTypeSound){
+
+    public static void initHeaderUI() {
+        switch (mTypeSound) {
             case TYPE_SOUNDS:
                 mActivitySoundsBinding.header.tvTitle.setText(R.string.sounds);
                 break;
@@ -92,7 +96,6 @@ public class SoundsActivity extends BaseActivity {
                 break;
         }
     }
-
 
 
 }

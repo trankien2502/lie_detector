@@ -8,9 +8,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,13 +21,13 @@ import com.vtdglobal.liedetector.databinding.FragmentFortePianoBinding;
 public class FortePianoFragment extends Fragment {
     FragmentFortePianoBinding mFragmentFortePianoBinding;
     MediaPlayer mediaPlayer;
-    Handler handler = new Handler();
-    Runnable runnable;
+//    Handler handler = new Handler();
+//    Runnable runnable;
     private SoundPool soundPool;
     ImageView[] pianoNote = null;
     int[] soundNote = null;
     int note;
-    private int[] soundIds = new int[46];
+    private final int[] soundIds = new int[46];
 
     public static  final int TYPE_C = 0;
     public static  final int TYPE_C_SHARP = 1;

@@ -63,9 +63,9 @@ public class FingerPrintFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mFragmentFingerPrintBinding = FragmentFingerPrintBinding.inflate(inflater,container,false);
+        mFragmentFingerPrintBinding = FragmentFingerPrintBinding.inflate(inflater, container, false);
         runnablePressing = new Runnable() {
-            @SuppressLint("ClickableViewAccessibility")
+            @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
             @Override
             public void run() {
                 if (isButtonPressed) {
@@ -73,9 +73,9 @@ public class FingerPrintFragment extends Fragment {
                     mFragmentFingerPrintBinding.imgFingerPrintPressing.setColorFilter(Color.TRANSPARENT);
                     mFragmentFingerPrintBinding.tvFingerPrintScreenScanner1.setVisibility(View.GONE);
                     mFragmentFingerPrintBinding.layoutFingerPrintScanningProgress.setVisibility(View.VISIBLE);
-                    mFragmentFingerPrintBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.none));
+                    mFragmentFingerPrintBinding.tvScannerPress.setTextColor(requireContext().getResources().getColor(R.color.none));
                     mFragmentFingerPrintBinding.imgScannerDirectUp.clearColorFilter();
-                    mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText(getString(R.string.wait) +" " + countdownPressing +" " + getString(R.string.seconds_to_scan));
+                    mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText(getString(R.string.wait) + " " + countdownPressing + " " + getString(R.string.seconds_to_scan));
                     if (countdownPressing > 0) {
                         handler.postDelayed(this, 1000);
                     } else {
@@ -86,23 +86,22 @@ public class FingerPrintFragment extends Fragment {
                         mFragmentFingerPrintBinding.layoutParentScanningPressing.setVisibility(View.GONE);
                         Random random = new Random();
                         countdownAnalyzing = 6 + random.nextInt(10);
-                        if (mediaPlayer!=null){
+                        if (mediaPlayer != null) {
                             mediaPlayer.release();
-                            mediaPlayer=null;
+                            mediaPlayer = null;
                         }
-                        mediaPlayer = MediaPlayer.create(getContext(),R.raw.analyzing_sound);
+                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.analyzing_sound);
                         mediaPlayer.start();
                         isAnalyzing = true;
                         handler.postDelayed(runnableAnalyzing, 500);
                         isButtonPressed = false;
                     }
-                }
-                else {
+                } else {
                     isAnalyzing = false;
                     handler.removeCallbacks(runnablePressing);
                     mFragmentFingerPrintBinding.layoutFingerPrintScanningProgress.setVisibility(View.GONE);
                     mFragmentFingerPrintBinding.imgFingerPrintPressing.clearColorFilter();
-                    if (mediaPlayer!=null){
+                    if (mediaPlayer != null) {
                         mediaPlayer.release();
                         mediaPlayer = null;
                     }
@@ -113,18 +112,16 @@ public class FingerPrintFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void run() {
-                if (!isAnalyzing){
+                if (!isAnalyzing) {
                     handler.removeCallbacks(runnableAnalyzing);
                     initUIDefault();
-                    if (mediaPlayer!=null){
+                    if (mediaPlayer != null) {
                         mediaPlayer.release();
                         mediaPlayer = null;
                     }
-                }
-                else {
-
+                } else {
                     countdownAnalyzing--;
-                    switch (countdownAnalyzing%4) {
+                    switch (countdownAnalyzing % 4) {
                         case 0:
                             mFragmentFingerPrintBinding.imgFingerPrintAnalyzingTruth.setImageResource(R.drawable.img_scanner_analyzing_none);
                             mFragmentFingerPrintBinding.imgFingerPrintAnalyzingLiar.setImageResource(R.drawable.img_scanner_analyzing_liar);
@@ -146,30 +143,31 @@ public class FingerPrintFragment extends Fragment {
                             mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.analyzing);
                             break;
                     }
-                    if (countdownAnalyzing==0){
+                    if (countdownAnalyzing == 0) {
                         mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.the_result_is_ready_now);
                         handler.removeCallbacks(runnableAnalyzing);
-                        if(mediaPlayer!= null){
+                        if (mediaPlayer != null) {
                             mediaPlayer.release();
                             mediaPlayer = null;
                         }
-                        if (ScannerActivity.isOpenDialog){
+                        if (ScannerActivity.isOpenDialog) {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(ScannerActivity.isOpenDialog) handler.postDelayed(this,1000);
+                                    if (ScannerActivity.isOpenDialog)
+                                        handler.postDelayed(this, 1000);
                                     else {
                                         handler.removeCallbacks(this);
                                         if (isAnalyzing)
                                             showDialogResult();
                                     }
                                 }
-                            },1000);
+                            }, 1000);
                         } else {
                             showDialogResult();
                         }
 
-                    }else
+                    } else
                         handler.postDelayed(this, 500);
 
                 }
@@ -180,6 +178,7 @@ public class FingerPrintFragment extends Fragment {
         initListener();
         return mFragmentFingerPrintBinding.getRoot();
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initListener() {
 
@@ -187,26 +186,26 @@ public class FingerPrintFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(isAnalyzing) return false;
+                if (isAnalyzing) return false;
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         initUIDefault();
                         isButtonPressed = true;
-                        countdownPressing = 5 ;
+                        countdownPressing = 5;
                         mFragmentFingerPrintBinding.imgFingerPrintPressing.setColorFilter(Color.TRANSPARENT);
                         mFragmentFingerPrintBinding.tvFingerPrintScreenScanner1.setVisibility(View.GONE);
                         mFragmentFingerPrintBinding.layoutFingerPrintScanningProgress.setVisibility(View.VISIBLE);
-                        mFragmentFingerPrintBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.none));
+                        mFragmentFingerPrintBinding.tvScannerPress.setTextColor(requireContext().getResources().getColor(R.color.none));
                         mFragmentFingerPrintBinding.imgScannerDirectUp.clearColorFilter();
                         loadGif();
-                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText(getString(R.string.wait) +" " + countdownPressing +" " + getString(R.string.seconds_to_scan));
+                        mFragmentFingerPrintBinding.tvFingerPrintScreenScanner2.setText(getString(R.string.wait) + " " + countdownPressing + " " + getString(R.string.seconds_to_scan));
                         handler.postDelayed(runnablePressing, 1000);
                         runAnimation();
-                        if (mediaPlayer!=null){
+                        if (mediaPlayer != null) {
                             mediaPlayer.release();
                             mediaPlayer = null;
                         }
-                        mediaPlayer = MediaPlayer.create(getContext(),R.raw.scansound_effect2);
+                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.scansound_effect2);
                         mediaPlayer.start();
                         return true;
                     case MotionEvent.ACTION_UP:
@@ -214,11 +213,11 @@ public class FingerPrintFragment extends Fragment {
                         isButtonPressed = false;
                         if (countdownPressing > 0) {
                             initUIDefault();
-                            if (mediaPlayer!=null){
+                            if (mediaPlayer != null) {
                                 mediaPlayer.release();
                                 mediaPlayer = null;
                             }
-                            mFragmentFingerPrintBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.white));
+                            mFragmentFingerPrintBinding.tvScannerPress.setTextColor(requireContext().getResources().getColor(R.color.white));
                             mFragmentFingerPrintBinding.imgScannerDirectUp.setColorFilter(Color.TRANSPARENT);
 
                         }
@@ -235,12 +234,12 @@ public class FingerPrintFragment extends Fragment {
     private void showDialogResult() {
         isAnalyzing = false;
         handler.removeCallbacks(runnableAnalyzing);
-        if (mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        mediaPlayer = MediaPlayer.create(getContext(),R.raw.get_result_sound);
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.get_result_sound);
         mediaPlayer.start();
-        final Dialog dialog = new Dialog(getContext());
+        final Dialog dialog = new Dialog(requireContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_scanner_result);
 
@@ -258,7 +257,7 @@ public class FingerPrintFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(mediaPlayer!=null){
+                if (mediaPlayer != null) {
                     mediaPlayer.release();
                     mediaPlayer = null;
                 }
@@ -282,6 +281,7 @@ public class FingerPrintFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
     private void getResultScanner() {
         Random random = new Random();
         boolean isTruth = random.nextBoolean();
@@ -305,17 +305,17 @@ public class FingerPrintFragment extends Fragment {
         mFragmentFingerPrintBinding.imgFingerPrintPress.setImageResource(R.drawable.img_finger_print_press_default);
         mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setText(R.string.analyzing);
         mFragmentFingerPrintBinding.tvFingerPrintScreenScanner3.setTextColor(getResources().getColor(R.color.white));
-        mFragmentFingerPrintBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.white));
+        mFragmentFingerPrintBinding.tvScannerPress.setTextColor(requireContext().getResources().getColor(R.color.white));
         mFragmentFingerPrintBinding.tvScannerPress.setText(R.string.press_here);
         mFragmentFingerPrintBinding.imgScannerDirectUp.setColorFilter(TRANSPARENT);
         mFragmentFingerPrintBinding.layoutFingerPrintScanningProgress.setVisibility(View.GONE);
     }
 
     private void initUIGetTruth() {
-        if (mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        mediaPlayer = MediaPlayer.create(getContext(),R.raw.result_true);
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.result_true);
         mediaPlayer.start();
         ScannerActivity.mType = ScannerActivity.TYPE_TRUE;
         ScannerActivity.initUIFooter();
@@ -332,16 +332,16 @@ public class FingerPrintFragment extends Fragment {
         mFragmentFingerPrintBinding.tvFingerPrintAnalyzingLiar.setTextColor(getResources().getColor(R.color.grayDefault));
         mFragmentFingerPrintBinding.imgFingerPrintPressBorder.setImageResource(R.drawable.img_scanner_press_border_truth);
         mFragmentFingerPrintBinding.imgFingerPrintPress.setImageResource(R.drawable.img_finger_print_press_truth);
-        mFragmentFingerPrintBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.white));
+        mFragmentFingerPrintBinding.tvScannerPress.setTextColor(requireContext().getResources().getColor(R.color.white));
         mFragmentFingerPrintBinding.tvScannerPress.setText(R.string.try_again_text);
         mFragmentFingerPrintBinding.imgScannerDirectUp.setColorFilter(TRANSPARENT);
     }
 
     private void initUIGetLiar() {
-        if (mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        mediaPlayer = MediaPlayer.create(getContext(),R.raw.result_lie);
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.result_lie);
         mediaPlayer.start();
         ScannerActivity.mType = ScannerActivity.TYPE_FALSE;
         ScannerActivity.initUIFooter();
@@ -358,7 +358,7 @@ public class FingerPrintFragment extends Fragment {
         mFragmentFingerPrintBinding.tvFingerPrintAnalyzingLiar.setTextColor(getResources().getColor(R.color.liar));
         mFragmentFingerPrintBinding.imgFingerPrintPressBorder.setImageResource(R.drawable.img_scanner_press_border_liar);
         mFragmentFingerPrintBinding.imgFingerPrintPress.setImageResource(R.drawable.img_finger_print_press_liar);
-        mFragmentFingerPrintBinding.tvScannerPress.setTextColor(getContext().getResources().getColor(R.color.white));
+        mFragmentFingerPrintBinding.tvScannerPress.setTextColor(requireContext().getResources().getColor(R.color.white));
         mFragmentFingerPrintBinding.tvScannerPress.setText(R.string.try_again_text);
         mFragmentFingerPrintBinding.imgScannerDirectUp.setColorFilter(TRANSPARENT);
     }
@@ -367,14 +367,15 @@ public class FingerPrintFragment extends Fragment {
     private void initUI() {
         initUIDefault();
     }
-    private void runAnimation(){
+
+    private void runAnimation() {
         ViewTreeObserver viewTreeObserver = mFragmentFingerPrintBinding.layoutParentScanningPressing.getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 int parentHeight = mFragmentFingerPrintBinding.layoutParentScanningPressing.getHeight();
                 int pressingLightHeight = mFragmentFingerPrintBinding.imgFingerPrintPressing.getHeight();
-                ValueAnimator animator = ValueAnimator.ofFloat(0f,parentHeight-pressingLightHeight);
+                ValueAnimator animator = ValueAnimator.ofFloat(0f, parentHeight - pressingLightHeight);
                 animator.setDuration(800);
                 animator.setInterpolator(new LinearInterpolator());
                 animator.setRepeatCount(ValueAnimator.INFINITE);
@@ -395,11 +396,13 @@ public class FingerPrintFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
         initUIDefault();
+        isAnalyzing = false;
+        isButtonPressed = false;
         handler.removeCallbacks(runnableAnalyzing);
         handler.removeCallbacks(runnablePressing);
     }
@@ -407,10 +410,12 @@ public class FingerPrintFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mediaPlayer!=null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        isAnalyzing = false;
+        isButtonPressed = false;
         handler.removeCallbacks(runnableAnalyzing);
         handler.removeCallbacks(runnablePressing);
 

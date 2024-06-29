@@ -25,9 +25,12 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.SoundsView
     private Runnable runnable;
 
 
+    public interface IOnClickSoundListener {
+        void onClickSoundListener(Sound sound);
+    }
 
-    public interface IOnClickSoundListener { void onClickSoundListener (Sound sound);}
     IOnClickSoundListener iOnClickSoundListener;
+
     public SoundsAdapter(Context context, List<Sound> soundList, IOnClickSoundListener iOnClickSoundListener) {
         this.context = context;
         this.soundList = soundList;
@@ -37,14 +40,14 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.SoundsView
     @NonNull
     @Override
     public SoundsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemSoundsBinding itemSoundsBinding = ItemSoundsBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
+        ItemSoundsBinding itemSoundsBinding = ItemSoundsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new SoundsViewHolder(itemSoundsBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SoundsViewHolder holder, int position) {
         Sound sound = soundList.get(position);
-        if (sound==null) return;
+        if (sound == null) return;
         holder.itemSoundsBinding.imgSound.setImageResource(sound.getImage());
         holder.itemSoundsBinding.tvSoundName.setText(sound.getName());
         holder.itemSoundsBinding.layoutSound.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +68,7 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.SoundsView
 
     @Override
     public int getItemCount() {
-        return soundList==null?0:soundList.size();
+        return soundList == null ? 0 : soundList.size();
     }
 
     public static class SoundsViewHolder extends RecyclerView.ViewHolder {
