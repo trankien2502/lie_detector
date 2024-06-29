@@ -179,19 +179,16 @@ public class FingerPrintFragment extends Fragment {
         return mFragmentFingerPrintBinding.getRoot();
     }
     private void stopAnalyzing(){
-//        try {
-//            showDialogResult();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        } finally {
-//            showDialogResult();
-//        }
         isAnalyzing = false;
         handler.removeCallbacks(runnableAnalyzing);
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        showDialogResult();
+        try {
+            showDialogResult();
+        }catch (Exception e){
+            initUIDefault();
+        }
     }
     @SuppressLint("ClickableViewAccessibility")
     private void initListener() {
@@ -409,7 +406,7 @@ public class FingerPrintFragment extends Fragment {
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        initUIDefault();
+        if (isAnalyzing) initUIDefault();
         isAnalyzing = false;
         isButtonPressed = false;
         handler.removeCallbacks(runnableAnalyzing);

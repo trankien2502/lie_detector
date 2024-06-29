@@ -134,14 +134,14 @@ public class SoundFragment extends Fragment {
                                     if(ScannerActivity.isOpenDialog) handler.postDelayed(this,1000);
                                     else {
                                         if (isAnalyzing)
-                                            showDialogResult();
+                                            stopAnalyzing();
                                         handler.removeCallbacks(this);
 
                                     }
                                 }
                             },1000);
                         } else {
-                            showDialogResult();
+                            stopAnalyzing();
                         }
                     } else
                         handler.postDelayed(this, 500);
@@ -224,13 +224,20 @@ public class SoundFragment extends Fragment {
             }
         });
     }
-
-    private void showDialogResult() {
+    private void stopAnalyzing(){
         isAnalyzing = false;
         handler.removeCallbacks(runnableAnalyzing);
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
+        try {
+            showDialogResult();
+        }catch (Exception e){
+            initUIDefault();
+        }
+    }
+
+    private void showDialogResult() {
         mediaPlayer = MediaPlayer.create(getContext(), R.raw.get_result_sound);
         mediaPlayer.start();
         final Dialog dialog = new Dialog(getContext());
@@ -368,9 +375,9 @@ public class SoundFragment extends Fragment {
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        if (isAnalyzing) initUIDefault();
         isAnalyzing = false;
         isButtonPressed = false;
-        initUIDefault();
         handler.removeCallbacks(runnableAnalyzing);
         handler.removeCallbacks(runnablePressing);
     }

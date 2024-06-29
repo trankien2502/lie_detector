@@ -79,7 +79,7 @@ public class EyeFragment extends Fragment {
                                             mediaPlayer = MediaPlayer.create(getContext(), R.raw.get_result_sound);
                                             mediaPlayer.start();
 //                                            setVisibilityAnalyzingGone();
-                                            showDialogResult();
+                                            stopAnalyzing();
                                         }
                                         handler.removeCallbacks(this);
                                     }
@@ -91,7 +91,7 @@ public class EyeFragment extends Fragment {
                             }
                             mediaPlayer = MediaPlayer.create(getContext(), R.raw.get_result_sound);
                             mediaPlayer.start();
-                            showDialogResult();
+                            stopAnalyzing();
                         }
                         //
 
@@ -154,6 +154,18 @@ public class EyeFragment extends Fragment {
         mFragmentEyeBinding.imgEyeScanningLeft.setVisibility(View.GONE);
         mFragmentEyeBinding.imgEyeScanningRight.setVisibility(View.GONE);
         mFragmentEyeBinding.imgEyeScanning.setVisibility(View.GONE);
+    }
+    private void stopAnalyzing(){
+        isAnalyzing = false;
+        handler.removeCallbacks(runnableAnalyzing);
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+        try {
+            showDialogResult();
+        }catch (Exception e){
+            initUIDefault();
+        }
     }
 
     private void showDialogResult() {
@@ -326,8 +338,9 @@ public class EyeFragment extends Fragment {
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        initUIDefault();
+        if (isAnalyzing) initUIDefault();
         isAnalyzing = false;
+
         if (ScannerActivity.cameraProvider != null) {
             ScannerActivity.cameraProvider.unbindAll();
         }
