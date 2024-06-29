@@ -155,16 +155,16 @@ public class FingerPrintFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     if (ScannerActivity.isOpenDialog)
-                                        handler.postDelayed(this, 1000);
+                                        handler.postDelayed(this, 500);
                                     else {
                                         handler.removeCallbacks(this);
                                         if (isAnalyzing)
-                                            showDialogResult();
+                                            stopAnalyzing();
                                     }
                                 }
-                            }, 1000);
+                            }, 500);
                         } else {
-                            showDialogResult();
+                            stopAnalyzing();
                         }
 
                     } else
@@ -178,7 +178,21 @@ public class FingerPrintFragment extends Fragment {
         initListener();
         return mFragmentFingerPrintBinding.getRoot();
     }
-
+    private void stopAnalyzing(){
+//        try {
+//            showDialogResult();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        } finally {
+//            showDialogResult();
+//        }
+        isAnalyzing = false;
+        handler.removeCallbacks(runnableAnalyzing);
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+        showDialogResult();
+    }
     @SuppressLint("ClickableViewAccessibility")
     private void initListener() {
 
@@ -232,11 +246,6 @@ public class FingerPrintFragment extends Fragment {
     }
 
     private void showDialogResult() {
-        isAnalyzing = false;
-        handler.removeCallbacks(runnableAnalyzing);
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-        }
         mediaPlayer = MediaPlayer.create(getContext(), R.raw.get_result_sound);
         mediaPlayer.start();
         final Dialog dialog = new Dialog(requireContext());
