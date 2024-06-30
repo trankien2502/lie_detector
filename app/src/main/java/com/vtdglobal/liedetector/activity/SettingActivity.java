@@ -17,6 +17,7 @@ import com.vtdglobal.liedetector.databinding.ActivitySettingBinding;
 import com.vtdglobal.liedetector.fragment.LanguageFragment;
 import com.vtdglobal.liedetector.fragment.SettingFragment;
 import com.vtdglobal.liedetector.fragment.SoundsFragment;
+import com.vtdglobal.liedetector.util.SystemUtil;
 
 public class SettingActivity extends BaseActivity {
     static ActivitySettingBinding mActivitySettingBinding;
@@ -57,13 +58,8 @@ public class SettingActivity extends BaseActivity {
         mActivitySettingBinding.headerSetting.imgTick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("selectedLanguage", true);
-                editor.putString("languageCurrent", LanguageFragment.languageSelected);
-                editor.apply();
+                SystemUtil.setLanguageName(getBaseContext(),LanguageFragment.languageSelected);
                 onClickBackButton();
-
             }
         });
     }

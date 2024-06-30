@@ -15,9 +15,10 @@ import com.vtdglobal.liedetector.databinding.ItemLanguageBinding;
 import com.vtdglobal.liedetector.model.Language;
 
 import java.util.List;
+import java.util.Objects;
 
 public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.LanguageViewHolder> {
-    private int selectedPosition = -1;
+    private String selectedLanguage = "";
     private final List<Language> listLanguage;
     private final Context context;
     private boolean isSettingMode = false;
@@ -49,10 +50,12 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langua
         Typeface fontLanguageSetting = Typeface.createFromAsset(context.getAssets(), "font/druk_text_wide_medium_trial.otf");
         holder.itemLanguageBinding.imgLanguage.setImageResource(language.getImage());
         holder.itemLanguageBinding.tvNameLanguage.setText(language.getName());
-        if (isSettingMode)
+        if (isSettingMode){
             holder.itemLanguageBinding.tvNameLanguage.setTypeface(fontLanguageSetting);
+
+        }
         holder.itemLanguageBinding.layoutItemLanguage.setOnClickListener(view -> iOnClickLanguage.onClickLanguageListener(language));
-        if (position == selectedPosition) {
+        if (Objects.equals(language.getCode(), selectedLanguage)) {
             holder.itemLanguageBinding.tvNameLanguage.setTextColor(context.getResources().getColor(R.color.blueLight));
             holder.itemLanguageBinding.viewForeground.setVisibility(View.VISIBLE);
             holder.itemLanguageBinding.layoutItemLanguage.setBackgroundResource(R.drawable.bg_darklight_blue_border_corner_8);
@@ -78,8 +81,8 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langua
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void setSelectedPosition(int position) {
-        selectedPosition = position;
+    public void setSelectedPosition(String code) {
+        selectedLanguage = code;
         notifyDataSetChanged();
     }
 

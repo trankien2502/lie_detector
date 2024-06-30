@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.activity.SettingActivity;
 import com.vtdglobal.liedetector.databinding.FragmentSettingBinding;
+import com.vtdglobal.liedetector.util.SystemUtil;
 
 public class SettingFragment extends Fragment {
 
@@ -31,9 +32,7 @@ public class SettingFragment extends Fragment {
     }
 
     private void initUI() {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
-        String languageCurrent = sharedPreferences.getString("languageCurrent", String.valueOf(Context.MODE_PRIVATE));
-        mFragmentSettingBinding.tvLanguageCurrent.setText(languageCurrent);
+        mFragmentSettingBinding.tvLanguageCurrent.setText(SystemUtil.getLanguageName(requireContext()));
     }
 
     private void initListener() {

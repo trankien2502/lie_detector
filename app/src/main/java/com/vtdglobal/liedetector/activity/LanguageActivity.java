@@ -13,9 +13,12 @@ import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.adapter.LanguageAdapter;
 import com.vtdglobal.liedetector.databinding.ActivityLanguageBinding;
 import com.vtdglobal.liedetector.model.Language;
+import com.vtdglobal.liedetector.util.SystemUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class LanguageActivity extends BaseActivity {
     ActivityLanguageBinding mActivityLanguageBinding;
@@ -23,6 +26,7 @@ public class LanguageActivity extends BaseActivity {
     LanguageAdapter languageAdapter;
     boolean isChoose = false;
     private String languageSelected;
+    String codeLang;
 
 
     @Override
@@ -30,20 +34,22 @@ public class LanguageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mActivityLanguageBinding = ActivityLanguageBinding.inflate(getLayoutInflater());
         setContentView(mActivityLanguageBinding.getRoot());
+
         checkLanguage();
+        codeLang = Locale.getDefault().getLanguage();
         getListLanguage();
         initUI();
         initListener();
     }
 
     private void checkLanguage() {
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
-        boolean check = sharedPreferences.getBoolean("selectedLanguage", Boolean.parseBoolean(String.valueOf(Context.MODE_PRIVATE)));
-        if (check) {
-            Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
-            startActivity(intent);
-            finishAffinity();
-        }
+        if (Objects.equals(SystemUtil.getLanguageName(getBaseContext()), ""))
+            return;
+        Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
+        startActivity(intent);
+        finishAffinity();
+
+
     }
 
     private void initListener() {
@@ -51,11 +57,12 @@ public class LanguageActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (isChoose) {
-                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("selectedLanguage", true);
-                    editor.putString("languageCurrent", languageSelected);
-                    editor.apply();
+                    SystemUtil.saveLocale(getBaseContext(), codeLang);
+//                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPreferences.edit();
+//                    editor.putBoolean("selectedLanguage", true);
+//                    editor.putString("languageCurrent", languageSelected);
+//                    editor.apply();
                     Intent intent = new Intent(LanguageActivity.this, IntroActivity.class);
                     startActivity(intent);
                     finishAffinity();
@@ -75,8 +82,13 @@ public class LanguageActivity extends BaseActivity {
 
     private void onSelected(Language language) {
         isChoose = true;
-        languageAdapter.setSelectedPosition(language.getId());
+        codeLang = language.getCode();
+        SystemUtil.saveLocale(getBaseContext(), codeLang);
         languageSelected = language.getName();
+        SystemUtil.setLanguageName(getBaseContext(),languageSelected);
+        languageAdapter.setSelectedPosition(language.getCode());
+
+
     }
 
     private void getListLanguage() {

@@ -16,9 +16,11 @@ import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.adapter.LanguageAdapter;
 import com.vtdglobal.liedetector.databinding.FragmentLanguageBinding;
 import com.vtdglobal.liedetector.model.Language;
+import com.vtdglobal.liedetector.util.SystemUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class LanguageFragment extends Fragment {
@@ -27,11 +29,12 @@ public class LanguageFragment extends Fragment {
     List<Language> listLanguage;
     LanguageAdapter languageAdapter;
     public static String languageSelected;
+    String codeLang;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mFragmentLanguageBinding = FragmentLanguageBinding.inflate(inflater,container,false);
-
+        codeLang = Locale.getDefault().getLanguage();
         getListLanguage();
         //getLanguageCurrent();
         initUI();
@@ -46,16 +49,20 @@ public class LanguageFragment extends Fragment {
         languageAdapter = new LanguageAdapter(getContext(), listLanguage, this::onSelected);
         languageAdapter.setSettingMode(true);
         mFragmentLanguageBinding.rcvLanguage.setAdapter(languageAdapter);
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("languageData", Context.MODE_PRIVATE);
-        String languageCurrent = sharedPreferences.getString("languageCurrent", String.valueOf(Context.MODE_PRIVATE));
+
+        String languageCurrent = SystemUtil.getPreLanguage(requireContext());
         for (Language language : listLanguage){
-            if (languageCurrent.equals(language.getName())){
-                languageAdapter.setSelectedPosition(language.getId());
+            if (languageCurrent.equals(language.getCode())){
+                languageAdapter.setSelectedPosition(language.getCode());
             }
         }
     }
     private void onSelected(Language language) {
-        languageAdapter.setSelectedPosition(language.getId());
+        codeLang = language.getCode();
+        SystemUtil.saveLocale(requireContext(), codeLang);
+        languageSelected = language.getName();
+        SystemUtil.setLanguageName(requireContext(),languageSelected);
+        languageAdapter.setSelectedPosition(language.getCode());
         languageSelected = language.getName();
     }
 
@@ -74,7 +81,4 @@ public class LanguageFragment extends Fragment {
 
     }
 
-    public String getLanguageSelected() {
-        return languageSelected;
-    }
 }

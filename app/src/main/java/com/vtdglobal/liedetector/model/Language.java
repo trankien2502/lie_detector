@@ -1,14 +1,14 @@
 package com.vtdglobal.liedetector.model;
 
 public class Language {
-    public static final int ENGLISH = 0;
-    public static final int FRENCH = 1;
-    public static final int PORTUGUESE = 2;
-    public static final int GERMAN = 3;
-    public static final int SPANISH = 4;
-    public static final int HINDI = 5;
-    public static final int INDONESIA = 6;
-    public static final int CHINA = 7;
+    public static final String ENGLISH = "en";
+    public static final String FRENCH = "fr";
+    public static final String PORTUGUESE = "pt";
+    public static final String GERMAN = "de";
+    public static final String SPANISH = "es";
+    public static final String HINDI = "hi";
+    public static final String INDONESIA = "in";
+    public static final String CHINA = "zh";
 
     public static final String LANGUAGE_0 = "English";
     public static final String LANGUAGE_1 = "French";
@@ -19,25 +19,34 @@ public class Language {
     public static final String LANGUAGE_6 = "Indonesia";
     public static final String LANGUAGE_7 = "China";
 
-    private int id;
+    private String code;
     private String name;
     private int image;
     private boolean isActive;
 
-    public Language(int id, String name, int image) {
-        this.id = id;
+    public Language(String code, String name, int image) {
+        this.code = code;
         this.name = name;
         this.image = image;
     }
 
-    public int getId() {
-        return id;
+    public Language(String code, String name, int image, boolean isActive) {
+        this.code = code;
+        this.name = name;
+        this.image = image;
+        this.isActive = isActive;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Language() {
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
     public String getName() {
         return name;
     }
