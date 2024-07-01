@@ -1,2 +1,2 @@
-rootProject.name = "BaseProduct"
+rootProject.name = "LieDetector"
 include ':app'

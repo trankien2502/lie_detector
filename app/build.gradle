@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true // ADD THIS LINE
         def formattedDate = new Date().format('MMM.dd.yyyy')
-        archivesBaseName = "BaseProduct_v${versionName}(${versionCode})_${formattedDate}"
+        archivesBaseName = "Lie_Detector_Test_Prank_v${versionName}(${versionCode})_${formattedDate}"
     }
 
     bundle {
