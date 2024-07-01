@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.baseproduct'
+    namespace 'com.liedetector.test.prank.liescanner.truthtest'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.baseproduct"
+        applicationId "com.liedetector.test.prank.liescanner.truthtest"
         minSdk 21
         targetSdk 33
         versionCode 100
