@@ -1,10 +1,7 @@
 package com.liedetector.test.prank.liescanner.truthtest.ui.language;
 
-import android.view.View;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityLanguageStartBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.intro.IntroActivity;
@@ -31,26 +28,27 @@ public class LanguageStartActivity extends BaseActivity<ActivityLanguageStartBin
         initData();
         codeLang = Locale.getDefault().getLanguage();
 
-        binding.viewTop.ivBack.setVisibility(View.INVISIBLE);
-        binding.viewTop.tvToolBar.setText(getString(R.string.language));
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         LanguageStartAdapter languageStartAdapter = new LanguageStartAdapter(listLanguage, code -> codeLang = code, this);
 
 
         languageStartAdapter.setCheck(SystemUtil.getPreLanguage(getBaseContext()));
 
-        binding.rcvLangStart.setLayoutManager(linearLayoutManager);
-        binding.rcvLangStart.setAdapter(languageStartAdapter);
+        binding.rcvLanguage.setLayoutManager(linearLayoutManager);
+        binding.rcvLanguage.setAdapter(languageStartAdapter);
     }
 
     @Override
     public void bindView() {
-        binding.viewTop.ivCheck.setOnClickListener(view -> {
+        binding.imgTick.setOnClickListener(view -> {
             SystemUtil.saveLocale(getBaseContext(), codeLang);
-            startNextActivity(IntroActivity.class, null);
-            finishAffinity();
+            startNextActivity();
         });
+    }
+
+    private void startNextActivity() {
+        startNextActivity(IntroActivity.class, null);
+        finishAffinity();
     }
 
     private void initData() {

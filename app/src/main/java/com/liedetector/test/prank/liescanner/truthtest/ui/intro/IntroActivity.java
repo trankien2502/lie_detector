@@ -1,16 +1,19 @@
 package com.liedetector.test.prank.liescanner.truthtest.ui.intro;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityIntroBinding;
-import com.liedetector.test.prank.liescanner.truthtest.ui.home.HomeActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity;
-import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
+import com.liedetector.test.prank.liescanner.truthtest.util.PermissionManager;
 
 public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
     ImageView[] dots = null;
@@ -48,9 +51,14 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
 
     @Override
     public void bindView() {
-        binding.btnNext.setOnClickListener(view -> binding.viewPager2.setCurrentItem(binding.viewPager2.getCurrentItem() + 1));
+        binding.btnNext.setOnClickListener(view -> {
+            if (binding.viewPager2.getCurrentItem() < 2) {
+                binding.viewPager2.setCurrentItem(binding.viewPager2.getCurrentItem() + 1);
+            } else {
+                startNextActivity();
+            }
+        });
 
-        binding.btnStart.setOnClickListener(view -> goToNextScreen());
     }
 
     private void changeContentInit(int position) {
@@ -63,21 +71,20 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
             case 0:
             case 1:
                 binding.btnNext.setVisibility(View.VISIBLE);
-                binding.btnStart.setVisibility(View.GONE);
                 break;
             case 2:
                 binding.btnNext.setVisibility(View.GONE);
-                binding.btnStart.setVisibility(View.VISIBLE);
                 break;
         }
     }
 
-    public void goToNextScreen() {
-        if (SharePrefUtils.getCountOpenApp(this) > 1) {
-            startNextActivity(HomeActivity.class, null);
+    public void startNextActivity() {
+        if (PermissionManager.checkRecordPermission(this) && PermissionManager.checkCameraPermission(this)) {
+            startNextActivity(MainActivity.class, null);
         } else {
             startNextActivity(PermissionActivity.class, null);
         }
+        finish();
     }
 
     @Override

@@ -20,8 +20,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
         SharePrefUtils.increaseCountOpenApp(this);
 
         new Handler().postDelayed(() -> {
-            startNextActivity(LanguageStartActivity.class, null);
-            finishAffinity();
+            startNextActivity();
         }, 3000);
 
     }
@@ -29,6 +28,11 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
     @Override
     public void bindView() {
 
+    }
+
+    private void startNextActivity() {
+        startNextActivity(LanguageStartActivity.class, null);
+        finishAffinity();
     }
 
     @Override

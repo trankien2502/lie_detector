@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.liedetector.test.prank.liescanner.truthtest'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.liedetector.test.prank.liescanner.truthtest"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 100
         versionName "1.0.0"
 
@@ -63,6 +63,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:3.0.2'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -76,6 +77,13 @@ dependencies {
     implementation 'com.google.android.play:review-ktx:2.0.1'
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+
+    implementation "androidx.camera:camera-core:1.2.0-beta01"
+    implementation "androidx.camera:camera-camera2:1.2.0-beta01"
+    implementation "androidx.camera:camera-lifecycle:1.2.0-beta01"
+    implementation "androidx.camera:camera-view:1.2.0-beta01"
+    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.23"
+    implementation "me.relex:circleindicator:2.1.6"
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:30.1.0')

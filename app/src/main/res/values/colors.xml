@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_FFBB86FC">#FFBB86FC</color>
-    <color name="color_FF6200EE">#FF6200EE</color>
-    <color name="color_FF3700B3">#FF3700B3</color>
-    <color name="color_FF03DAC5">#FF03DAC5</color>
-    <color name="color_FF018786">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="color_D82D25">#D82D25</color>
-    <color name="color_3A5EA3">#3A5EA3</color>
+    <color name="bubbleBlue">#25FDFF</color>
+    <color name="blueLight">#02B2B4</color>
+    <color name="gray">#b3acaf</color>
+
+    <color name="red">#F44336</color>
+    <color name="grayLight">#EBEFF1</color>
+    <color name="dark">#1e1e1e</color>
+    <color name="darkHeavy">#000000</color>
+    <color name="darkLight">#2e2e2e</color>
+    <color name="none">#00000000</color>
+    <color name="liar">#FF3232</color>
+    <color name="truth">#01e98a</color>
+    <color name="grayDefault">#969696</color>
+    <color name="home">#001e3d</color>
+    <color name="splash0">#15202d</color>
+    <color name="splash">#2611da49</color>
+    <color name="splash2">#60000000</color>
+
+
+
+
+    <color name="switch_thumb_checked">#03D8DA</color>
+    <color name="switch_thumb_unchecked">#767676</color>
+    <color name="switch_track_checked">#80e2e3</color>
+    <color name="switch_track_unchecked">#adadad</color>
+
 </resources>

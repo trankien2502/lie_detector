@@ -50,4 +50,20 @@ public class SystemUtil {
             editor.apply();
         }
     }
+
+    public static String getLanguageName(Context mContext) {
+        SharedPreferences preferences = mContext.getSharedPreferences("data", Context.MODE_PRIVATE);
+        return preferences.getString("KEY_LANGUAGE_NAME","");
+    }
+
+    public static void setLanguageName(Context context, String language) {
+        if (language == null || language.equals("")) {
+        } else {
+            SharedPreferences preferences = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("KEY_LANGUAGE_NAME", language);
+            editor.apply();
+        }
+    }
+
 }

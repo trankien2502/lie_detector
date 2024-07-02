@@ -5,9 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityLanguageBinding;
-import com.liedetector.test.prank.liescanner.truthtest.ui.home.HomeActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.adapter.LanguageAdapter;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.model.LanguageModel;
+import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class LanguageActivity extends BaseActivity<ActivityLanguageBinding> {
         initData();
         codeLang = Locale.getDefault().getLanguage();
 
-        binding.viewTop.tvToolBar.setText(getString(R.string.language));
+        binding.viewTop.tvTitle.setText(getString(R.string.language));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         LanguageAdapter languageAdapter = new LanguageAdapter(listLanguage, code -> codeLang = code, this);
@@ -37,19 +37,19 @@ public class LanguageActivity extends BaseActivity<ActivityLanguageBinding> {
 
         languageAdapter.setCheck(SystemUtil.getPreLanguage(getBaseContext()));
 
-        binding.rcvLang.setLayoutManager(linearLayoutManager);
-        binding.rcvLang.setAdapter(languageAdapter);
+        binding.rcvLanguage.setLayoutManager(linearLayoutManager);
+        binding.rcvLanguage.setAdapter(languageAdapter);
     }
 
     @Override
     public void bindView() {
-        binding.viewTop.ivCheck.setOnClickListener(view -> {
+        binding.viewTop.imgTick.setOnClickListener(view -> {
             SystemUtil.saveLocale(getBaseContext(), codeLang);
-            startNextActivity(HomeActivity.class, null);
+            startNextActivity(MainActivity.class, null);
             finishAffinity();
         });
 
-        binding.viewTop.ivBack.setOnClickListener(v -> onBackPressed());
+        binding.viewTop.imgLeft.setOnClickListener(v -> onBackPressed());
     }
 
     private void initData() {

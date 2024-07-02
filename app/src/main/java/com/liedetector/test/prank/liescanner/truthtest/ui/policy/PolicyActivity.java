@@ -3,7 +3,6 @@ package com.liedetector.test.prank.liescanner.truthtest.ui.policy;
 import android.annotation.SuppressLint;
 import android.view.View;
 
-import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityPolicyBinding;
@@ -20,9 +19,7 @@ public class PolicyActivity extends BaseActivity<ActivityPolicyBinding> {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void initView() {
-        binding.viewTop.tvToolBar.setText(getString(R.string.privacy_policy));
-
-        binding.viewTop.ivCheck.setVisibility(View.INVISIBLE);
+        binding.viewTop.imgTick.setVisibility(View.INVISIBLE);
 
         if (!linkPolicy.isEmpty() && IsNetWork.haveNetworkConnection(this)) {
             binding.webView.setVisibility(View.VISIBLE);
@@ -41,7 +38,7 @@ public class PolicyActivity extends BaseActivity<ActivityPolicyBinding> {
 
     @Override
     public void bindView() {
-        binding.viewTop.ivBack.setOnClickListener(v -> onBackPressed());
+        binding.viewTop.imgLeft.setOnClickListener(v -> onBackPressed());
     }
 
 }
