@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/splash0"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash0">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="99dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="99dp">
+
         <LinearLayout
             android:id="@+id/layout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:orientation="horizontal">
+
             <RelativeLayout
                 android:layout_width="140dp"
-                android:layout_marginEnd="15dp"
-                android:layout_height="90dp">
+                android:layout_height="90dp"
+                android:layout_marginEnd="15dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_splash_true"/>
+                    android:src="@drawable/img_splash_true" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="4dp"
                     android:layout_toEndOf="@+id/imageView3"
                     android:fontFamily="@font/druk_text_wide_medium_trial"
                     android:text="@string/truth"
-                    android:layout_marginStart="4dp"
                     android:textColor="#00ef8d"
                     android:textSize="14sp" />
 
@@ -41,81 +45,91 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="18dp"
                     android:src="@drawable/img_splash_light_true" />
+
                 <ImageView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:scaleType="fitCenter"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/img_splash_eclipse_truth"/>
+                    android:src="@drawable/img_splash_eclipse_truth" />
 
 
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="140dp"
                 android:layout_height="90dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_splash_lie"/>
+                    android:src="@drawable/img_splash_lie" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/lie"
                     android:layout_centerVertical="true"
-                    android:layout_toStartOf="@+id/liee"
-                    android:textColor="#FF3232"
                     android:layout_marginEnd="20dp"
-                    android:textSize="21sp"
-                    android:fontFamily="@font/druk_text_wide_medium_trial"/>
+                    android:layout_toStartOf="@+id/liee"
+                    android:fontFamily="@font/druk_text_wide_medium_trial"
+                    android:text="@string/lie"
+                    android:textColor="#FF3232"
+                    android:textSize="21sp" />
 
                 <ImageView
                     android:id="@+id/liee"
                     android:layout_width="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="15dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_splash_light_lie"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/img_splash_light_lie" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/img_splash_eclipse_lie"/>
+                    android:src="@drawable/img_splash_eclipse_lie" />
 
 
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_marginTop="276dp"
         android:layout_gravity="start"
+        android:layout_marginTop="276dp"
+        android:adjustViewBounds="true"
         android:src="@drawable/img_splash_wave" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:layout_marginTop="182dp"
         android:layout_gravity="end"
-        android:src="@drawable/img_splash_call"
-        android:contentDescription="TODO" />
+        android:layout_marginTop="182dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="TODO"
+        android:src="@drawable/img_splash_call" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/todo"
         android:scaleType="fitXY"
-        android:src="@drawable/img_splash_light1"
-        android:contentDescription="@string/todo" />
+        android:src="@drawable/img_splash_light1" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/splash"/>
+        android:background="@color/splash" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/splash2"/>
+        android:background="@color/splash2" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -173,9 +187,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="85dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:layout_marginBottom="85dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -199,7 +213,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </FrameLayout>

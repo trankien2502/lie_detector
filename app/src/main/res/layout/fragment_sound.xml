@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.SoundFragment">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/layout_sound_screen_scanner"
@@ -123,8 +121,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="45dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/dark_dimension"
                     android:padding="10dp"
                     android:text="@string/the_liar"
@@ -159,15 +157,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:clickable="true"
-            android:visibility="visible"
-            android:focusable="true">
+            android:focusable="true"
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/img_sound_press_border"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
                 android:adjustViewBounds="true"
+                android:scaleType="fitXY"
                 android:src="@drawable/img_scanner_press_border_default" />
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -4,28 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/darkHeavy"
-    android:padding="15dp"
-
-    tools:context=".activity.LanguageActivity">
+    android:padding="15dp">
 
     <TextView
         android:id="@+id/tv_per"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_margin="15dp"
         android:fontFamily="@font/druk_text_wide_medium_trial"
         android:text="@string/permission"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:textColor="@color/white"
         android:textSize="22sp" />
 
     <TextView
         android:id="@+id/tv_per_detail"
-        android:layout_below="@+id/tv_per"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_per"
         android:layout_marginTop="25dp"
         android:fontFamily="@font/urbanist_medium"
         android:text="@string/permission_text"
@@ -35,9 +33,9 @@
 
     <RelativeLayout
         android:id="@+id/layout_mic_per"
-        android:layout_below="@+id/tv_per_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_per_detail"
         android:layout_marginTop="15dp"
         android:background="@drawable/bg_darklight_corner_8"
         android:padding="10dp">
@@ -70,13 +68,12 @@
 
     <RelativeLayout
         android:id="@+id/layout_cam_per"
-        android:layout_below="@+id/layout_mic_per"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_mic_per"
         android:layout_marginTop="15dp"
         android:background="@drawable/bg_darklight_corner_8"
-        android:padding="10dp"
-        >
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -99,10 +96,11 @@
             android:layout_centerVertical="true"
             android:thumbTint="@color/switch_thumb"
             android:trackTint="@color/switch_track"
-            tools:targetApi="m"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            tools:targetApi="m" />
 
     </RelativeLayout>
+
     <TextView
         android:id="@+id/btn_continue"
         android:layout_width="wrap_content"

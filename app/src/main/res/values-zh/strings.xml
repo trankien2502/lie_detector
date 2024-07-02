@@ -124,4 +124,6 @@
     <string name="todo">待办事项</string>
     <string name="start1">开始</string>
     <string name="please_select_language">请选择语言！</string>
+    <string name="stop">停止</string>
+
 </resources>

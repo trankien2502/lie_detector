@@ -134,5 +134,6 @@
     <string name="todo">TODO</string>
     <string name="start1">Start</string>
     <string name="please_select_language">Please select language!</string>
+    <string name="stop">Stop</string>
 
 </resources>

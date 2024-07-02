@@ -124,4 +124,6 @@
     <string name="todo">PENDÊNCIA</string>
     <string name="start1">Começar</string>
     <string name="please_select_language">Selecione o idioma!</string>
+    <string name="stop">Parar</string>
+
 </resources>

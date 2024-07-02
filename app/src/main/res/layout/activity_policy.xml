@@ -44,7 +44,7 @@
             android:textSize="@dimen/_12ssp"
             android:includeFontPadding="false"
             android:text="@string/no_internet_connection"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

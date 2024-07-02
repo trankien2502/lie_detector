@@ -46,7 +46,7 @@
             android:gravity="center"
             android:padding="10dp"
             android:fontFamily="@font/urbanist_medium"
-            android:text="Stop"
+            android:text="@string/stop"
             android:textColor="@color/white"
             android:textSize="20sp" />
 

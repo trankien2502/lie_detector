@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.EyeFragment">
+    android:layout_height="match_parent">
+
     <FrameLayout
         android:id="@+id/layout_eye_screen_scanner"
         android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:id="@+id/img_eye_screen_scanner"
@@ -94,8 +93,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="45dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/dark_dimension"
                     android:padding="10dp"
                     android:text="@string/the_liar"
@@ -112,6 +111,7 @@
             android:src="@drawable/img_scanner_result_background_light_truth"
             android:visibility="gone" />
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/layout_eye_scanning"
         android:layout_width="match_parent"
@@ -178,6 +178,7 @@
             </FrameLayout>
         </LinearLayout>
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/click"
         android:layout_width="match_parent"
@@ -197,8 +198,8 @@
                 android:id="@+id/img_eye_press_border"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
                 android:adjustViewBounds="true"
+                android:scaleType="fitXY"
                 android:src="@drawable/img_scanner_press_border_default" />
 
             <androidx.constraintlayout.widget.ConstraintLayout

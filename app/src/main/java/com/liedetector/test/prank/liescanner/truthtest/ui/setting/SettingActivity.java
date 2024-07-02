@@ -108,7 +108,7 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
         Intent intentShare = new Intent(Intent.ACTION_SEND);
         intentShare.setType("text/plain");
         intentShare.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        intentShare.putExtra(Intent.EXTRA_TEXT, "Download application :https://play.google.com/store/apps/details?id=${activity.packageName}");
+        intentShare.putExtra(Intent.EXTRA_TEXT, "Download application :" + "https://play.google.com/store/apps/details?id=" + getPackageName());
         startActivity(Intent.createChooser(intentShare, "Share with"));
 
     }

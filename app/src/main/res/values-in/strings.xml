@@ -124,4 +124,6 @@
     <string name="todo">MELAKUKAN</string>
     <string name="start1">Awal</string>
     <string name="please_select_language">Silakan pilih bahasa!</string>
+    <string name="stop">Berhenti</string>
+
 </resources>

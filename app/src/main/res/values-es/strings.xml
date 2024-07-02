@@ -124,4 +124,6 @@
     <string name="todo">HACER</string>
     <string name="start1">Comenzar</string>
     <string name="please_select_language">¡Seleccione el idioma!</string>
+    <string name="stop">Detener</string>
+
 </resources>
