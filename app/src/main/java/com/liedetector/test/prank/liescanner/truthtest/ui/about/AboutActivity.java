@@ -2,6 +2,7 @@ package com.liedetector.test.prank.liescanner.truthtest.ui.about;
 
 import android.view.View;
 
+import com.liedetector.test.prank.liescanner.truthtest.BuildConfig;
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityAboutBinding;
@@ -18,7 +19,7 @@ public class AboutActivity extends BaseActivity<ActivityAboutBinding> {
         binding.headerSetting.imgTick.setVisibility(View.INVISIBLE);
         binding.headerSetting.tvTitle.setText(getString(R.string.about));
 
-        String version = getString(R.string.version) + " 1.0.0"/* + BuildConfig.VERSION_CODE*/;
+        String version = getString(R.string.version) + " " + BuildConfig.VERSION_NAME;
         binding.tvVersion.setText(version);
     }
 
