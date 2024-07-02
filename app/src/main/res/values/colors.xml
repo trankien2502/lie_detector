@@ -27,5 +27,6 @@
     <color name="switch_thumb_unchecked">#767676</color>
     <color name="switch_track_checked">#80e2e3</color>
     <color name="switch_track_unchecked">#adadad</color>
+    <color name="color_02B2B4">#02B2B4</color>
 
 </resources>

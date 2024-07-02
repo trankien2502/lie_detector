@@ -18,6 +18,7 @@ public class LanguageActivity extends BaseActivity<ActivityLanguageBinding> {
 
     List<LanguageModel> listLanguage;
     String codeLang;
+    String nameLang;
 
     @Override
     public ActivityLanguageBinding getBinding() {
@@ -32,7 +33,10 @@ public class LanguageActivity extends BaseActivity<ActivityLanguageBinding> {
         binding.viewTop.tvTitle.setText(getString(R.string.language));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        LanguageAdapter languageAdapter = new LanguageAdapter(listLanguage, code -> codeLang = code, this);
+        LanguageAdapter languageAdapter = new LanguageAdapter(listLanguage, languageModel -> {
+            codeLang = languageModel.getCode();
+            nameLang = languageModel.getName();
+        }, this);
 
 
         languageAdapter.setCheck(SystemUtil.getPreLanguage(getBaseContext()));
@@ -45,6 +49,7 @@ public class LanguageActivity extends BaseActivity<ActivityLanguageBinding> {
     public void bindView() {
         binding.viewTop.imgTick.setOnClickListener(view -> {
             SystemUtil.saveLocale(getBaseContext(), codeLang);
+            SystemUtil.setLanguageName(getBaseContext(),nameLang);
             startNextActivity(MainActivity.class, null);
             finishAffinity();
         });

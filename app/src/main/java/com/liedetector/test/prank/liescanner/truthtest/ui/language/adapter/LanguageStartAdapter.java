@@ -1,16 +1,15 @@
 package com.liedetector.test.prank.liescanner.truthtest.ui.language.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +37,6 @@ public class LanguageStartAdapter extends RecyclerView.Adapter<LanguageStartAdap
         return new LanguageViewHolder(view);
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onBindViewHolder(@NonNull LanguageViewHolder holder, int position) {
         LanguageModel languageModel = languageModelList.get(position);
@@ -46,15 +44,14 @@ public class LanguageStartAdapter extends RecyclerView.Adapter<LanguageStartAdap
             return;
         }
 
-        holder.rdbCheck.setVisibility(View.GONE);
         holder.tvLang.setText(languageModel.getName());
 
         if (languageModel.getActive()) {
             holder.layoutItem.setBackgroundResource(R.drawable.bg_lang_item_s);
-            holder.tvLang.setTextColor(context.getColor(R.color.color_D82D25));
+            holder.tvLang.setTextColor(ContextCompat.getColor(context, R.color.color_02B2B4));
         } else {
             holder.layoutItem.setBackgroundResource(R.drawable.bg_lang_item_sn);
-            holder.tvLang.setTextColor(context.getColor(R.color.color_3A5EA3));
+            holder.tvLang.setTextColor(ContextCompat.getColor(context, R.color.white));
         }
 
         switch (languageModel.getCode()) {
@@ -86,7 +83,7 @@ public class LanguageStartAdapter extends RecyclerView.Adapter<LanguageStartAdap
 
         holder.layoutItem.setOnClickListener(v -> {
             setCheck(languageModel.getCode());
-            iClickItemLanguage.onClickItemLanguage(languageModel.getCode());
+            iClickItemLanguage.onClickItemLanguage(languageModel);
             notifyDataSetChanged();
         });
 
@@ -102,14 +99,12 @@ public class LanguageStartAdapter extends RecyclerView.Adapter<LanguageStartAdap
     }
 
     public static class LanguageViewHolder extends RecyclerView.ViewHolder {
-        private final RadioButton rdbCheck;
         private final TextView tvLang;
         private final LinearLayout layoutItem;
         private final ImageView icLang;
 
         public LanguageViewHolder(@NonNull View itemView) {
             super(itemView);
-            rdbCheck = itemView.findViewById(R.id.rdbCheck);
             icLang = itemView.findViewById(R.id.icLang);
             tvLang = itemView.findViewById(R.id.tvLang);
             layoutItem = itemView.findViewById(R.id.layoutItem);

@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -46,8 +46,14 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langug
             return;
         }
         holder.tvLang.setText(languageModel.getName());
-        holder.rdbCheck.setChecked(languageModel.getActive());
-        holder.rdbCheck.setClickable(false);
+
+        if (languageModel.getActive()) {
+            holder.layoutItem.setBackgroundResource(R.drawable.bg_lang_item_s);
+            holder.tvLang.setTextColor(ContextCompat.getColor(context, R.color.color_02B2B4));
+        } else {
+            holder.layoutItem.setBackgroundResource(R.drawable.bg_lang_item_sn);
+            holder.tvLang.setTextColor(ContextCompat.getColor(context, R.color.white));
+        }
 
         switch (languageModel.getCode()) {
             case "fr":
@@ -78,7 +84,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langug
 
         holder.layoutItem.setOnClickListener(v -> {
             setCheck(languageModel.getCode());
-            iClickLanguage.onClickItemLanguage(languageModel.getCode());
+            iClickLanguage.onClickItemLanguage(languageModel);
             notifyDataSetChanged();
         });
 
@@ -94,14 +100,12 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langug
     }
 
     public static class LangugeViewHolder extends RecyclerView.ViewHolder {
-        private final RadioButton rdbCheck;
         private final TextView tvLang;
         private final LinearLayout layoutItem;
         private final ImageView icLang;
 
         public LangugeViewHolder(@NonNull View itemView) {
             super(itemView);
-            rdbCheck = itemView.findViewById(R.id.rdbCheck);
             icLang = itemView.findViewById(R.id.icLang);
             tvLang = itemView.findViewById(R.id.tvLang);
             layoutItem = itemView.findViewById(R.id.layoutItem);
