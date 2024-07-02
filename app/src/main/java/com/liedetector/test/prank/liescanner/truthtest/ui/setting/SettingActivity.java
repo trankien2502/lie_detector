@@ -20,12 +20,6 @@ import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
-    public static final int TYPE_SETTING = 1;
-    public static final int TYPE_LANGUAGE = 2;
-    public static final int TYPE_RATE = 3;
-    public static final int TYPE_SHARE = 4;
-    public static final int TYPE_ABOUT = 5;
-    public static int mType = TYPE_SETTING;
 
     @Override
     public ActivitySettingBinding getBinding() {
@@ -35,6 +29,7 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
     @Override
     public void initView() {
         binding.headerSetting.tvTitle.setText(getString(R.string.setting));
+        binding.headerSetting.imgTick.setVisibility(View.INVISIBLE);
 
         binding.tvLanguageCurrent.setText(SystemUtil.getLanguageName(this));
 

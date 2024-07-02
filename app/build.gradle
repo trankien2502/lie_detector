@@ -6,17 +6,17 @@ plugins {
 
 android {
     namespace 'com.liedetector.test.prank.liescanner.truthtest'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.liedetector.test.prank.liescanner.truthtest"
         minSdk 21
-        targetSdk 34
-        versionCode 100
-        versionName "1.0.0"
+        targetSdk 33
+        versionCode 101
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled true // ADD THIS LINE
+        multiDexEnabled true
         def formattedDate = new Date().format('MMM.dd.yyyy')
         archivesBaseName = "Lie_Detector_Test_Prank_v${versionName}(${versionCode})_${formattedDate}"
     }
@@ -83,7 +83,7 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:1.2.0-beta01"
     implementation "androidx.camera:camera-view:1.2.0-beta01"
     implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.23"
-    implementation "me.relex:circleindicator:2.1.6"
+    implementation 'com.google.guava:guava:29.0-android'
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:30.1.0')

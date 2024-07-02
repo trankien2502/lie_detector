@@ -66,16 +66,6 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
             if (i == position) dots[i].setImageResource(R.drawable.ic_intro_s);
             else dots[i].setImageResource(R.drawable.ic_intro_sn);
         }
-
-        switch (position) {
-            case 0:
-            case 1:
-                binding.btnNext.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                binding.btnNext.setVisibility(View.GONE);
-                break;
-        }
     }
 
     public void startNextActivity() {

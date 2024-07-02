@@ -17,12 +17,13 @@
         android:src="@drawable/img_logo_about" />
 
     <TextView
+        android:id="@+id/tv_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/druk_text_wide_medium_trial"
-        android:text="@string/version_1_0_0"
+        android:text="@string/version"
         android:textColor="@color/white"
         android:textSize="13sp" />
 

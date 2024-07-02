@@ -1,21 +1,8 @@
 package com.liedetector.test.prank.liescanner.truthtest.ui.scanner;
 
 import static android.graphics.Color.TRANSPARENT;
-
-
 import static com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity.CAMERA_PERMISSION_REQUEST_CODE;
 import static com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity.MICRO_PERMISSION_REQUEST_CODE;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.Preview;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -36,7 +23,17 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.ListenableFuture;
+import androidx.annotation.NonNull;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.Preview;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
+
+import com.google.common.util.concurrent.ListenableFuture;
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity2;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityScannerBinding;
