@@ -10,7 +10,7 @@ import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityPolic
 
 public class PolicyActivity extends BaseActivity<ActivityPolicyBinding> {
 
-    String linkPolicy = "";
+    String linkPolicy = "https://firebasestorage.googleapis.com/v0/b/lie-detector-test---prank.appspot.com/o/Privacy%20Policy.html?alt=media&token=cfb30b66-0779-4f0a-8d7f-d7f27a4a6bdb";
 
     @Override
     public ActivityPolicyBinding getBinding() {

@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class SharePrefUtils {
-    public static String email = "abcd@gmail.com";
-    public static String subject = "Base Product";
+    public static String email = "admobah21@gmail.com";
+    public static String subject = "Lie Detector Test - Prank";
     private static SharedPreferences mSharePref;
 
     public static void init(Context context) {

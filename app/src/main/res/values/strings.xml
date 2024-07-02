@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Lie Detector</string>
+    <string name="app_name" translatable="false">Lie Detector Test - Prank</string>
 
     <string name="english" translatable="false">English</string>
     <string name="french" translatable="false">French</string>
