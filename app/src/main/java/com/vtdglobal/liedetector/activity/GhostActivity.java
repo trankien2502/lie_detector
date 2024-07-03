@@ -194,7 +194,6 @@ public class GhostActivity extends BaseActivity {
                     if (timeToSee > 0) {
                         ghostHandler.postDelayed(this, 1000);
                     } else {
-
                         ghostAppear();
                     }
                 } else {
