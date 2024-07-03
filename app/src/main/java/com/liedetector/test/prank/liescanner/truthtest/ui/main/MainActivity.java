@@ -20,9 +20,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @Override
     public void bindView() {
-        binding.layoutScanner.setOnClickListener(view -> {
-            startNextActivity(ScannerActivity.class, null);
-        });
+        binding.layoutScanner.setOnClickListener(view -> startNextActivity(ScannerActivity.class, null));
 
         binding.layoutSounds.setOnClickListener(view -> startNextActivity(SoundsActivity.class, null));
 

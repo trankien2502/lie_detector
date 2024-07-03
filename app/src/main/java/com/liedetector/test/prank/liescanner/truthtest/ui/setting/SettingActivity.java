@@ -65,7 +65,6 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
                 Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
                 sendIntent.setData(uri);
                 try {
-                    finishAffinity();
                     startActivity(Intent.createChooser(sendIntent, getString(R.string.Send_Email)));
                     SharePrefUtils.forceRated(SettingActivity.this);
                 } catch (android.content.ActivityNotFoundException ex) {
@@ -86,7 +85,6 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
                             binding.lineRate.setVisibility(View.GONE);
                             SharePrefUtils.forceRated(SettingActivity.this);
                             ratingDialog.dismiss();
-                            finishAffinity();
                         });
                     } else {
                         ratingDialog.dismiss();
@@ -97,7 +95,6 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
             @Override
             public void later() {
                 ratingDialog.dismiss();
-                finishAffinity();
             }
 
         });
