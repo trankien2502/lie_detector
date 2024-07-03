@@ -1,6 +1,7 @@
 package com.liedetector.test.prank.liescanner.truthtest.ui.funny;
 
 import android.media.MediaPlayer;
+import android.media.metrics.Event;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -10,6 +11,7 @@ import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityFunny
 import com.liedetector.test.prank.liescanner.truthtest.ui.funny.adapter.SoundAdapter;
 import com.liedetector.test.prank.liescanner.truthtest.ui.setting.SettingActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.sound.model.Sound;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class FunnyActivity extends BaseActivity<ActivityFunnyBinding> {
     @Override
     public void initView() {
         binding.header.tvTitle.setText(getString(R.string.funny));
-
+        EventTracking.logEvent(this,"funny_view");
         getListSoundFunny();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         binding.rcvSoundFunny.setLayoutManager(gridLayoutManager);
@@ -41,7 +43,10 @@ public class FunnyActivity extends BaseActivity<ActivityFunnyBinding> {
     public void bindView() {
         binding.header.imgLeft.setOnClickListener(view -> onBackPressed());
 
-        binding.header.imgSetting.setOnClickListener(view -> startNextActivity(SettingActivity.class, null));
+        binding.header.imgSetting.setOnClickListener(view -> {
+            startNextActivity(SettingActivity.class, null);
+            EventTracking.logEvent(this,"scanner_setting_click");
+        });
 
 
     }
@@ -49,6 +54,35 @@ public class FunnyActivity extends BaseActivity<ActivityFunnyBinding> {
     private void onClickSoundFunny(Sound sound) {
         if (mediaPlayer != null) {
             mediaPlayer.release();
+        }
+        switch (sound.getId()){
+            case Sound.SOUND_ID_0:
+                EventTracking.logEvent(this,"funny_sound_click","","air_horn");
+                break;
+            case Sound.SOUND_ID_1:
+                EventTracking.logEvent(this,"funny_sound_click","","laugh");
+                break;
+            case Sound.SOUND_ID_2:
+                EventTracking.logEvent(this,"funny_sound_click","","claps");
+                break;
+            case Sound.SOUND_ID_3:
+                EventTracking.logEvent(this,"funny_sound_click","","whistle");
+                break;
+            case Sound.SOUND_ID_4:
+                EventTracking.logEvent(this,"funny_sound_click","","fart");
+                break;
+            case Sound.SOUND_ID_5:
+                EventTracking.logEvent(this,"funny_sound_click","","punch");
+                break;
+            case Sound.SOUND_ID_6:
+                EventTracking.logEvent(this,"funny_sound_click","","OMG");
+                break;
+            case Sound.SOUND_ID_7:
+                EventTracking.logEvent(this,"funny_sound_click","","police");
+                break;
+            case Sound.SOUND_ID_8:
+                EventTracking.logEvent(this,"funny_sound_click","","remote");
+                break;
         }
         mediaPlayer = MediaPlayer.create(this, sound.getSound());
         mediaPlayer.start();

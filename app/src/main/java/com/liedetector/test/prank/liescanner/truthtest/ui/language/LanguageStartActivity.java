@@ -7,6 +7,7 @@ import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityLangu
 import com.liedetector.test.prank.liescanner.truthtest.ui.intro.IntroActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.adapter.LanguageStartAdapter;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.model.LanguageModel;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class LanguageStartActivity extends BaseActivity<ActivityLanguageStartBin
 
         binding.rcvLanguage.setLayoutManager(linearLayoutManager);
         binding.rcvLanguage.setAdapter(languageStartAdapter);
+        EventTracking.logEvent(this,"language_fo_open");
     }
 
     @Override
@@ -47,6 +49,7 @@ public class LanguageStartActivity extends BaseActivity<ActivityLanguageStartBin
         binding.imgTick.setOnClickListener(view -> {
             SystemUtil.saveLocale(getBaseContext(), codeLang);
             SystemUtil.setLanguageName(getBaseContext(),nameLang);
+            EventTracking.logEvent(this,"language_fo_save_click");
             startNextActivity();
         });
     }

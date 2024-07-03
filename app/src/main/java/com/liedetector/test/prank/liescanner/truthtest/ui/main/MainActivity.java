@@ -5,6 +5,7 @@ import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityMainB
 import com.liedetector.test.prank.liescanner.truthtest.dialog.exit.ExitAppDialog;
 import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.ScannerActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.sound.SoundsActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
@@ -15,14 +16,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @Override
     public void initView() {
-
+        EventTracking.logEvent(this,"home_view");
     }
 
     @Override
     public void bindView() {
-        binding.layoutScanner.setOnClickListener(view -> startNextActivity(ScannerActivity.class, null));
+        binding.layoutScanner.setOnClickListener(view -> {
+            startNextActivity(ScannerActivity.class, null);
+            EventTracking.logEvent(this,"home_scanner_click");
+        });
 
-        binding.layoutSounds.setOnClickListener(view -> startNextActivity(SoundsActivity.class, null));
+        binding.layoutSounds.setOnClickListener(view -> {
+            startNextActivity(SoundsActivity.class, null);
+            EventTracking.logEvent(this,"home_sound_click");
+        });
 
     }
 

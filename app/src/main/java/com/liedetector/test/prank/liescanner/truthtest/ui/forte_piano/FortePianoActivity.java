@@ -12,6 +12,7 @@ import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityFortePianoBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.setting.SettingActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 public class FortePianoActivity extends BaseActivity<ActivityFortePianoBinding> {
 
@@ -44,7 +45,7 @@ public class FortePianoActivity extends BaseActivity<ActivityFortePianoBinding> 
     @Override
     public void initView() {
         binding.header.tvTitle.setText(getString(R.string.forte_piano));
-
+        EventTracking.logEvent(this,"piano_view");
         AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
         soundPool = new SoundPool.Builder().setMaxStreams(10).setAudioAttributes(audioAttributes).build();
         initUI();
@@ -55,7 +56,10 @@ public class FortePianoActivity extends BaseActivity<ActivityFortePianoBinding> 
     public void bindView() {
         binding.header.imgLeft.setOnClickListener(view -> onBackPressed());
 
-        binding.header.imgSetting.setOnClickListener(view -> startNextActivity(SettingActivity.class, null));
+        binding.header.imgSetting.setOnClickListener(view -> {
+            EventTracking.logEvent(this,"scanner_setting_click");
+            startNextActivity(SettingActivity.class, null);
+        });
 
         initNoteListener();
         initPianoListener();

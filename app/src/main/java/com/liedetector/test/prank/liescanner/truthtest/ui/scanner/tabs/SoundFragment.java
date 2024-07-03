@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.FragmentSoundBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.ScannerActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 import java.io.IOException;
 import java.util.Random;
@@ -176,6 +177,7 @@ public class SoundFragment extends Fragment {
                 if (isAnalyzing) return false;
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        EventTracking.logEvent(requireContext(),"scanner_press_click","","press_to_talk");
                         initUIDefault();
                         isButtonPressed = true;
                         countdownPressing = 16;

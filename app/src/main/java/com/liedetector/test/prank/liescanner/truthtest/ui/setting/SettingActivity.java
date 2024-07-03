@@ -16,6 +16,7 @@ import com.liedetector.test.prank.liescanner.truthtest.dialog.rate.IClickDialogR
 import com.liedetector.test.prank.liescanner.truthtest.dialog.rate.RatingDialog;
 import com.liedetector.test.prank.liescanner.truthtest.ui.about.AboutActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.LanguageActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
@@ -30,7 +31,7 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
     public void initView() {
         binding.headerSetting.tvTitle.setText(getString(R.string.setting));
         binding.headerSetting.imgTick.setVisibility(View.INVISIBLE);
-
+        EventTracking.logEvent(this,"setting_view");
         binding.tvLanguageCurrent.setText(SystemUtil.getLanguageName(this));
 
         if (SharePrefUtils.isRated(this)) {
@@ -43,9 +44,15 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
     public void bindView() {
         binding.headerSetting.imgLeft.setOnClickListener(view -> onBackPressed());
 
-        binding.layoutLanguage.setOnClickListener(view -> startNextActivity(LanguageActivity.class, null));
+        binding.layoutLanguage.setOnClickListener(view -> {
+            startNextActivity(LanguageActivity.class, null);
+            EventTracking.logEvent(this,"setting_language_click");
+        });
 
-        binding.layoutAbout.setOnClickListener(view -> startNextActivity(AboutActivity.class, null));
+        binding.layoutAbout.setOnClickListener(view -> {
+            startNextActivity(AboutActivity.class, null);
+            EventTracking.logEvent(this,"setting_about_click");
+        });
 
         binding.layoutRate.setOnClickListener(view -> onRate());
 
@@ -53,6 +60,7 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
     }
 
     private void onRate() {
+        EventTracking.logEvent(this,"setting_rate_us_click");
         RatingDialog ratingDialog = new RatingDialog(SettingActivity.this, true);
         ratingDialog.init(new IClickDialogRate() {
             @Override
@@ -74,6 +82,7 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
 
             @Override
             public void rate() {
+                EventTracking.logEvent(SettingActivity.this,"rate_submit");
                 ReviewManager manager = ReviewManagerFactory.create(SettingActivity.this);
                 Task<ReviewInfo> request = manager.requestReviewFlow();
                 request.addOnCompleteListener(task -> {
@@ -94,14 +103,17 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
 
             @Override
             public void later() {
+                EventTracking.logEvent(SettingActivity.this,"rate_not_now");
                 ratingDialog.dismiss();
             }
 
         });
         ratingDialog.show();
+        EventTracking.logEvent(this,"rate_show");
     }
 
     private void onShare() {
+        EventTracking.logEvent(this,"setting_share_click");
         Intent intentShare = new Intent(Intent.ACTION_SEND);
         intentShare.setType("text/plain");
         intentShare.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));

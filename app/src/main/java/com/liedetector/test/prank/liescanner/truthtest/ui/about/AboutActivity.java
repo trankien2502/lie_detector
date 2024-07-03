@@ -7,6 +7,7 @@ import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityAboutBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.policy.PolicyActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 public class AboutActivity extends BaseActivity<ActivityAboutBinding> {
     @Override
@@ -16,6 +17,7 @@ public class AboutActivity extends BaseActivity<ActivityAboutBinding> {
 
     @Override
     public void initView() {
+        EventTracking.logEvent(this,"view_about_app");
         binding.headerSetting.imgTick.setVisibility(View.INVISIBLE);
         binding.headerSetting.tvTitle.setText(getString(R.string.about));
 

@@ -10,6 +10,7 @@ import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityHilar
 import com.liedetector.test.prank.liescanner.truthtest.ui.funny.adapter.SoundAdapter;
 import com.liedetector.test.prank.liescanner.truthtest.ui.setting.SettingActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.sound.model.Sound;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class HilariousActivity extends BaseActivity<ActivityHilariousBinding> {
     @Override
     public void initView() {
         binding.header.tvTitle.setText(getString(R.string.hilarious));
-
+        EventTracking.logEvent(this,"hilarious_view");
         getListSoundHilarious();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         binding.rcvSoundHilarious.setLayoutManager(gridLayoutManager);
@@ -41,12 +42,42 @@ public class HilariousActivity extends BaseActivity<ActivityHilariousBinding> {
     public void bindView() {
         binding.header.imgLeft.setOnClickListener(view -> onBackPressed());
 
-        binding.header.imgSetting.setOnClickListener(view -> startNextActivity(SettingActivity.class, null));
+        binding.header.imgSetting.setOnClickListener(view -> {
+            startNextActivity(SettingActivity.class, null);
+            EventTracking.logEvent(this,"scanner_setting_click");
+        });
 
 
     }
 
     private void onClickSoundHilarious(Sound sound) {
+        switch (sound.getId()){
+            case Sound.SOUND_ID_9:
+                EventTracking.logEvent(this,"hilarious_sound_click","","cat");
+                break;
+            case Sound.SOUND_ID_10:
+                EventTracking.logEvent(this,"hilarious_sound_click","","broke");
+                break;
+            case Sound.SOUND_ID_11:
+                EventTracking.logEvent(this,"hilarious_sound_click","","mouse");
+                break;
+            case Sound.SOUND_ID_12:
+                EventTracking.logEvent(this,"hilarious_sound_click","","dog");
+                break;
+            case Sound.SOUND_ID_13:
+                EventTracking.logEvent(this,"hilarious_sound_click","","bomb");
+                break;
+            case Sound.SOUND_ID_14:
+                EventTracking.logEvent(this,"hilarious_sound_click","","fart");
+                break;
+            case Sound.SOUND_ID_15:
+                EventTracking.logEvent(this,"hilarious_sound_click","","door");
+                break;
+            case Sound.SOUND_ID_16:
+                EventTracking.logEvent(this,"hilarious_sound_click","","ghost");
+                break;
+
+        }
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }

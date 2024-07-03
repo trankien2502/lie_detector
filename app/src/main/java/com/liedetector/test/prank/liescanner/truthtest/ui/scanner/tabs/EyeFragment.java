@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.FragmentEyeBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.ScannerActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 import java.util.Random;
 
@@ -116,6 +117,7 @@ public class EyeFragment extends Fragment {
         mFragmentEyeBinding.layoutEyePressButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventTracking.logEvent(requireContext(),"scanner_press_click","","click_here");
                 if (isResultScreen) {
                     initUIDefault();
                     isResultScreen = false;

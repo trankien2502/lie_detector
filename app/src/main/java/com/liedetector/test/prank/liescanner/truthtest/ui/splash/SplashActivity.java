@@ -5,6 +5,7 @@ import android.os.Handler;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivitySplashBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.LanguageStartActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 
 public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
@@ -23,6 +24,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
             startNextActivity();
         }, 3000);
 
+        EventTracking.logEvent(this,"splash_open");
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class EventTracking {
 
-    public void logEvent(Context context, String nameEvent) {
+    public static void logEvent(Context context, String nameEvent) {
         if (context != null) {
             Bundle bundle = new Bundle();
             bundle.putString(nameEvent, nameEvent);
@@ -15,7 +15,7 @@ public class EventTracking {
         }
     }
 
-    public void logEvent(Context context, String nameEvent, String param, String value) {
+    public static void logEvent(Context context, String nameEvent, String param, String value) {
         if (context != null) {
             Bundle bundle = new Bundle();
             bundle.putString(param, value);
@@ -23,7 +23,7 @@ public class EventTracking {
         }
     }
 
-    public void logEvent(Context context, String nameEvent, String param, Long value) {
+    public static void logEvent(Context context, String nameEvent, String param, Long value) {
         if (context != null) {
             Bundle bundle = new Bundle();
             bundle.putLong(param, value);
@@ -31,7 +31,7 @@ public class EventTracking {
         }
     }
 
-    public void logEvent(Context context, String nameEvent, Bundle bundle) {
+    public static void logEvent(Context context, String nameEvent, Bundle bundle) {
         if (context != null) {
             FirebaseAnalytics.getInstance(context).logEvent(nameEvent, bundle);
         }

@@ -41,6 +41,7 @@ import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.tabs.EyeFragme
 import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.tabs.FingerPrintFragment;
 import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.tabs.SoundFragment;
 import com.liedetector.test.prank.liescanner.truthtest.ui.setting.SettingActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 public class ScannerActivity extends BaseActivity2 {
 
@@ -81,6 +82,7 @@ public class ScannerActivity extends BaseActivity2 {
     private void initUI() {
         mTypeScanner = TYPE_FINGER_PRINT;
         replaceFragment(new FingerPrintFragment());
+        EventTracking.logEvent(this,"scanner_view");
         initUIFooter();
         checkCameraPermission();
         checkMicroPermission();
@@ -104,6 +106,7 @@ public class ScannerActivity extends BaseActivity2 {
                 boolean isPressing = SoundFragment.isButtonPressed();
                 boolean isAnalyzingEye = EyeFragment.isAnalyzing();
                 if (isAnalyzingEye || isAnalyzingFinger || isAnalyzing || isPressingFinger || isPressing) {
+                    EventTracking.logEvent(ScannerActivity.this,"scanner_setting_click");
                     showDialogStopScan(TYPE_SETTING_HEADER);
                 } else
                     openSetting();
@@ -157,6 +160,7 @@ public class ScannerActivity extends BaseActivity2 {
         mActivityScannerBinding.layoutScannerButtonLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EventTracking.logEvent(ScannerActivity.this,"scanner_finger_click");
                 if (mTypeScanner == TYPE_FINGER_PRINT) return;
                 if (mTypeScanner == TYPE_SOUND) {
                     boolean isAnalyzing = SoundFragment.isAnalyzing();
@@ -180,6 +184,7 @@ public class ScannerActivity extends BaseActivity2 {
         mActivityScannerBinding.layoutScannerButtonRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EventTracking.logEvent(ScannerActivity.this,"scanner_sound_click");
                 if (mTypeScanner == TYPE_EYES) return;
                 if (mTypeScanner == TYPE_FINGER_PRINT) {
                     boolean isAnalyzing = FingerPrintFragment.isAnalyzing();
@@ -205,6 +210,7 @@ public class ScannerActivity extends BaseActivity2 {
         mActivityScannerBinding.layoutScannerButtonCenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EventTracking.logEvent(ScannerActivity.this,"scanner_eyes_click");
                 if (mTypeScanner == TYPE_SOUND) return;
                 if (mTypeScanner == TYPE_EYES) {
                     boolean isAnalyzing = EyeFragment.isAnalyzing();

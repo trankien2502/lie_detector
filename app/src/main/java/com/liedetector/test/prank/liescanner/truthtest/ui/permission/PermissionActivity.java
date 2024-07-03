@@ -23,6 +23,7 @@ import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityPermissionBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> {
     public static boolean isPermissionCamera;
@@ -48,6 +49,7 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
         if (isPermissionCamera) {
             binding.swichCamera.setChecked(true);
         }
+        EventTracking.logEvent(this,"permission_view");
     }
 
     @Override
@@ -57,7 +59,7 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
                 startNextActivity();
             } else
                 showDialogWarning();
-
+            EventTracking.logEvent(PermissionActivity.this,"permission_continue_click");
         });
         binding.swichCamera.setOnCheckedChangeListener((compoundButton, b) -> {
             checkCameraPermission();

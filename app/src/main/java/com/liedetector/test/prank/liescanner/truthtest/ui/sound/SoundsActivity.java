@@ -12,6 +12,7 @@ import com.liedetector.test.prank.liescanner.truthtest.ui.hilarious.HilariousAct
 import com.liedetector.test.prank.liescanner.truthtest.ui.setting.SettingActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.sound.adapter.SoundsAdapter;
 import com.liedetector.test.prank.liescanner.truthtest.ui.sound.model.Sound;
+import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class SoundsActivity extends BaseActivity<ActivitySoundsBinding> {
 
     @Override
     public void initView() {
+        EventTracking.logEvent(this,"sound_view");
         getListSoundFunny();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
@@ -41,22 +43,29 @@ public class SoundsActivity extends BaseActivity<ActivitySoundsBinding> {
     public void bindView() {
         binding.header.imgLeft.setOnClickListener(view -> onBackPressed());
 
-        binding.header.imgSetting.setOnClickListener(view -> startNextActivity(SettingActivity.class, null));
+        binding.header.imgSetting.setOnClickListener(view -> {
+            startNextActivity(SettingActivity.class, null);
+            EventTracking.logEvent(this,"scanner_setting_click");
+        });
 
     }
 
     private void onClickSoundFunny(Sound sound) {
         switch (sound.getId()) {
             case Sound.SOUND_ID_17:
+                EventTracking.logEvent(this,"sound_hair_clipper_click");
                 startNextActivity(HairClipperActivity.class, null);
                 break;
             case Sound.SOUND_ID_18:
+                EventTracking.logEvent(this,"sound_funny_click");
                 startNextActivity(FunnyActivity.class, null);
                 break;
             case Sound.SOUND_ID_19:
+                EventTracking.logEvent(this,"sound_hilarious_click");
                 startNextActivity(HilariousActivity.class, null);
                 break;
             case Sound.SOUND_ID_20:
+                EventTracking.logEvent(this,"sound_piano_click");
                 startNextActivity(FortePianoActivity.class, null);
                 break;
         }
