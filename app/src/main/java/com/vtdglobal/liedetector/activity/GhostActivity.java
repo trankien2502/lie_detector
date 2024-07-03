@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +33,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.PixelCopy;
 import android.view.Surface;
 import android.view.TextureView;
@@ -77,6 +79,7 @@ public class GhostActivity extends BaseActivity {
     int timeToSee = 30, timeToLeave = 15;
     public static int appearedGhost;
     boolean isOn = true,isLightSign = false;
+
     public static boolean isStartGetGhost;
     int displayTextTime = 10;
 
@@ -85,6 +88,7 @@ public class GhostActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mActivityGhostBinding = ActivityGhostBinding.inflate(getLayoutInflater());
         setContentView(mActivityGhostBinding.getRoot());
+//        createLoadingDialog();
         initData();
         initUI();
         initUIHeader();
@@ -95,6 +99,7 @@ public class GhostActivity extends BaseActivity {
         isStartGetGhost = true;
         getGhost();
     }
+
 
     private void initUI() {
         Handler handler1 = new Handler();
@@ -292,6 +297,7 @@ public class GhostActivity extends BaseActivity {
                     isStartGetGhost = true;
                     return;
                 }
+                alertDialog.show();
                 timeToLeave += 2;
                 imageCapture.takePicture(ContextCompat.getMainExecutor(GhostActivity.this),
                         new ImageCapture.OnImageCapturedCallback() {
@@ -308,10 +314,12 @@ public class GhostActivity extends BaseActivity {
                                 image.close();
                                 capturedBitmap = bitmap;
                                 startNextActivity(ImageCaptureActivity.class, null);
+                                alertDialog.dismiss();
                             }
 
                             @Override
                             public void onError(@NonNull ImageCaptureException exception) {
+                                alertDialog.dismiss();
                                 Toast.makeText(GhostActivity.this, "Error capturing image", Toast.LENGTH_SHORT).show();
                             }
                         });

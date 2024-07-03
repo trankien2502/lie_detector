@@ -52,6 +52,7 @@ public class ImageCaptureActivity extends BaseActivity {
         mActivityImageCaptureBinding.layoutShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alertDialog.show();
                 finalBitmap = getBitmapFromView(mActivityImageCaptureBinding.cardView1);
 //                startNextActivity(TestActivity.class,null);
                 Bitmap bitmap = getBitmapFromView(mActivityImageCaptureBinding.cardView1);
@@ -64,7 +65,9 @@ public class ImageCaptureActivity extends BaseActivity {
                     fOut.flush();
                     fOut.close();
                     shareImage(FileProvider.getUriForFile(ImageCaptureActivity.this, AUTHORITY, file));
+                    alertDialog.dismiss();
                 } catch (IOException e) {
+                    alertDialog.dismiss();
                     e.printStackTrace();
                 }
             }

@@ -1,13 +1,14 @@
 package com.vtdglobal.liedetector.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -15,7 +16,8 @@ import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.util.SystemUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    protected AlertDialog progressDialog;
+
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,6 +25,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         hideNavigationBar();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+    private void createLoadingDialog(){
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_loading, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+
+        alertDialog = builder.create();
+
     }
 
     @Override
@@ -57,18 +69,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 //                .progress(true, 0)
 //                .build();
 //    }
-    public void showProgressDialog(boolean value) {
-        if (value) {
-            if (progressDialog != null && !progressDialog.isShowing()) {
-                progressDialog.show();
-                progressDialog.setCancelable(false);
-            }
-        } else {
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-        }
-    }
 
 
     @Override
