@@ -44,11 +44,12 @@ import com.vtdglobal.liedetector.fragment.EyeFragment;
 import com.vtdglobal.liedetector.fragment.FingerPrintFragment;
 import com.vtdglobal.liedetector.fragment.SoundFragment;
 import com.vtdglobal.liedetector.fragment.SoundsFragment;
+import com.vtdglobal.liedetector.util.CameraUtil;
 
 public class ScannerActivity extends BaseActivity {
 
     @SuppressLint("StaticFieldLeak")
-    static ActivityScannerBinding mActivityScannerBinding;
+    public static ActivityScannerBinding mActivityScannerBinding;
     public static ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     @SuppressLint("StaticFieldLeak")
     public static ProcessCameraProvider cameraProvider;
@@ -139,7 +140,8 @@ public class ScannerActivity extends BaseActivity {
     private void openEyeScanner() {
         checkCameraPermission();
         if (isPermissionCamera) {
-            startCamera(this);
+//            startCamera(this);
+            CameraUtil.startCamera(this,mActivityScannerBinding.previewView);
             replaceFragment(new EyeFragment());
             mTypeScanner = TYPE_EYES;
             initUIFooter();
@@ -348,7 +350,8 @@ public class ScannerActivity extends BaseActivity {
             case CAMERA_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     isPermissionCamera = true;
-                    startCamera(this);
+//                    startCamera(this);
+                    CameraUtil.startCamera(this,mActivityScannerBinding.previewView);
                     replaceFragment(new EyeFragment());
                     mTypeScanner = TYPE_EYES;
                     initUIFooter();

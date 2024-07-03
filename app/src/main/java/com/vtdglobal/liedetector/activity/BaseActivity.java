@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.util.SystemUtil;
 
 public abstract class BaseActivity extends AppCompatActivity {
+    protected AlertDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +50,24 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void finishThisActivity() {
         finish();
         overridePendingTransition(R.anim.in_left, R.anim.out_right);
+    }
+//    public void createProgressDialog() {
+//        progressDialog = new MaterialAlertDialogBuilder(this).setMessage("Please wait...").
+////                .content(R.string.msg_please_waiting)
+//                .progress(true, 0)
+//                .build();
+//    }
+    public void showProgressDialog(boolean value) {
+        if (value) {
+            if (progressDialog != null && !progressDialog.isShowing()) {
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+            }
+        } else {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }
     }
 
 

@@ -49,5 +49,8 @@ dependencies {
     implementation ("androidx.camera:camera-view:1.2.0-beta01")
     implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.23")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
+    implementation ("androidx.cardview:cardview:1.0.0")
+//    implementation ("com.afollestad.material-dialogs:core:0.9.6.0")
+
 
 }

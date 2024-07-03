@@ -2,6 +2,8 @@ package com.vtdglobal.liedetector.fragment;
 
 import static android.graphics.Color.TRANSPARENT;
 
+import static com.vtdglobal.liedetector.activity.ScannerActivity.mActivityScannerBinding;
+
 import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import com.vtdglobal.liedetector.R;
 import com.vtdglobal.liedetector.activity.ScannerActivity;
 import com.vtdglobal.liedetector.databinding.FragmentEyeBinding;
+import com.vtdglobal.liedetector.util.CameraUtil;
 
 import java.util.Random;
 
@@ -248,7 +251,7 @@ public class EyeFragment extends Fragment {
         setVisibilityResultGone();
         ScannerActivity.mType = ScannerActivity.TYPE_DEFAULT;
         ScannerActivity.initUIFooter();
-        ScannerActivity.startCamera(getContext());
+        CameraUtil.startCamera(requireContext(),mActivityScannerBinding.previewView);
     }
 
     private void initUIGetTruth() {

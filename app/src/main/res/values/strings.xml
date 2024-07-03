@@ -105,5 +105,10 @@
     <string name="todo">TODO</string>
     <string name="start1">Start</string>
     <string name="please_select_language">Please select language!</string>
+    <string name="ghost">GHOST</string>
+    <string name="capture">CAPTURE</string>
+    <string name="image_capture">IMAGE CAPTURE</string>
+    <string name="evp_levels">EVP LEVELS</string>
+    <string name="walk_around_slowly_to_detect_supernatural_entities">WALK AROUND SLOWLY TO DETECT SUPERNATURAL ENTITIES.....</string>
 
 </resources>

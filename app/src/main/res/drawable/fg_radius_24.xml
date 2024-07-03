@@ -1,0 +1,22 @@
+<!-- res/drawable/rounded_layer_list.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Lớp nền -->
+    <item>
+        <shape>
+            <solid android:color="#000000"/>
+        </shape>
+    </item>
+    <!-- Lớp viền -->
+    <item>
+        <shape>
+            <solid android:color="#FFFFFF"/> <!-- Màu trong suốt -->
+            <corners android:radius="24dp"/> <!-- Bán kính góc bo -->
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="#00000000"/> <!-- Màu trong suốt -->
+            <corners android:radius="24dp"/> <!-- Bán kính góc bo -->
+        </shape>
+    </item>
+</layer-list>
