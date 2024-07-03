@@ -8,29 +8,19 @@ android {
     namespace 'com.liedetector.test.prank.liescanner.truthtest'
     compileSdk 33
 
-    signingConfigs{
-       release{
-           storeFile file('D:\\Long code\\Store107\\LieDetector\\app\\key\\sapp_key_store_lie_detector.jks')
-           storePassword 'sapp@123'
-           keyAlias 'key_store'
-           keyPassword 'sapp@123'
-       }
-   }
-
 
     defaultConfig {
         applicationId "com.liedetector.test.prank.liescanner.truthtest"
         minSdk 21
         targetSdk 33
-        versionCode 101
-        versionName "1.0.1"
+        versionCode 102
+        versionName "1.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         def formattedDate = new Date().format('MMM.dd.yyyy')
         archivesBaseName = "Lie_Detector_Test_Prank_v${versionName}(${versionCode})_${formattedDate}"
 
-        signingConfig signingConfigs.release
     }
 
     bundle {
