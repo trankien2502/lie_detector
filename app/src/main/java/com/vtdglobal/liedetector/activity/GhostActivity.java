@@ -88,7 +88,6 @@ public class GhostActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mActivityGhostBinding = ActivityGhostBinding.inflate(getLayoutInflater());
         setContentView(mActivityGhostBinding.getRoot());
-//        createLoadingDialog();
         initData();
         initUI();
         initUIHeader();

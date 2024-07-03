@@ -24,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         SystemUtil.setLocale(this);
         super.onCreate(savedInstanceState);
         hideNavigationBar();
+        createLoadingDialog();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     private void createLoadingDialog(){
