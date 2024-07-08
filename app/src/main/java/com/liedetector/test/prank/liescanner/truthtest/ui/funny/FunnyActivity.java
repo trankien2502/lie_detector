@@ -37,6 +37,7 @@ public class FunnyActivity extends BaseActivity<ActivityFunnyBinding> {
 
         soundAdapter = new SoundAdapter(this, soundList, this::onClickSoundFunny);
         binding.rcvSoundFunny.setAdapter(soundAdapter);
+        loadBanner(binding.rlBanner);
     }
 
     @Override
@@ -120,4 +121,9 @@ public class FunnyActivity extends BaseActivity<ActivityFunnyBinding> {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadBanner(binding.rlBanner);
+    }
 }

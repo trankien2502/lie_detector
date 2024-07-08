@@ -8,7 +8,11 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ads.sapp.admob.Admob;
 import com.liedetector.test.prank.liescanner.truthtest.R;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
+import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 public abstract class BaseActivity2 extends AppCompatActivity {
@@ -25,6 +29,25 @@ public abstract class BaseActivity2 extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         hideNavigationBar();
+    }
+    public void loadBanner(View view) {
+        if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
+            Admob.getInstance().loadBannerFloor(this, ConstantIdAds.listIDAdsBanner);
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
+
+
+    }
+    public void loadBannerCollapsible(View view){
+        if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBannerCollapsible.size() != 0 && ConstantRemote.banner_collapsible) {
+            Admob.getInstance().loadCollapsibleBannerFloor(this, ConstantIdAds.listIDAdsBannerCollapsible, "bottom");
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
+
     }
     private void hideNavigationBar() {
         View decorView = getWindow().getDecorView();

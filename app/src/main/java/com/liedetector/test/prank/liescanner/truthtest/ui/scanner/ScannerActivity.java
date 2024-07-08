@@ -33,6 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.ads.sapp.admob.AppOpenManager;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity2;
@@ -77,6 +78,7 @@ public class ScannerActivity extends BaseActivity2 {
         initUI();
         initUIFooter();
         initListenerFooter();
+        loadBanner(mActivityScannerBinding.rlBanner);
     }
 
     private void initUI() {
@@ -86,6 +88,7 @@ public class ScannerActivity extends BaseActivity2 {
         initUIFooter();
         checkCameraPermission();
         checkMicroPermission();
+
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -130,6 +133,7 @@ public class ScannerActivity extends BaseActivity2 {
             mTypeScanner = TYPE_SOUND;
             initUIFooter();
             initListenerFooter();
+            loadBanner(mActivityScannerBinding.rlBanner);
         } else {
             requestPermissionMicro();
         }
@@ -143,12 +147,14 @@ public class ScannerActivity extends BaseActivity2 {
             mTypeScanner = TYPE_EYES;
             initUIFooter();
             initListenerFooter();
+            loadBanner(mActivityScannerBinding.rlBanner);
         } else {
             requestPermissionCamera();
         }
     }
 
     private void openFingerPrintScanner() {
+        loadBanner(mActivityScannerBinding.rlBanner);
         replaceFragment(new FingerPrintFragment());
         mTypeScanner = TYPE_FINGER_PRINT;
         initUIFooter();
@@ -156,6 +162,7 @@ public class ScannerActivity extends BaseActivity2 {
     }
 
     private void initListenerFooter() {
+
         mType = TYPE_DEFAULT;
         mActivityScannerBinding.layoutScannerButtonLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -512,5 +519,10 @@ public class ScannerActivity extends BaseActivity2 {
         dialog.show();
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadBanner(mActivityScannerBinding.rlBanner);
+        AppOpenManager.getInstance().disableAppResumeWithActivity(ScannerActivity.class);
+    }
 }

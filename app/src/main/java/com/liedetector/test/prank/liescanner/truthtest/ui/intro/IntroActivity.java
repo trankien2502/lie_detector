@@ -2,19 +2,35 @@ package com.liedetector.test.prank.liescanner.truthtest.ui.intro;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ads.sapp.admob.Admob;
+import com.ads.sapp.ads.CommonAd;
+import com.ads.sapp.ads.CommonAdCallback;
+import com.ads.sapp.ads.wrapper.ApAdError;
+import com.ads.sapp.funtion.AdCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.liedetector.test.prank.liescanner.truthtest.R;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
+import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityIntroBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.splash.SplashActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 import com.liedetector.test.prank.liescanner.truthtest.util.PermissionManager;
+
+import org.jetbrains.annotations.Nullable;
 
 public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
     ImageView[] dots = null;
@@ -41,6 +57,7 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
             @Override
             public void onPageSelected(int position) {
                 changeContentInit(position);
+
             }
 
             @Override
@@ -48,8 +65,37 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
 
             }
         });
+        loadNativeIntro();
+        loadInterIntro();
     }
+    private void loadInterIntro() {
 
+        if (ConstantIdAds.mInterIntro == null && IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsInterIntro.size() != 0 && ConstantRemote.inter_intro) {
+            ConstantIdAds.mInterIntro = CommonAd.getInstance().getInterstitialAds(this, ConstantIdAds.listIDAdsInterIntro);
+        }
+    }
+    private void showInterIntro(){
+        if (IsNetWork.haveNetworkConnectionUMP(IntroActivity.this) && ConstantIdAds.listIDAdsInterIntro.size() != 0 && ConstantRemote.inter_intro) {
+            try {
+                if (ConstantIdAds.mInterIntro != null) {
+                    CommonAd.getInstance().forceShowInterstitial(this, ConstantIdAds.mInterIntro, new CommonAdCallback() {
+                        @Override
+                        public void onNextAction() {
+                            startNextActivity();
+                            ConstantIdAds.mInterIntro = null;
+                            loadInterIntro();
+                        }
+                    }, true);
+                } else {
+                    startNextActivity();
+                }
+            } catch (Exception e) {
+                startNextActivity();
+            }
+        } else {
+            startNextActivity();
+        }
+    }
     @Override
     public void bindView() {
         binding.btnNext.setOnClickListener(view -> {
@@ -68,7 +114,7 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
             if (binding.viewPager2.getCurrentItem() < 2) {
                 binding.viewPager2.setCurrentItem(binding.viewPager2.getCurrentItem() + 1);
             } else {
-                startNextActivity();
+                showInterIntro();
             }
         });
 
@@ -81,13 +127,17 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
         }
         switch (position){
             case 0:
+                binding.nativeIntro.setVisibility(View.GONE);
                 EventTracking.logEvent(this,"intro1_view");
                 break;
             case 1:
+                binding.nativeIntro.setVisibility(View.GONE);
                 EventTracking.logEvent(this,"intro2_view");
                 break;
             case 2:
+                binding.nativeIntro.setVisibility(View.VISIBLE);
                 EventTracking.logEvent(this,"intro3_view");
+                //loadNativeIntro();
                 break;
 
         }
@@ -100,6 +150,31 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
             startNextActivity(PermissionActivity.class, null);
         }
         finish();
+    }
+    public void loadNativeIntro() {
+        try {
+            if (IsNetWork.haveNetworkConnection(IntroActivity.this) && ConstantIdAds.listIDAdsNativeIntro.size() != 0 && ConstantRemote.native_intro) {
+                Admob.getInstance().loadNativeAd(IntroActivity.this, ConstantIdAds.listIDAdsNativeIntro, new AdCallback() {
+                    @Override
+                    public void onUnifiedNativeAdLoaded(@NonNull NativeAd unifiedNativeAd) {
+                        NativeAdView adView = (NativeAdView) LayoutInflater.from(IntroActivity.this).inflate(R.layout.layout_native_show_small, null);
+                        binding.nativeIntro.removeAllViews();
+                        binding.nativeIntro.addView(adView);
+                        Admob.getInstance().populateUnifiedNativeAdView(unifiedNativeAd, adView);
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@Nullable LoadAdError i) {
+                        binding.nativeIntro.setVisibility(View.GONE);
+                    }
+                });
+            } else {
+                binding.nativeIntro.setVisibility(View.GONE);
+            }
+
+        } catch (Exception e) {
+            binding.nativeIntro.setVisibility(View.GONE);
+        }
     }
 
     @Override

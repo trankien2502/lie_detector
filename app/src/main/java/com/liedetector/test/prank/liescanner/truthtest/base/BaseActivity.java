@@ -8,7 +8,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
+import com.ads.sapp.admob.Admob;
+import com.ads.sapp.admob.AppOpenManager;
+import com.ads.sapp.ads.CommonAd;
+import com.ads.sapp.ads.CommonAdCallback;
 import com.liedetector.test.prank.liescanner.truthtest.R;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
+import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActivity {
@@ -32,6 +39,63 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
 
         initView();
         bindView();
+
+    }
+    private void load(){
+        if (ConstantRemote.resume){
+            AppOpenManager.getInstance().enableAppResumeWithActivity(getClass());
+        }else {
+            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
+        }
+
+    }
+    public void loadBanner(View view) {
+        if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
+            Admob.getInstance().loadBannerFloor(this, ConstantIdAds.listIDAdsBanner);
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
+
+
+    }
+    public void loadBannerCollapsible(View view){
+        if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBannerCollapsible.size() != 0 && ConstantRemote.banner_collapsible) {
+            Admob.getInstance().loadCollapsibleBannerFloor(this, ConstantIdAds.listIDAdsBannerCollapsible, "bottom");
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
+
+    }
+    private void loadInterAll() {
+        if (ConstantIdAds.mInterAll == null && IsNetWork.haveNetworkConnection(getBaseContext()) && ConstantIdAds.listIDAdsInterAll.size() != 0 && ConstantRemote.show_inter_all) {
+            ConstantIdAds.mInterAll = CommonAd.getInstance().getInterstitialAds(this, ConstantIdAds.listIDAdsInterAll);
+        }
+    }
+    private void showInterAll(Class activity){
+        if (IsNetWork.haveNetworkConnection(getBaseContext()) && ConstantIdAds.listIDAdsInterAll.size() != 0 && ConstantRemote.show_inter_all) {
+            try {
+                if (ConstantIdAds.mInterAll != null) {
+                    CommonAd.getInstance().forceShowInterstitial(getBaseContext(), ConstantIdAds.mInterAll, new CommonAdCallback() {
+                        @Override
+                        public void onNextAction() {
+
+                            startNextActivity(activity,null);
+                            ConstantIdAds.mInterAll = null;
+                            loadInterAll();
+                        }
+                    }, true);
+                } else {
+                    startNextActivity(activity,null);
+                }
+            } catch (Exception e) {
+                startNextActivity(activity,null);
+            }
+        } else {
+            startNextActivity(activity,null);
+        }
+
     }
 
     public void startNextActivity(Class activity, Bundle bundle) {
@@ -54,6 +118,8 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
     protected void onResume() {
         super.onResume();
         //tắt ads resume all
+        load();
+
     }
 
     @Override

@@ -11,18 +11,35 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
+import com.ads.sapp.admob.Admob;
+import com.ads.sapp.admob.AppOpenManager;
+import com.ads.sapp.ads.CommonAd;
+import com.ads.sapp.ads.CommonAdCallback;
+import com.ads.sapp.ads.wrapper.ApAdError;
+import com.ads.sapp.funtion.AdCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.liedetector.test.prank.liescanner.truthtest.R;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
+import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityPermissionBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.ScannerActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.splash.SplashActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> {
@@ -50,13 +67,70 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
             binding.swichCamera.setChecked(true);
         }
         EventTracking.logEvent(this,"permission_view");
+        loadInterPermission();
+        loadNativePermission();
     }
+    private void showInterPermission(){
+        if (IsNetWork.haveNetworkConnectionUMP(PermissionActivity.this) && ConstantIdAds.listIDAdsInterPermission.size() != 0 && ConstantRemote.inter_permission) {
+            try {
+                if (ConstantIdAds.mInterPermission != null) {
+                    CommonAd.getInstance().forceShowInterstitial(this, ConstantIdAds.mInterPermission, new CommonAdCallback() {
+                        @Override
+                        public void onNextAction() {
+                            startNextActivity();
+                            ConstantIdAds.mInterPermission = null;
+                            loadInterPermission();
+                        }
+                    }, true);
+                } else {
+                    startNextActivity();
+                }
+            } catch (Exception e) {
+                startNextActivity();
+            }
+        } else {
+            startNextActivity();
+        }
+    }
+    public void loadInterPermission(){
+        if (ConstantIdAds.mInterPermission == null && IsNetWork.haveNetworkConnectionUMP(PermissionActivity.this) && ConstantIdAds.listIDAdsInterPermission.size() != 0 && ConstantRemote.inter_permission) {
+            ConstantIdAds.mInterPermission = CommonAd.getInstance().getInterstitialAds(this, ConstantIdAds.listIDAdsInterPermission);
+        }
+    }
+    public void loadNativePermission() {
+        try {
+            if (IsNetWork.haveNetworkConnection(PermissionActivity.this) && ConstantIdAds.listIDAdsNativePermission.size() != 0 && ConstantRemote.native_permission) {
+                Admob.getInstance().loadNativeAd(PermissionActivity.this, ConstantIdAds.listIDAdsNativePermission, new AdCallback() {
+                    @Override
+                    public void onUnifiedNativeAdLoaded(@NonNull NativeAd unifiedNativeAd) {
+                        NativeAdView adView = (NativeAdView) LayoutInflater.from(PermissionActivity.this).inflate(R.layout.layout_native_show_large, null);
+                        binding.nativePermission.removeAllViews();
+                        binding.nativePermission.addView(adView);
+                        Admob.getInstance().populateUnifiedNativeAdView(unifiedNativeAd, adView);
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@Nullable LoadAdError i) {
+                        binding.nativePermission.setVisibility(View.INVISIBLE);
+                    }
+                });
+            } else {
+                binding.nativePermission.setVisibility(View.INVISIBLE);
+            }
+
+        } catch (Exception e) {
+            binding.nativePermission.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+
 
     @Override
     public void bindView() {
         binding.btnContinue.setOnClickListener(view -> {
             if (checkAllPermission()) {
-                startNextActivity();
+                showInterPermission();
             } else
                 showDialogWarning();
             EventTracking.logEvent(PermissionActivity.this,"permission_continue_click");
@@ -190,7 +264,7 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
 
         buttonOK.setOnClickListener(v -> {
             dialog.dismiss();
-            startNextActivity();
+            showInterPermission();
         });
 
         buttonCancel.setOnClickListener(v -> dialog.dismiss());
@@ -242,5 +316,6 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
         if (isPermissionCamera) {
             binding.swichCamera.setChecked(true);
         }
+        AppOpenManager.getInstance().disableAppResumeWithActivity(PermissionActivity.class);
     }
 }

@@ -45,6 +45,20 @@
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:layout_weight="1" />
+    <RelativeLayout
+        android:id="@+id/nativeLanguage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/fr_ads_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+            <include layout="@layout/layout_native_load_large" />
+        </FrameLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

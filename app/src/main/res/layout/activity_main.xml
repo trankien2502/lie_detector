@@ -7,7 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="bottom"
+        android:layout_above="@id/nativeHome"
         android:orientation="vertical">
 
 
@@ -47,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="-22dp">
+            >
 
             <ImageView
                 android:layout_width="match_parent"
@@ -74,5 +75,21 @@
 
         </FrameLayout>
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/nativeHome"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/fr_ads_permission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+            <include android:id="@+id/change_bg" layout="@layout/layout_native_load_large" />
+        </FrameLayout>
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

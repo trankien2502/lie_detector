@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 
+import com.ads.sapp.admob.AppOpenManager;
 import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
@@ -16,6 +17,7 @@ import com.liedetector.test.prank.liescanner.truthtest.dialog.rate.IClickDialogR
 import com.liedetector.test.prank.liescanner.truthtest.dialog.rate.RatingDialog;
 import com.liedetector.test.prank.liescanner.truthtest.ui.about.AboutActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.LanguageActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
@@ -38,6 +40,7 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
             binding.layoutRate.setVisibility(View.GONE);
             binding.lineRate.setVisibility(View.GONE);
         }
+        loadBanner(binding.rlBanner);
     }
 
     @Override
@@ -122,5 +125,10 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadBanner(binding.rlBanner);
+        AppOpenManager.getInstance().disableAppResumeWithActivity(SettingActivity.class);
+    }
 }

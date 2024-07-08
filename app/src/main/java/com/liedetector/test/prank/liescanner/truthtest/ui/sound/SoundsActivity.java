@@ -1,8 +1,15 @@
 package com.liedetector.test.prank.liescanner.truthtest.ui.sound;
 
+import android.view.View;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.ads.sapp.admob.Admob;
+import com.ads.sapp.ads.CommonAd;
 import com.liedetector.test.prank.liescanner.truthtest.R;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
+import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivitySoundsBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.forte_piano.FortePianoActivity;
@@ -37,6 +44,18 @@ public class SoundsActivity extends BaseActivity<ActivitySoundsBinding> {
 
         soundsAdapter = new SoundsAdapter(this, soundsList, this::onClickSoundFunny);
         binding.rcvSounds.setAdapter(soundsAdapter);
+        loadBannerSounds();
+    }
+
+    private void loadBannerSounds() {
+        if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
+            Admob.getInstance().loadBannerFloor(this, ConstantIdAds.listIDAdsBanner);
+            binding.rlBanner.setVisibility(View.VISIBLE);
+        } else {
+            binding.rlBanner.setVisibility(View.GONE);
+        }
+
+
     }
 
     @Override
@@ -81,5 +100,9 @@ public class SoundsActivity extends BaseActivity<ActivitySoundsBinding> {
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadBannerSounds();
+    }
 }

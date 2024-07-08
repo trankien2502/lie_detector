@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/darkHeavy"
@@ -7,13 +7,31 @@
 
     <include
         android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         layout="@layout/layout_header_sounds" />
 
     <ImageView
         android:id="@+id/img_clipper"
         android:layout_width="match_parent"
+        android:layout_below="@id/header"
+        android:layout_above="@id/rlBanner"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:src="@drawable/img_clipper_off" />
+    <RelativeLayout
+        android:id="@+id/rlBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
-</LinearLayout>
+        <include
+            android:id="@+id/banner"
+            layout="@layout/layout_banner_control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

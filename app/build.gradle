@@ -129,4 +129,7 @@ dependencies {
     implementation 'com.google.ads.mediation:unity:4.8.0.0'
     implementation 'com.google.ads.mediation:mintegral:16.5.21.0'
 
+    //adjust
+    implementation 'com.adjust.sdk:adjust-android:4.38.0'
+
 }

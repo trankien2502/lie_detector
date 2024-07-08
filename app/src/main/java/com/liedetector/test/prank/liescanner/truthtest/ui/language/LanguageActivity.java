@@ -1,13 +1,27 @@
 package com.liedetector.test.prank.liescanner.truthtest.ui.language;
 
+import android.view.LayoutInflater;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.ads.sapp.admob.Admob;
+import com.ads.sapp.funtion.AdCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.liedetector.test.prank.liescanner.truthtest.R;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
+import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityLanguageBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.adapter.LanguageAdapter;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.model.LanguageModel;
 import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 import java.util.ArrayList;
@@ -29,9 +43,7 @@ public class LanguageActivity extends BaseActivity<ActivityLanguageBinding> {
     public void initView() {
         initData();
         codeLang = Locale.getDefault().getLanguage();
-
         binding.viewTop.tvTitle.setText(getString(R.string.language));
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         LanguageAdapter languageAdapter = new LanguageAdapter(listLanguage, languageModel -> {
             codeLang = languageModel.getCode();

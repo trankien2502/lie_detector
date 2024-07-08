@@ -50,6 +50,7 @@ public class FortePianoActivity extends BaseActivity<ActivityFortePianoBinding> 
         soundPool = new SoundPool.Builder().setMaxStreams(10).setAudioAttributes(audioAttributes).build();
         initUI();
         initData();
+        loadBanner(binding.rlBanner);
     }
 
     @Override
@@ -326,4 +327,9 @@ public class FortePianoActivity extends BaseActivity<ActivityFortePianoBinding> 
         soundPool = null;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadBanner(binding.rlBanner);
+    }
 }

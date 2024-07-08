@@ -26,6 +26,7 @@ public class HairClipperActivity extends BaseActivity<ActivityHairClipperBinding
         binding.header.tvTitle.setText(getString(R.string.hair_clipper));
         EventTracking.logEvent(this,"hair_clipper_view");
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        loadBanner(binding.rlBanner);
     }
 
     @Override
@@ -103,4 +104,9 @@ public class HairClipperActivity extends BaseActivity<ActivityHairClipperBinding
         if (isClipperOn) vibrator.cancel();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadBanner(binding.rlBanner);
+    }
 }
