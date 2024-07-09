@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="14dp"
+    android:viewportWidth="20"
+    android:viewportHeight="14">
+
+  <!-- Hình chữ nhật với các góc bo tròn -->
+  <path
+      android:fillColor="#25FDFF"
+      android:pathData="M 2.5,0 H 17.5 C 18.88,0 20,1.12 20,2.5 V 11.5 C 20,12.88 18.88,14 17.5,14 H 2.5 C 1.12,14 0,12.88 0,11.5 V 2.5 C 0,1.12 1.12,0 2.5,0 Z"/>
+
+  <!-- Đường path vẽ các ký tự -->
+  <path
+      android:fillColor="#000000"
+      android:pathData="M9.191 10l-0.516-1.523h-2.148L6.012 10H5.102l2.035-5.637h0.945l2.035 5.637H9.191ZM7.59 5.301L6.75 7.773h1.703L7.613 5.301H7.59ZM12.07 10.07c-1.039 0-1.727-0.828-1.727-2.125s0.688-2.125 1.727-2.125c0.59 0 1.059 0.297 1.29 0.75h0.016V4.363h0.848V10H13.395V9.301h-0.016c-0.242 0.469-0.711 0.77-1.308 0.77ZM12.293 6.535c-0.668 0-1.086 0.547-1.086 1.41 0 0.867 0.418 1.41 1.086 1.41 0.648 0 1.082-0.55 1.082-1.41 0-0.852-0.434-1.41-1.082-1.41Z"/>
+</vector>

@@ -124,6 +124,6 @@ public class FunnyActivity extends BaseActivity<ActivityFunnyBinding> {
     @Override
     protected void onResume() {
         super.onResume();
-        loadBanner(binding.rlBanner);
+        //loadBanner(binding.rlBanner);
     }
 }

@@ -3,10 +3,13 @@ package com.liedetector.test.prank.liescanner.truthtest.ui.main;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -52,9 +55,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     public void initView() {
         EventTracking.logEvent(this, "home_view");
+        //loadNativeHome();
         loadInterScanner();
         loadInterSound();
-        loadNativeHome();
     }
 
     @Override
@@ -72,10 +75,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     public void loadNativeHome() {
         try {
             if (IsNetWork.haveNetworkConnection(MainActivity.this) && ConstantIdAds.listIDAdsNativeHome.size() != 0 && ConstantRemote.native_home) {
+                NativeAdView adViewLoad = (NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_load_large, null,false);
+                binding.nativeHome.removeAllViews();
+                binding.nativeHome.addView(adViewLoad);
                 Admob.getInstance().loadNativeAd(MainActivity.this, ConstantIdAds.listIDAdsNativeHome, new AdCallback() {
                     @Override
                     public void onUnifiedNativeAdLoaded(@NonNull NativeAd unifiedNativeAd) {
-                        NativeAdView adView = (NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_show_large, null);
+                        NativeAdView adView = (NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_show_large, null,false);
                         binding.nativeHome.removeAllViews();
                         binding.nativeHome.addView(adView);
                         Admob.getInstance().populateUnifiedNativeAdView(unifiedNativeAd, adView);
@@ -171,22 +177,39 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                     CommonAd.getInstance().forceShowInterstitial(this, ConstantIdAds.mInterScanner, new CommonAdCallback() {
                         @Override
                         public void onNextAction() {
-                            startNextActivity(ScannerActivity.class, null);
+                            startNextActivity(ScannerActivity.class);
                             ConstantIdAds.mInterScanner = null;
                             loadInterScanner();
                         }
                     }, true);
                 } else {
-                    startNextActivity(ScannerActivity.class, null);
+                    startNextActivity(ScannerActivity.class);
                 }
             } catch (Exception e) {
-                startNextActivity(ScannerActivity.class, null);
+                startNextActivity(ScannerActivity.class);
             }
         } else {
-            startNextActivity(ScannerActivity.class, null);
+            startNextActivity(ScannerActivity.class);
         }
 
     }
+    private void startNextActivity(Class activity){
+        Intent intent = new Intent(this,activity);
+        startActivity(intent);
+        //loadNativeHome();
+    }
+    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            binding.nativeHome.removeAllViews();
+            try {
+                binding.nativeHome.addView((NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_load_large, null));
+                loadNativeHome();
+            } catch (Exception e) {
+                binding.nativeHome.setVisibility(View.INVISIBLE);
+            }
+        }
+    });
+
     
     private void showInterSound() {
         if (IsNetWork.haveNetworkConnectionUMP( MainActivity.this) && ConstantIdAds.listIDAdsInterSound.size() != 0 && ConstantRemote.show_inter_all) {
@@ -201,13 +224,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                         }
                     }, true);
                 } else {
-                    startNextActivity(SoundsActivity.class,null);
+                    startNextActivity(SoundsActivity.class);
                 }
             } catch (Exception e) {
-                startNextActivity(SoundsActivity.class,null);
+                startNextActivity(SoundsActivity.class);
             }
         } else {
-            startNextActivity(SoundsActivity.class,null);
+            startNextActivity(SoundsActivity.class);
         }
 
 }

@@ -3,7 +3,9 @@ package com.liedetector.test.prank.liescanner.truthtest.base;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,8 +32,11 @@ public abstract class BaseActivity2 extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         hideNavigationBar();
     }
-    public void loadBanner(View view) {
+    public void loadBanner(RelativeLayout view) {
         if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
+            view.removeAllViews();
+            RelativeLayout layout = (RelativeLayout) LayoutInflater.from(this).inflate(com.ads.sapp.R.layout.layout_banner_control, null, false);
+            view.addView(layout);
             Admob.getInstance().loadBannerFloor(this, ConstantIdAds.listIDAdsBanner);
             view.setVisibility(View.VISIBLE);
         } else {

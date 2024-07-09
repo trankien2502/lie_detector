@@ -2,8 +2,13 @@ package com.liedetector.test.prank.liescanner.truthtest.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
@@ -49,8 +54,11 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         }
 
     }
-    public void loadBanner(View view) {
+    public void loadBanner(RelativeLayout view) {
         if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
+            view.removeAllViews();
+            RelativeLayout layout = (RelativeLayout) LayoutInflater.from(this).inflate(com.ads.sapp.R.layout.layout_banner_control, null, false);
+            view.addView(layout);
             Admob.getInstance().loadBannerFloor(this, ConstantIdAds.listIDAdsBanner);
             view.setVisibility(View.VISIBLE);
         } else {
@@ -59,6 +67,7 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
 
 
     }
+
     public void loadBannerCollapsible(View view){
         if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBannerCollapsible.size() != 0 && ConstantRemote.banner_collapsible) {
             Admob.getInstance().loadCollapsibleBannerFloor(this, ConstantIdAds.listIDAdsBannerCollapsible, "bottom");

@@ -28,4 +28,5 @@ public class ConstantIdAds {
     public static ArrayList<String> listIDAdsInterAll = new ArrayList<>();
 
     public static ApInterstitialAd mInterAll;
+    public static ApInterstitialAd mBannerSound;
 }

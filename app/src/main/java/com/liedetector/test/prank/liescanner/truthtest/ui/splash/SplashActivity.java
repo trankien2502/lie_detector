@@ -196,6 +196,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
 
                                     }
                                 }
+
                                 if (IsNetWork.haveNetworkConnectionUMP(SplashActivity.this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
                                     Admob.getInstance().loadBannerFloor(SplashActivity.this, ConstantIdAds.listIDAdsBanner);
                                     binding.rlBanner.setVisibility(View.VISIBLE);
