@@ -70,11 +70,36 @@ public class SharePrefUtils {
         SharedPreferences pre = context.getSharedPreferences("dataAudio", Context.MODE_PRIVATE);
         return pre.getInt("first", 0);
     }
+    public static int getCountExitApp(Context context){
+        SharedPreferences pre = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+        return pre.getInt("countExit", 1);
+    }
+    public static void increaseCountExitApp(Context context) {
+        SharedPreferences pre = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pre.edit();
+        editor.putInt("countExit", pre.getInt("countExit", 1) + 1);
+        editor.apply();
+        editor.commit();
+    }
+
+
 
     public static boolean isRated(Context context) {
         SharedPreferences pre = context.getSharedPreferences("data", Context.MODE_PRIVATE);
         return pre.getBoolean("rated", false);
     }
+    public static boolean getResumeBackFromSetting(Context context) {
+        SharedPreferences pre = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+        return pre.getBoolean("resume_back_from_setting", true);
+    }
+    public static void setResumeBack(Context context, boolean isResumeBackFromSetting) {
+        SharedPreferences pre = context.getSharedPreferences("data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pre.edit();
+        editor.putBoolean("resume_back_from_setting", isResumeBackFromSetting);
+        editor.apply();
+        editor.commit();
+    }
+
 
     public static int getCountOpenApp(Context context) {
         SharedPreferences pre = context.getSharedPreferences("data", Context.MODE_PRIVATE);
@@ -87,6 +112,7 @@ public class SharePrefUtils {
         editor.putInt("counts", pre.getInt("counts", 0) + 1);
         editor.commit();
     }
+
 
     public static void forceRated(Context context) {
         SharedPreferences pre = context.getSharedPreferences("data", Context.MODE_PRIVATE);

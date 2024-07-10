@@ -2,6 +2,7 @@ package com.liedetector.test.prank.liescanner.truthtest.ui.language;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.liedetector.test.prank.liescanner.truthtest.ui.intro.IntroActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.adapter.LanguageStartAdapter;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.model.LanguageModel;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
+import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class LanguageStartActivity extends BaseActivity<ActivityLanguageStartBin
     List<LanguageModel> listLanguage;
     String codeLang;
     String nameLang;
+    boolean isChoose = false;
 
     @Override
     public ActivityLanguageStartBinding getBinding() {
@@ -48,10 +51,11 @@ public class LanguageStartActivity extends BaseActivity<ActivityLanguageStartBin
         LanguageStartAdapter languageStartAdapter = new LanguageStartAdapter(listLanguage, languageModel -> {
             codeLang = languageModel.getCode();
             nameLang = languageModel.getName();
+            isChoose = true;
         }, this);
 
 
-        languageStartAdapter.setCheck(SystemUtil.getPreLanguage(getBaseContext()));
+        //languageStartAdapter.setCheck(SystemUtil.getPreLanguage(getBaseContext()));
 
         binding.rcvLanguage.setLayoutManager(linearLayoutManager);
         binding.rcvLanguage.setAdapter(languageStartAdapter);
@@ -62,6 +66,10 @@ public class LanguageStartActivity extends BaseActivity<ActivityLanguageStartBin
     @Override
     public void bindView() {
         binding.imgTick.setOnClickListener(view -> {
+            if (!isChoose){
+                Toast.makeText(this, "Please select language!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             SystemUtil.saveLocale(getBaseContext(), codeLang);
             SystemUtil.setLanguageName(getBaseContext(), nameLang);
             EventTracking.logEvent(this, "language_fo_save_click");
@@ -72,7 +80,6 @@ public class LanguageStartActivity extends BaseActivity<ActivityLanguageStartBin
     public void loadNativeLanguage() {
         try {
             if (IsNetWork.haveNetworkConnection(LanguageStartActivity.this) && ConstantIdAds.listIDAdsNativeLanguage.size() != 0 && ConstantRemote.native_language) {
-
                 Admob.getInstance().loadNativeAd(LanguageStartActivity.this, ConstantIdAds.listIDAdsNativeLanguage, new AdCallback() {
                     @Override
                     public void onUnifiedNativeAdLoaded(@NonNull NativeAd unifiedNativeAd) {

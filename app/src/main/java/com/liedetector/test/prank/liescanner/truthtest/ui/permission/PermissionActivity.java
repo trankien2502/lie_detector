@@ -39,12 +39,15 @@ import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityPermissionBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.ScannerActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.setting.SettingActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.splash.SplashActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
+import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 
 public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> {
     public static boolean isPermissionCamera;
     public static boolean isPermissionMicro;
+    private  boolean isFromSetting = false;
     private static final String PREFS_NAME = "PermissionPrefs";
     private static final String PREF_KEY_DENY_COUNT_MIC = "denyCountMic";
     private static final String PREF_KEY_DENY_COUNT_CAM = "denyCountCam";
@@ -244,7 +247,7 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
     private void startNextActivity() {
         Intent intent = new Intent(PermissionActivity.this, MainActivity.class);
         startActivity(intent);
-        finish();
+        finishAffinity();
     }
 
     private void showDialogWarning() {
@@ -290,16 +293,21 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
 
         if (perId == MICRO_PERMISSION_REQUEST_CODE) tvPermission.setText(R.string.microphone);
         if (perId == CAMERA_PERMISSION_REQUEST_CODE) tvPermission.setText(R.string.camera);
-        buttonOK.setOnClickListener(v -> {
-            dialog.dismiss();
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            Uri uri = Uri.fromParts("package", getPackageName(), null);
-            intent.setData(uri);
-            startActivity(intent);
+        buttonOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFromSetting = true;
+                //SharePrefUtils.setResumeBack(PermissionActivity.this,false);
+                dialog.dismiss();
+                //ConstantRemote.resume_back_from_setting = false;
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+                if (isFromSetting) Toast.makeText(PermissionActivity.this, "OK", Toast.LENGTH_SHORT).show();
+            }
         });
-
         buttonCancel.setOnClickListener(v -> dialog.dismiss());
-
         // Show the dialog
         dialog.show();
     }
@@ -316,6 +324,15 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
         if (isPermissionCamera) {
             binding.swichCamera.setChecked(true);
         }
-        AppOpenManager.getInstance().disableAppResumeWithActivity(PermissionActivity.class);
+        if (isFromSetting){
+            //Toast.makeText(this, "TRUE", Toast.LENGTH_SHORT).show();
+            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
+            isFromSetting = false;
+            return;
+        }
+        //Toast.makeText(this, "FALSE", Toast.LENGTH_SHORT).show();
+
+
+
     }
 }

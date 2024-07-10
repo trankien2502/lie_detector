@@ -22,7 +22,10 @@ import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
 import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivitySplashBinding;
+import com.liedetector.test.prank.liescanner.truthtest.ui.intro.IntroActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.LanguageStartActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 import com.liedetector.test.prank.liescanner.truthtest.util.SPUtils;
 import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
@@ -50,7 +53,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
         clearAllAds();
         callUMP();
         callRemoteConfig();
-        EventTracking.logEvent(this,"splash_open");
+        EventTracking.logEvent(this, "splash_open");
     }
 
     private void clearAllAds() {
@@ -65,8 +68,8 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
         ConstantIdAds.listIDAdsInterSound = new ArrayList<>();
         ConstantIdAds.listIDAdsNativeHome = new ArrayList<>();
         ConstantIdAds.listIDAdsBannerCollapsible = new ArrayList<>();
-        ConstantIdAds.listIDAdsBanner= new ArrayList<>();
-        ConstantIdAds.listIDAdsResume= new ArrayList<>();
+        ConstantIdAds.listIDAdsBanner = new ArrayList<>();
+        ConstantIdAds.listIDAdsResume = new ArrayList<>();
 
         ConstantIdAds.listIDAdsInterAll = new ArrayList<>();
     }
@@ -96,9 +99,9 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
         ConstantRemote.initRemoteConfig(task -> {
             if (task.isSuccessful()) {
                 ConstantRemote.open_splash = ConstantRemote.getRemoteConfigBoolean("open_splash");
-                ConstantRemote.show_inter_all = ConstantRemote.getRemoteConfigBoolean("show_inter_all");
+                ConstantRemote.banner_splash = ConstantRemote.getRemoteConfigBoolean("banner_splash");
                 ConstantRemote.inter_splash = ConstantRemote.getRemoteConfigBoolean("inter_splash");
-                ConstantRemote.native_language =  ConstantRemote.getRemoteConfigBoolean("native_language");
+                ConstantRemote.native_language = ConstantRemote.getRemoteConfigBoolean("native_language");
                 ConstantRemote.inter_intro = ConstantRemote.getRemoteConfigBoolean("inter_intro");
                 ConstantRemote.native_intro = ConstantRemote.getRemoteConfigBoolean("native_intro");
                 ConstantRemote.inter_permission = ConstantRemote.getRemoteConfigBoolean("inter_permission");
@@ -110,12 +113,15 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
                 ConstantRemote.banner = ConstantRemote.getRemoteConfigBoolean("banner");
                 ConstantRemote.resume = ConstantRemote.getRemoteConfigBoolean("resume");
 
-                ConstantRemote.inter_all = ConstantRemote.getRemoteConfigString("inter_all");
-                ConstantRemote.rate_aoa_inter_splash = ConstantRemote.getRemoteConfigOpenSplash("rate_aoa_inter_splash");
+                ConstantRemote.show_intro = ConstantRemote.getRemoteConfigBoolean("show_intro");
+                ConstantRemote.rate_aoa_inter_splash = ConstantRemote.getRemoteConfigString("rate_aoa_inter_splash");
+                ConstantRemote.show_language = ConstantRemote.getRemoteConfigString("show_language");
+                ConstantRemote.show_permission = ConstantRemote.getRemoteConfigString("show_permission");
             }
         });
 
     }
+
     private void callConsent() {
         GoogleMobileAdsConsentManager googleMobileAdsConsentManager = GoogleMobileAdsConsentManager.getInstance(getApplicationContext());
         googleMobileAdsConsentManager.setSetTagForUnderAge(false);
@@ -138,6 +144,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
             }
         });
     }
+
     private void callApi() {
 
         if (IsNetWork.haveNetworkConnectionUMP(this)) {
@@ -155,9 +162,6 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
                                             break;
                                         case "inter_splash":
                                             ConstantIdAds.listIDAdsInterSplash.add(ads.getAds_id());
-                                            break;
-                                        case "show_inter_all":
-                                            ConstantIdAds.listIDAdsInterAll.add(ads.getAds_id());
                                             break;
                                         case "native_language":
                                             ConstantIdAds.listIDAdsNativeLanguage.add(ads.getAds_id());
@@ -183,9 +187,6 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
                                         case "native_home":
                                             ConstantIdAds.listIDAdsNativeHome.add(ads.getAds_id());
                                             break;
-                                        case "banner_collapsible":
-                                            ConstantIdAds.listIDAdsBannerCollapsible.add(ads.getAds_id());
-                                            break;
                                         case "banner":
                                             ConstantIdAds.listIDAdsBanner.add(ads.getAds_id());
                                             break;
@@ -196,8 +197,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
 
                                     }
                                 }
-
-                                if (IsNetWork.haveNetworkConnectionUMP(SplashActivity.this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
+                                if (IsNetWork.haveNetworkConnectionUMP(SplashActivity.this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner_splash) {
                                     Admob.getInstance().loadBannerFloor(SplashActivity.this, ConstantIdAds.listIDAdsBanner);
                                     binding.rlBanner.setVisibility(View.VISIBLE);
                                 } else {
@@ -231,6 +231,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
             new Handler().postDelayed(this::startNextActivity, 3000);
         }
     }
+
     private boolean isShowAppOpenOrInter() {
         try {
             int appOpenRate = Integer.parseInt(ConstantRemote.rate_aoa_inter_splash.get(0));
@@ -240,6 +241,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
             return true;
         }
     }
+
     private void showAppOpenSplash() {
         if (IsNetWork.haveNetworkConnectionUMP(this) && ConstantIdAds.listIDAdsOpenSplash.size() != 0 && ConstantRemote.open_splash) {
             AdCallback adCallback = new AdCallback() {
@@ -254,6 +256,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
             startNextActivity();
         }
     }
+
     private void showAppInterSplash() {
         if (IsNetWork.haveNetworkConnectionUMP(this) && ConstantIdAds.listIDAdsInterSplash.size() != 0 && ConstantRemote.inter_splash) {
             CommonAd.getInstance().loadSplashInterstitialAds(SplashActivity.this, ConstantIdAds.listIDAdsInterSplash, 15000, 3500, new CommonAdCallback() {
@@ -280,11 +283,38 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
         }
     }
 
+    public void startNextActivity() {
+        if (ConstantRemote.resume) {
+            AppOpenManager.getInstance().enableAppResume();
+        } else {
+            AppOpenManager.getInstance().disableAppResume();
+        }
+        if (SharePrefUtils.getCountOpenApp(SplashActivity.this) == 1) {
+            startNextActivity(LanguageStartActivity.class, null);
+        } else {
+            if (ConstantRemote.show_language.contains(String.valueOf(SharePrefUtils.getCountOpenApp(SplashActivity.this)))) {
+                startNextActivity(LanguageStartActivity.class, null);
+            } else {
+                if (ConstantRemote.show_intro) {
+                    startNextActivity(IntroActivity.class, null);
+                } else {
+                    if (ConstantRemote.show_permission.contains(String.valueOf(SharePrefUtils.getCountOpenApp(SplashActivity.this)))) {
+                        startNextActivity(PermissionActivity.class, null);
+                    } else {
+                        if (!(PermissionActivity.isPermissionCamera && PermissionActivity.isPermissionMicro)) {
+                            startNextActivity(PermissionActivity.class, null);
+                        } else {
+                            startNextActivity(MainActivity.class, null);
+                        }
+                    }
 
 
+                }
+            }
+        }
+        finishAffinity();
 
-
-
+    }
 
 
     @Override
@@ -292,10 +322,10 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
 
     }
 
-    private void startNextActivity() {
-        startNextActivity(LanguageStartActivity.class, null);
-        finishAffinity();
-    }
+//    private void startNextActivity() {
+//        startNextActivity(LanguageStartActivity.class, null);
+//        finishAffinity();
+//    }
 
     @Override
     public void onBackPressed() {

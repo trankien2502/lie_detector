@@ -36,6 +36,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.ads.sapp.admob.AppOpenManager;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.liedetector.test.prank.liescanner.truthtest.R;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity2;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityScannerBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.tabs.EyeFragment;
@@ -68,6 +69,7 @@ public class ScannerActivity extends BaseActivity2 {
     public static int mTypeScanner = TYPE_FINGER_PRINT;
     public static int mType = TYPE_DEFAULT;
     public static boolean isOpenDialog = false;
+    private boolean isFromSetting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -436,6 +438,7 @@ public class ScannerActivity extends BaseActivity2 {
                 Uri uri = Uri.fromParts("package", getPackageName(), null);
                 intent.setData(uri);
                 startActivity(intent);
+                isFromSetting = true;
             }
         });
 
@@ -523,6 +526,12 @@ public class ScannerActivity extends BaseActivity2 {
     protected void onResume() {
         super.onResume();
         loadBanner(mActivityScannerBinding.rlBanner);
-        AppOpenManager.getInstance().disableAppResumeWithActivity(ScannerActivity.class);
+        if (isFromSetting){
+            //Toast.makeText(this, "TRUE", Toast.LENGTH_SHORT).show();
+            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
+            isFromSetting = false;
+            return;
+        }
+
     }
 }

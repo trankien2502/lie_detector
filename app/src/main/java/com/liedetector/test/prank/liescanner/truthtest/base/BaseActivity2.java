@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ads.sapp.admob.Admob;
+import com.ads.sapp.admob.AppOpenManager;
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
 import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
@@ -32,6 +33,7 @@ public abstract class BaseActivity2 extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         hideNavigationBar();
     }
+
     public void loadBanner(RelativeLayout view) {
         if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
             view.removeAllViews();
@@ -45,7 +47,8 @@ public abstract class BaseActivity2 extends AppCompatActivity {
 
 
     }
-    public void loadBannerCollapsible(View view){
+
+    public void loadBannerCollapsible(View view) {
         if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBannerCollapsible.size() != 0 && ConstantRemote.banner_collapsible) {
             Admob.getInstance().loadCollapsibleBannerFloor(this, ConstantIdAds.listIDAdsBannerCollapsible, "bottom");
             view.setVisibility(View.VISIBLE);
@@ -54,6 +57,7 @@ public abstract class BaseActivity2 extends AppCompatActivity {
         }
 
     }
+
     private void hideNavigationBar() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
@@ -61,6 +65,7 @@ public abstract class BaseActivity2 extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
     }
+
     public void startNextActivity(Class activity, Bundle bundle) {
         Intent intent = new Intent(this, activity);
         if (bundle == null) {
@@ -76,13 +81,21 @@ public abstract class BaseActivity2 extends AppCompatActivity {
         overridePendingTransition(R.anim.in_left, R.anim.out_right);
     }
 
+    private void load() {
+        if (ConstantRemote.resume) {
+            AppOpenManager.getInstance().enableAppResumeWithActivity(getClass());
+        } else {
+            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
+        }
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         //tắt ads resume all
+        load();
     }
-
 
 
 }

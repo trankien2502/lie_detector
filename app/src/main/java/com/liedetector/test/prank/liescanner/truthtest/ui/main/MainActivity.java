@@ -32,6 +32,7 @@ import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityMainBinding;
 import com.liedetector.test.prank.liescanner.truthtest.dialog.exit.ExitAppDialog;
+import com.liedetector.test.prank.liescanner.truthtest.dialog.exit.IClickDialogExit;
 import com.liedetector.test.prank.liescanner.truthtest.dialog.rate.IClickDialogRate;
 import com.liedetector.test.prank.liescanner.truthtest.dialog.rate.RatingDialog;
 import com.liedetector.test.prank.liescanner.truthtest.ui.intro.IntroActivity;
@@ -100,18 +101,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             binding.nativeHome.setVisibility(View.INVISIBLE);
         }
     }
-    private void countExitApp(){
-        final String PREFS_NAME = "ExitAppPrefs";
-        final String PREF_KEY_COUNT_EXIT_APP = "exitAppCount";
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        int count = prefs.getInt(PREF_KEY_COUNT_EXIT_APP, 0);
-        count++;
-        //SharePrefUtils.putInt(PREFS_NAME,count);
-        if (count%2==0){
-            onRate();
-        }
-    }
-    private void onRate() {
+    private void showDialogRate() {
         RatingDialog ratingDialog = new RatingDialog(MainActivity.this, true);
         ratingDialog.init(new IClickDialogRate() {
             @Override
@@ -124,8 +114,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 try {
                     startActivity(Intent.createChooser(sendIntent, getString(R.string.Send_Email)));
                     SharePrefUtils.forceRated(getApplicationContext());
+                    finishAffinity();
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(getApplicationContext(), getString(R.string.There_is_no), Toast.LENGTH_SHORT).show();
+                    SharePrefUtils.increaseCountExitApp(MainActivity.this);
+                    finishAffinity();
                 }
             }
 
@@ -141,8 +134,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                         flow.addOnSuccessListener(result -> {
                             SharePrefUtils.forceRated(MainActivity.this);
                             ratingDialog.dismiss();
+                            finishAffinity();
                         });
                     } else {
+                        SharePrefUtils.increaseCountExitApp(MainActivity.this);
+                        finishAffinity();
                         ratingDialog.dismiss();
                     }
                 });
@@ -151,6 +147,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             @Override
             public void later() {
                 EventTracking.logEvent(MainActivity.this,"rate_not_now");
+                SharePrefUtils.increaseCountExitApp(MainActivity.this);
+                finishAffinity();
                 ratingDialog.dismiss();
             }
 
@@ -198,21 +196,21 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         startActivity(intent);
         //loadNativeHome();
     }
-    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            binding.nativeHome.removeAllViews();
-            try {
-                binding.nativeHome.addView((NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_load_large, null));
-                loadNativeHome();
-            } catch (Exception e) {
-                binding.nativeHome.setVisibility(View.INVISIBLE);
-            }
-        }
-    });
+//    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+//        if (result.getResultCode() == RESULT_OK) {
+//            binding.nativeHome.removeAllViews();
+//            try {
+//                binding.nativeHome.addView((NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_load_large, null));
+//                loadNativeHome();
+//            } catch (Exception e) {
+//                binding.nativeHome.setVisibility(View.INVISIBLE);
+//            }
+//        }
+//    });
 
     
     private void showInterSound() {
-        if (IsNetWork.haveNetworkConnectionUMP( MainActivity.this) && ConstantIdAds.listIDAdsInterSound.size() != 0 && ConstantRemote.show_inter_all) {
+        if (IsNetWork.haveNetworkConnectionUMP( MainActivity.this) && ConstantIdAds.listIDAdsInterSound.size() != 0 && ConstantRemote.inter_sound) {
             try {
                 if (ConstantIdAds.mInterSound != null) {
                     CommonAd.getInstance().forceShowInterstitial(this, ConstantIdAds.mInterSound, new CommonAdCallback() {
@@ -238,8 +236,27 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private void showDialogExit() {
         ExitAppDialog dialog = new ExitAppDialog(this, false);
-        dialog.init(this::finishAffinity);
+        dialog.init(new IClickDialogExit() {
+            @Override
+            public void quit() {
+                SharePrefUtils.increaseCountExitApp(MainActivity.this);
+                finishAffinity();
+            }
+        });
         dialog.show();
+    }
+
+    private void showRateOrExitApp() {
+        if (SharePrefUtils.isRated(this)) {
+            showDialogExit();
+        } else {
+            int count = SharePrefUtils.getCountExitApp(this);
+            if (count%2==0){
+                showDialogRate();
+            }else {
+                showDialogExit();
+            }
+        }
     }
 
     @Override
@@ -250,6 +267,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @Override
     public void onBackPressed() {
-        showDialogExit();
+        showRateOrExitApp();
     }
 }

@@ -10,16 +10,17 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class ConstantRemote {
-    public static ArrayList<String> show_language = new ArrayList<>(Collections.singletonList("1,2,3"));
+    public static ArrayList<String> show_language = new ArrayList<>(Collections.singletonList("1,2,3,4,5"));
+    public static ArrayList<String> show_permission = new ArrayList<>(Collections.singletonList("1,2,3,4,5"));
     public static ArrayList<String> rate_aoa_inter_splash = new ArrayList<>(Arrays.asList("30", "70"));
-    public static ArrayList<String> inter_all = new ArrayList<>(Arrays.asList("30", "70"));
-    public static boolean show_inter_all = true;
+    public static boolean show_intro = false;
+    public static boolean show_ump = false;
 
+    public static boolean banner_splash = true;
     public static boolean open_splash = true;
-
     public static boolean inter_splash = true;
     public static boolean native_language = true;
-    public static boolean inter_intro = false;
+    public static boolean inter_intro = true;
     public static boolean native_intro = true;
     public static boolean inter_permission = true;
     public static boolean native_permission = true;
@@ -28,8 +29,9 @@ public class ConstantRemote {
     public static boolean native_home = true;
     public static boolean banner_collapsible = true;
     public static boolean banner = true;
-
     public static boolean resume = true;
+
+    public static boolean resume_back_from_setting = true;
 
 
 

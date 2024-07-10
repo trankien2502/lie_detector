@@ -21,6 +21,8 @@ import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
 import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
 import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
+import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.ScannerActivity;
+import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActivity {
@@ -47,11 +49,17 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
 
     }
     private void load(){
-        if (ConstantRemote.resume){
-            AppOpenManager.getInstance().enableAppResumeWithActivity(getClass());
-        }else {
-            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
-        }
+//        if (SharePrefUtils.getResumeBackFromSetting(this)){
+            if (ConstantRemote.resume){
+                AppOpenManager.getInstance().enableAppResumeWithActivity(getClass());
+            }else {
+                AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
+            }
+//        } else {
+//            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
+//        }
+//        SharePrefUtils.setResumeBack(this,true);
+        //ConstantRemote.resume_back_from_setting = true;
 
     }
     public void loadBanner(RelativeLayout view) {
@@ -77,36 +85,6 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         }
 
     }
-    private void loadInterAll() {
-        if (ConstantIdAds.mInterAll == null && IsNetWork.haveNetworkConnection(getBaseContext()) && ConstantIdAds.listIDAdsInterAll.size() != 0 && ConstantRemote.show_inter_all) {
-            ConstantIdAds.mInterAll = CommonAd.getInstance().getInterstitialAds(this, ConstantIdAds.listIDAdsInterAll);
-        }
-    }
-    private void showInterAll(Class activity){
-        if (IsNetWork.haveNetworkConnection(getBaseContext()) && ConstantIdAds.listIDAdsInterAll.size() != 0 && ConstantRemote.show_inter_all) {
-            try {
-                if (ConstantIdAds.mInterAll != null) {
-                    CommonAd.getInstance().forceShowInterstitial(getBaseContext(), ConstantIdAds.mInterAll, new CommonAdCallback() {
-                        @Override
-                        public void onNextAction() {
-
-                            startNextActivity(activity,null);
-                            ConstantIdAds.mInterAll = null;
-                            loadInterAll();
-                        }
-                    }, true);
-                } else {
-                    startNextActivity(activity,null);
-                }
-            } catch (Exception e) {
-                startNextActivity(activity,null);
-            }
-        } else {
-            startNextActivity(activity,null);
-        }
-
-    }
-
     public void startNextActivity(Class activity, Bundle bundle) {
         Intent intent = new Intent(this, activity);
         if (bundle == null) {

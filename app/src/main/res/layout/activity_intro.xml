@@ -5,21 +5,23 @@
     android:layout_height="match_parent"
     android:background="@color/darkHeavy">
 
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <RelativeLayout
         android:id="@+id/view_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_12sdp"
-        android:layout_marginBottom="@dimen/_32sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
         app:layout_constraintBottom_toTopOf="@+id/btn_next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -72,6 +74,7 @@
         app:layout_constraintBottom_toTopOf="@+id/nativeIntro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
     <RelativeLayout
         android:id="@+id/nativeIntro"
         android:layout_width="match_parent"
@@ -89,7 +92,6 @@
             <include layout="@layout/layout_native_show_small" />
         </FrameLayout>
     </RelativeLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

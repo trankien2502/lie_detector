@@ -20,7 +20,7 @@ public class MyApplication extends AdsMultiDexApplication {
         SharePrefUtils.init(this);
         ConstantRemote.initRemoteConfig(task -> {
             if (task.isSuccessful()) {
-                ConstantRemote.open_splash = ConstantRemote.getRemoteConfigBoolean("open_splash");
+                ConstantRemote.show_ump = ConstantRemote.getRemoteConfigBoolean("show_ump");
             }
         });
         sdkInitialize(getApplicationContext());
