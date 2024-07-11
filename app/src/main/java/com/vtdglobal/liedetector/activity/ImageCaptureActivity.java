@@ -26,6 +26,7 @@ public class ImageCaptureActivity extends BaseActivity {
     public static ActivityImageCaptureBinding mActivityImageCaptureBinding;
     public static Bitmap finalBitmap;
     ImageView[] ghostImage = null;
+    int[] ghost = null;
     private final String AUTHORITY = "com.example.liedetector.fileprovider";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +35,21 @@ public class ImageCaptureActivity extends BaseActivity {
         setContentView(mActivityImageCaptureBinding.getRoot());
         mActivityImageCaptureBinding.imgImageCapture.setImageBitmap(GhostActivity.capturedBitmap);
         initData();
-        ghostImage[GhostActivity.appearedGhost].setVisibility(View.VISIBLE);
+        ghostImage[GhostActivity.appearedGhostImage].setImageResource(ghost[GhostActivity.appearedGhost]);
+        ghostImage[GhostActivity.appearedGhostImage].setVisibility(View.VISIBLE);
         initUIHeader();
         initListener();
     }
 
     private void initData() {
         ghostImage = new ImageView[]{
-                mActivityImageCaptureBinding.imgGhost1,mActivityImageCaptureBinding.imgGhost2,mActivityImageCaptureBinding.imgGhost3,
-                mActivityImageCaptureBinding.imgGhost4,mActivityImageCaptureBinding.imgGhost5,mActivityImageCaptureBinding.imgGhost6
+                mActivityImageCaptureBinding.imgGhost11,mActivityImageCaptureBinding.imgGhost22,mActivityImageCaptureBinding.imgGhost33,
+                mActivityImageCaptureBinding.imgGhost44,mActivityImageCaptureBinding.imgGhost55, mActivityImageCaptureBinding.imgGhost4,
+                mActivityImageCaptureBinding.imgGhost5
+        };
+        ghost = new int[]{
+                R.drawable.img_ghost_11, R.drawable.img_ghost_22, R.drawable.img_ghost_33, R.drawable.img_ghost_44, R.drawable.img_ghost_55,
+                R.drawable.img_ghost_1, R.drawable.img_ghost_2, R.drawable.img_ghost_3, R.drawable.img_ghost_4, R.drawable.img_ghost_5
         };
     }
 
