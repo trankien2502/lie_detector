@@ -1,5 +1,6 @@
 package com.liedetector.test.prank.liescanner.truthtest.base;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -20,11 +21,13 @@ import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 public abstract class BaseActivity2 extends AppCompatActivity {
 
+    public AlertDialog alertDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         SystemUtil.setLocale(this);
         super.onCreate(savedInstanceState);
         hideNavigationBar();
+        createLoadingDialog();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
@@ -87,6 +90,16 @@ public abstract class BaseActivity2 extends AppCompatActivity {
         } else {
             AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
         }
+    }
+    private void createLoadingDialog(){
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_loading, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+
+        alertDialog = builder.create();
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.liedetector.test.prank.liescanner.truthtest.base;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActivity {
 
     public VB binding;
+    public AlertDialog alertDialog;
 
     public abstract VB getBinding();
 
@@ -43,7 +45,7 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         setContentView(binding.getRoot());
 
         hideFullNavigation();
-
+        createLoadingDialog();
         initView();
         bindView();
 
@@ -79,6 +81,16 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         } else {
             view.setVisibility(View.GONE);
         }
+
+    }
+    private void createLoadingDialog(){
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_loading, null);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+
+        alertDialog = builder.create();
 
     }
 
