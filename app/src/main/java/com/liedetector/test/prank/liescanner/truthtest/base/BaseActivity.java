@@ -48,20 +48,15 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         bindView();
 
     }
-    private void load(){
-//        if (SharePrefUtils.getResumeBackFromSetting(this)){
-            if (ConstantRemote.resume){
-                AppOpenManager.getInstance().enableAppResumeWithActivity(getClass());
-            }else {
-                AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
-            }
-//        } else {
-//            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
-//        }
-//        SharePrefUtils.setResumeBack(this,true);
-        //ConstantRemote.resume_back_from_setting = true;
 
+    private void load() {
+        if (ConstantRemote.resume) {
+            AppOpenManager.getInstance().enableAppResumeWithActivity(getClass());
+        } else {
+            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
+        }
     }
+
     public void loadBanner(RelativeLayout view) {
         if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
             view.removeAllViews();
@@ -76,7 +71,8 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
 
     }
 
-    public void loadBannerCollapsible(View view){
+
+    public void loadBannerCollapsible(View view) {
         if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBannerCollapsible.size() != 0 && ConstantRemote.banner_collapsible) {
             Admob.getInstance().loadCollapsibleBannerFloor(this, ConstantIdAds.listIDAdsBannerCollapsible, "bottom");
             view.setVisibility(View.VISIBLE);
@@ -85,6 +81,7 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         }
 
     }
+
     public void startNextActivity(Class activity, Bundle bundle) {
         Intent intent = new Intent(this, activity);
         if (bundle == null) {

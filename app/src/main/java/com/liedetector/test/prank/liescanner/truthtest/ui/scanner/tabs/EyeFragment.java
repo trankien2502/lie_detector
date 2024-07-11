@@ -361,4 +361,10 @@ public class EyeFragment extends Fragment {
         }
         handler.removeCallbacks(runnableAnalyzing);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initUIDefault();
+    }
 }

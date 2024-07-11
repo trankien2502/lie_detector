@@ -83,7 +83,8 @@ public class LanguageActivity extends BaseActivity<ActivityLanguageBinding> {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
+        setResult(RESULT_OK);
         finishThisActivity();
     }
 }

@@ -22,7 +22,11 @@ import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityLangu
 import com.liedetector.test.prank.liescanner.truthtest.ui.intro.IntroActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.adapter.LanguageStartAdapter;
 import com.liedetector.test.prank.liescanner.truthtest.ui.language.model.LanguageModel;
+import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity;
+import com.liedetector.test.prank.liescanner.truthtest.ui.splash.SplashActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
+import com.liedetector.test.prank.liescanner.truthtest.util.PermissionManager;
 import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
@@ -66,7 +70,7 @@ public class LanguageStartActivity extends BaseActivity<ActivityLanguageStartBin
     @Override
     public void bindView() {
         binding.imgTick.setOnClickListener(view -> {
-            if (!isChoose){
+            if (!isChoose) {
                 Toast.makeText(this, "Please select language!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -105,7 +109,22 @@ public class LanguageStartActivity extends BaseActivity<ActivityLanguageStartBin
 
 
     private void startNextActivity() {
-        startNextActivity(IntroActivity.class, null);
+        if (SharePrefUtils.getCountOpenApp(LanguageStartActivity.this) == 1) {
+            startNextActivity(IntroActivity.class, null);
+        } else {
+            if (ConstantRemote.show_intro) {
+                startNextActivity(IntroActivity.class, null);
+            } else {
+                if (ConstantRemote.show_permission.contains(String.valueOf(SharePrefUtils.getCountOpenApp(LanguageStartActivity.this)))) {
+                    startNextActivity(PermissionActivity.class, null);
+                } else {
+                    if (!PermissionManager.checkAllPermission(this)){
+                        startNextActivity(PermissionActivity.class, null);
+                    } else
+                        startNextActivity(MainActivity.class, null);
+                }
+            }
+        }
         finishAffinity();
     }
 

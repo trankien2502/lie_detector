@@ -1,12 +1,16 @@
 package com.liedetector.test.prank.liescanner.truthtest.ui.forte_piano;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
@@ -55,11 +59,15 @@ public class FortePianoActivity extends BaseActivity<ActivityFortePianoBinding> 
 
     @Override
     public void bindView() {
-        binding.header.imgLeft.setOnClickListener(view -> onBackPressed());
+        binding.header.imgLeft.setOnClickListener(view -> {
+            setResult(RESULT_OK);
+            onBackPressed();
+        });
 
         binding.header.imgSetting.setOnClickListener(view -> {
             EventTracking.logEvent(this,"scanner_setting_click");
-            startNextActivity(SettingActivity.class, null);
+            Intent intent = new Intent(FortePianoActivity.this,SettingActivity.class);
+            resultLauncher.launch(intent);
         });
 
         initNoteListener();
@@ -316,6 +324,15 @@ public class FortePianoActivity extends BaseActivity<ActivityFortePianoBinding> 
             }
         });
     }
+    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            try {
+                loadBanner(binding.rlBanner);
+            } catch (Exception e){
+                binding.rlBanner.setVisibility(View.GONE);
+            }
+        }
+    });
 
     public void onDestroy() {
         super.onDestroy();
@@ -330,6 +347,12 @@ public class FortePianoActivity extends BaseActivity<ActivityFortePianoBinding> 
     @Override
     protected void onResume() {
         super.onResume();
-        loadBanner(binding.rlBanner);
+
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        setResult(RESULT_OK);
+        finish();
     }
 }

@@ -93,7 +93,6 @@ public abstract class BaseActivity2 extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //tắt ads resume all
         load();
     }
 

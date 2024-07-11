@@ -27,6 +27,7 @@ import com.liedetector.test.prank.liescanner.truthtest.ui.language.LanguageStart
 import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
+import com.liedetector.test.prank.liescanner.truthtest.util.PermissionManager;
 import com.liedetector.test.prank.liescanner.truthtest.util.SPUtils;
 import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 
@@ -53,7 +54,17 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
         clearAllAds();
         callUMP();
         callRemoteConfig();
+//        loadBanner();
         EventTracking.logEvent(this, "splash_open");
+    }
+
+    private void loadBanner() {
+        if (IsNetWork.haveNetworkConnectionUMP(SplashActivity.this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner_splash) {
+            binding.rlBanner.setVisibility(View.VISIBLE);
+            Admob.getInstance().loadBannerFloor(SplashActivity.this, ConstantIdAds.listIDAdsBanner);
+        } else {
+            binding.rlBanner.setVisibility(View.GONE);
+        }
     }
 
     private void clearAllAds() {
@@ -197,13 +208,8 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
 
                                     }
                                 }
-                                if (IsNetWork.haveNetworkConnectionUMP(SplashActivity.this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner_splash) {
-                                    Admob.getInstance().loadBannerFloor(SplashActivity.this, ConstantIdAds.listIDAdsBanner);
-                                    binding.rlBanner.setVisibility(View.VISIBLE);
-                                } else {
-                                    binding.rlBanner.setVisibility(View.GONE);
-                                }
 
+                                loadBanner();
                                 new Handler().postDelayed(() -> {
                                     if (isShowAppOpenOrInter()) {
                                         showAppOpenSplash();
@@ -301,11 +307,10 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
                     if (ConstantRemote.show_permission.contains(String.valueOf(SharePrefUtils.getCountOpenApp(SplashActivity.this)))) {
                         startNextActivity(PermissionActivity.class, null);
                     } else {
-                        if (!(PermissionActivity.isPermissionCamera && PermissionActivity.isPermissionMicro)) {
+                        if (!PermissionManager.checkAllPermission(this)){
                             startNextActivity(PermissionActivity.class, null);
-                        } else {
+                        } else
                             startNextActivity(MainActivity.class, null);
-                        }
                     }
 
 

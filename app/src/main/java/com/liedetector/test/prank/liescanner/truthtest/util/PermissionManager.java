@@ -16,4 +16,8 @@ public class PermissionManager {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
     }
 
+    public static boolean checkAllPermission(Context context){
+        return checkCameraPermission(context) && checkRecordPermission(context);
+    }
+
 }

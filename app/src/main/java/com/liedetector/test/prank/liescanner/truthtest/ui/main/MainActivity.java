@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     public void initView() {
         EventTracking.logEvent(this, "home_view");
-        //loadNativeHome();
+        loadNativeHome();
         loadInterScanner();
         loadInterSound();
     }
@@ -101,6 +101,18 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             binding.nativeHome.setVisibility(View.INVISIBLE);
         }
     }
+    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            //binding.nativeHome.removeAllViews();
+            try {
+                //binding.nativeHome.addView((NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_load_large, null));
+                loadNativeHome();
+            } catch (Exception e) {
+                binding.nativeHome.setVisibility(View.INVISIBLE);
+            }
+        }
+    });
+
     private void showDialogRate() {
         RatingDialog ratingDialog = new RatingDialog(MainActivity.this, true);
         ratingDialog.init(new IClickDialogRate() {
@@ -193,20 +205,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
     private void startNextActivity(Class activity){
         Intent intent = new Intent(this,activity);
-        startActivity(intent);
-        //loadNativeHome();
+        resultLauncher.launch(intent);
+        //startActivity(intent);
     }
-//    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-//        if (result.getResultCode() == RESULT_OK) {
-//            binding.nativeHome.removeAllViews();
-//            try {
-//                binding.nativeHome.addView((NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_load_large, null));
-//                loadNativeHome();
-//            } catch (Exception e) {
-//                binding.nativeHome.setVisibility(View.INVISIBLE);
-//            }
-//        }
-//    });
 
     
     private void showInterSound() {
@@ -216,7 +217,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                     CommonAd.getInstance().forceShowInterstitial(this, ConstantIdAds.mInterSound, new CommonAdCallback() {
                         @Override
                         public void onNextAction() {
-                            startNextActivity(SoundsActivity.class,null);
+                            startNextActivity(SoundsActivity.class);
                             ConstantIdAds.mInterSound = null;
                             loadInterSound();
                         }
@@ -262,7 +263,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     protected void onResume() {
         super.onResume();
-        loadNativeHome();
+        //loadNativeHome();
     }
 
     @Override

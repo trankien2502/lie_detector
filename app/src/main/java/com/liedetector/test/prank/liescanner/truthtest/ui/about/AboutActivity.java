@@ -27,9 +27,17 @@ public class AboutActivity extends BaseActivity<ActivityAboutBinding> {
 
     @Override
     public void bindView() {
-        binding.headerSetting.imgLeft.setOnClickListener(view -> onBackPressed());
+        binding.headerSetting.imgLeft.setOnClickListener(view -> {
+            onBackPressed();
+        });
 
         binding.tvPolicy.setOnClickListener(view -> startNextActivity(PolicyActivity.class, null));
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        setResult(RESULT_OK);
+        finish();
     }
 
 

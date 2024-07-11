@@ -30,6 +30,7 @@ import com.liedetector.test.prank.liescanner.truthtest.ui.sound.adapter.SoundsAd
 import com.liedetector.test.prank.liescanner.truthtest.ui.sound.model.Sound;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
+import java.time.chrono.HijrahChronology;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,14 +81,10 @@ public class SoundsActivity extends BaseActivity<ActivitySoundsBinding> {
     }
     public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
-            binding.rlBanner.removeAllViews();
-            RelativeLayout layout = (RelativeLayout) LayoutInflater.from(this).inflate(com.ads.sapp.R.layout.layout_banner_control, null, false);
-            binding.rlBanner.addView(layout);
-            if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
-                findViewById(R.id.rlBanner).setVisibility(View.VISIBLE);
-                Admob.getInstance().loadBannerFloor(this, ConstantIdAds.listIDAdsBanner);
-            } else {
-                findViewById(R.id.rlBanner).setVisibility(View.GONE);
+            try {
+                loadBanner(binding.rlBanner);
+            } catch (Exception e){
+                binding.rlBanner.setVisibility(View.GONE);
             }
         }
     });
@@ -96,19 +93,19 @@ public class SoundsActivity extends BaseActivity<ActivitySoundsBinding> {
         switch (sound.getId()) {
             case Sound.SOUND_ID_17:
                 EventTracking.logEvent(this,"sound_hair_clipper_click");
-                startNextActivity(HairClipperActivity.class, null);
+                resultLauncher.launch(new Intent(SoundsActivity.this, HairClipperActivity.class));
                 break;
             case Sound.SOUND_ID_18:
                 EventTracking.logEvent(this,"sound_funny_click");
-                startNextActivity(FunnyActivity.class, null);
+                resultLauncher.launch(new Intent(SoundsActivity.this, FunnyActivity.class));
                 break;
             case Sound.SOUND_ID_19:
                 EventTracking.logEvent(this,"sound_hilarious_click");
-                startNextActivity(HilariousActivity.class, null);
+                resultLauncher.launch(new Intent(SoundsActivity.this, HilariousActivity.class));
                 break;
             case Sound.SOUND_ID_20:
                 EventTracking.logEvent(this,"sound_piano_click");
-                startNextActivity(FortePianoActivity.class, null);
+                resultLauncher.launch(new Intent(SoundsActivity.this, FortePianoActivity.class));
                 break;
         }
     }
@@ -126,6 +123,13 @@ public class SoundsActivity extends BaseActivity<ActivitySoundsBinding> {
     @Override
     protected void onResume() {
         super.onResume();
-        loadBanner(binding.rlBanner);
+        //loadBanner(binding.rlBanner);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        setResult(RESULT_OK);
+        finish();
     }
 }

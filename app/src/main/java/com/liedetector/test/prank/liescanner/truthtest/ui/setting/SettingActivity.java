@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.ads.sapp.admob.AppOpenManager;
 import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.review.ReviewInfo;
@@ -26,7 +29,6 @@ import com.liedetector.test.prank.liescanner.truthtest.util.SystemUtil;
 
 public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
 
-    private boolean isFromSetting = false;
     @Override
     public ActivitySettingBinding getBinding() {
         return ActivitySettingBinding.inflate(getLayoutInflater());
@@ -51,12 +53,12 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
         binding.headerSetting.imgLeft.setOnClickListener(view -> onBackPressed());
 
         binding.layoutLanguage.setOnClickListener(view -> {
-            startNextActivity(LanguageActivity.class, null);
+            resultLauncher.launch(new Intent(this, LanguageActivity.class));
             EventTracking.logEvent(this,"setting_language_click");
         });
 
         binding.layoutAbout.setOnClickListener(view -> {
-            startNextActivity(AboutActivity.class, null);
+            resultLauncher.launch(new Intent(this, AboutActivity.class));
             EventTracking.logEvent(this,"setting_about_click");
         });
 
@@ -64,6 +66,16 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
 
         binding.layoutShare.setOnClickListener(view -> onShare());
     }
+    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            try {
+                loadBanner(binding.rlBanner);
+            } catch (Exception e){
+                binding.rlBanner.setVisibility(View.GONE);
+            }
+        }
+    });
+
 
     private void onRate() {
         EventTracking.logEvent(this,"setting_rate_us_click");
@@ -74,13 +86,13 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
                 binding.layoutRate.setVisibility(View.GONE);
                 binding.lineRate.setVisibility(View.GONE);
                 ratingDialog.dismiss();
-                isFromSetting = true;
                 String uriText = "mailto:" + SharePrefUtils.email + "?subject=" + "Review for " + SharePrefUtils.subject + "&body=" + SharePrefUtils.subject + "\nRate : " + ratingDialog.getRating() + "\nContent: ";
                 Uri uri = Uri.parse(uriText);
                 Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
                 sendIntent.setData(uri);
                 try {
                     startActivity(Intent.createChooser(sendIntent, getString(R.string.Send_Email)));
+                    AppOpenManager.getInstance().disableAppResumeWithActivity(SettingActivity.class);
                     SharePrefUtils.forceRated(SettingActivity.this);
                 } catch (android.content.ActivityNotFoundException ex) {
                     Toast.makeText(SettingActivity.this, getString(R.string.There_is_no), Toast.LENGTH_SHORT).show();
@@ -126,18 +138,17 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
         intentShare.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
         intentShare.putExtra(Intent.EXTRA_TEXT, "Download application :" + "https://play.google.com/store/apps/details?id=" + getPackageName());
         startActivity(Intent.createChooser(intentShare, "Share with"));
-        isFromSetting = true;
+        AppOpenManager.getInstance().disableAppResumeWithActivity(SettingActivity.class);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadBanner(binding.rlBanner);
-        if (isFromSetting){
-            //Toast.makeText(this, "TRUE", Toast.LENGTH_SHORT).show();
-            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
-            isFromSetting = false;
-            return;
-        }
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        setResult(RESULT_OK);
+        finish();
     }
 }

@@ -1,7 +1,12 @@
 package com.liedetector.test.prank.liescanner.truthtest.ui.hair_clipper;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
+import android.view.View;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.liedetector.test.prank.liescanner.truthtest.R;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
@@ -31,10 +36,13 @@ public class HairClipperActivity extends BaseActivity<ActivityHairClipperBinding
 
     @Override
     public void bindView() {
-        binding.header.imgLeft.setOnClickListener(view -> onBackPressed());
+        binding.header.imgLeft.setOnClickListener(view -> {
+            setResult(RESULT_OK);
+            onBackPressed();
+        });
 
         binding.header.imgSetting.setOnClickListener(view -> {
-            startNextActivity(SettingActivity.class, null);
+            resultLauncher.launch(new Intent(HairClipperActivity.this,SettingActivity.class));
             EventTracking.logEvent(this,"scanner_setting_click");
         });
 
@@ -52,6 +60,15 @@ public class HairClipperActivity extends BaseActivity<ActivityHairClipperBinding
             }
         });
     }
+    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            try {
+                loadBanner(binding.rlBanner);
+            } catch (Exception e){
+                binding.rlBanner.setVisibility(View.GONE);
+            }
+        }
+    });
 
     private void onClickClipperOn() {
         if (mediaPlayer == null) {
@@ -107,6 +124,12 @@ public class HairClipperActivity extends BaseActivity<ActivityHairClipperBinding
     @Override
     protected void onResume() {
         super.onResume();
-        loadBanner(binding.rlBanner);
+        //loadBanner(binding.rlBanner);
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        setResult(RESULT_OK);
+        finish();
     }
 }

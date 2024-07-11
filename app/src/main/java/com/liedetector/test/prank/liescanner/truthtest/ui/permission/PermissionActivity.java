@@ -37,6 +37,7 @@ import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
 import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityPermissionBinding;
+import com.liedetector.test.prank.liescanner.truthtest.ui.intro.IntroActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.ScannerActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.setting.SettingActivity;
@@ -47,7 +48,6 @@ import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> {
     public static boolean isPermissionCamera;
     public static boolean isPermissionMicro;
-    private  boolean isFromSetting = false;
     private static final String PREFS_NAME = "PermissionPrefs";
     private static final String PREF_KEY_DENY_COUNT_MIC = "denyCountMic";
     private static final String PREF_KEY_DENY_COUNT_CAM = "denyCountCam";
@@ -174,7 +174,7 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
         });
     }
 
-    private boolean checkAllPermission() {
+    public boolean checkAllPermission() {
         checkCameraPermission();
         checkMicroPermission();
         return isPermissionCamera && isPermissionMicro;
@@ -217,7 +217,6 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt(PREF_KEY_DENY_COUNT_MIC, denyCount);
                         editor.apply();
-                        //if (denyCount>2) showDialogPermissionGuide(MICRO_PERMISSION_REQUEST_CODE);
                     } else
                         Toast.makeText(this, getString(R.string.denied_mic), Toast.LENGTH_SHORT).show();
                 }
@@ -235,7 +234,6 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putInt(PREF_KEY_DENY_COUNT_CAM, denyCount);
                         editor.apply();
-                        //if (denyCount>2) showDialogPermissionGuide(CAMERA_PERMISSION_REQUEST_CODE);
 
                     } else
                         Toast.makeText(this, getString(R.string.denied_camera), Toast.LENGTH_SHORT).show();
@@ -245,8 +243,7 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
     }
 
     private void startNextActivity() {
-        Intent intent = new Intent(PermissionActivity.this, MainActivity.class);
-        startActivity(intent);
+        startNextActivity(MainActivity.class, null);
         finishAffinity();
     }
 
@@ -296,15 +293,12 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
         buttonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isFromSetting = true;
-                //SharePrefUtils.setResumeBack(PermissionActivity.this,false);
                 dialog.dismiss();
-                //ConstantRemote.resume_back_from_setting = false;
+                AppOpenManager.getInstance().disableAppResumeWithActivity(PermissionActivity.class);
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri.fromParts("package", getPackageName(), null);
                 intent.setData(uri);
                 startActivity(intent);
-                if (isFromSetting) Toast.makeText(PermissionActivity.this, "OK", Toast.LENGTH_SHORT).show();
             }
         });
         buttonCancel.setOnClickListener(v -> dialog.dismiss());
@@ -324,13 +318,6 @@ public class PermissionActivity extends BaseActivity<ActivityPermissionBinding> 
         if (isPermissionCamera) {
             binding.swichCamera.setChecked(true);
         }
-        if (isFromSetting){
-            //Toast.makeText(this, "TRUE", Toast.LENGTH_SHORT).show();
-            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
-            isFromSetting = false;
-            return;
-        }
-        //Toast.makeText(this, "FALSE", Toast.LENGTH_SHORT).show();
 
 
 

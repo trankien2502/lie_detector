@@ -2,6 +2,7 @@ package com.liedetector.test.prank.liescanner.truthtest.ui.intro;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
 import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityIntroBinding;
+import com.liedetector.test.prank.liescanner.truthtest.ui.language.LanguageStartActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.main.MainActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.permission.PermissionActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.splash.SplashActivity;
@@ -32,6 +34,7 @@ import com.liedetector.test.prank.liescanner.truthtest.util.PermissionManager;
 import com.liedetector.test.prank.liescanner.truthtest.util.SharePrefUtils;
 
 import org.jetbrains.annotations.Nullable;
+
 
 public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
     ImageView[] dots = null;
@@ -78,10 +81,6 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
     }
 
     private void showInterIntro() {
-//        if (ConstantRemote.show_inter_intro){
-//            startNextActivity();
-//            return;
-//        }
         if (IsNetWork.haveNetworkConnectionUMP(IntroActivity.this) && ConstantIdAds.listIDAdsInterIntro.size() != 0 && ConstantRemote.inter_intro) {
             try {
                 if (ConstantIdAds.mInterIntro != null) {
@@ -126,6 +125,7 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
                 showInterIntro();
             }
         });
+        binding.btnNext2.setOnClickListener(v -> showInterIntro());
 
     }
 
@@ -136,24 +136,49 @@ public class IntroActivity extends BaseActivity<ActivityIntroBinding> {
         }
         switch (position) {
             case 0:
+                binding.btnNext.setVisibility(View.VISIBLE);
+                binding.btnNext2.setVisibility(View.INVISIBLE);
+                binding.nativeLoad.setVisibility(View.GONE);
                 binding.nativeIntro.setVisibility(View.GONE);
                 EventTracking.logEvent(this, "intro1_view");
                 break;
             case 1:
+                binding.btnNext.setVisibility(View.VISIBLE);
+                binding.btnNext2.setVisibility(View.INVISIBLE);
+                binding.nativeLoad.setVisibility(View.GONE);
                 binding.nativeIntro.setVisibility(View.GONE);
                 EventTracking.logEvent(this, "intro2_view");
                 break;
             case 2:
-                binding.nativeIntro.setVisibility(View.VISIBLE);
+                binding.btnNext.setVisibility(View.GONE);
+                binding.btnNext2.setVisibility(View.VISIBLE);
+                if (IsNetWork.haveNetworkConnection(IntroActivity.this) && ConstantIdAds.listIDAdsNativeIntro.size() != 0 && ConstantRemote.native_intro) {
+                    binding.nativeLoad.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(() -> {
+                        binding.nativeLoad.setVisibility(View.GONE);
+                        binding.nativeIntro.setVisibility(View.VISIBLE);
+
+                    }, 500);
+                }
                 EventTracking.logEvent(this, "intro3_view");
-                //loadNativeIntro();
                 break;
 
         }
     }
 
     public void startNextActivity() {
-        startNextActivity(PermissionActivity.class, null);
+        if (SharePrefUtils.getCountOpenApp(IntroActivity.this) == 1) {
+            startNextActivity(PermissionActivity.class, null);
+        } else {
+            if (ConstantRemote.show_permission.contains(String.valueOf(SharePrefUtils.getCountOpenApp(IntroActivity.this)))) {
+                startNextActivity(PermissionActivity.class, null);
+            } else {
+                if (!PermissionManager.checkAllPermission(this)) {
+                    startNextActivity(PermissionActivity.class, null);
+                } else
+                    startNextActivity(MainActivity.class, null);
+            }
+        }
         finishAffinity();
     }
 

@@ -17,12 +17,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
@@ -33,10 +37,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.ads.sapp.admob.Admob;
 import com.ads.sapp.admob.AppOpenManager;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.liedetector.test.prank.liescanner.truthtest.R;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
 import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
+import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
 import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity2;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityScannerBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.scanner.tabs.EyeFragment;
@@ -69,7 +76,6 @@ public class ScannerActivity extends BaseActivity2 {
     public static int mTypeScanner = TYPE_FINGER_PRINT;
     public static int mType = TYPE_DEFAULT;
     public static boolean isOpenDialog = false;
-    private boolean isFromSetting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +98,16 @@ public class ScannerActivity extends BaseActivity2 {
         checkMicroPermission();
 
     }
+    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            try {
+                loadBanner(mActivityScannerBinding.rlBanner);
+            } catch (Exception e){
+                mActivityScannerBinding.rlBanner.setVisibility(View.GONE);
+            }
+        }
+    });
+
 
     public void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -101,7 +117,10 @@ public class ScannerActivity extends BaseActivity2 {
     }
 
     private void initListenerHeader() {
-        mActivityScannerBinding.header.imgLeft.setOnClickListener(view -> finish());
+        mActivityScannerBinding.header.imgLeft.setOnClickListener(view -> {
+            setResult(RESULT_OK);
+            finish();
+        });
         mActivityScannerBinding.header.imgSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,10 +130,12 @@ public class ScannerActivity extends BaseActivity2 {
                 boolean isPressing = SoundFragment.isButtonPressed();
                 boolean isAnalyzingEye = EyeFragment.isAnalyzing();
                 if (isAnalyzingEye || isAnalyzingFinger || isAnalyzing || isPressingFinger || isPressing) {
-                    EventTracking.logEvent(ScannerActivity.this,"scanner_setting_click");
                     showDialogStopScan(TYPE_SETTING_HEADER);
-                } else
+                } else{
+                    EventTracking.logEvent(ScannerActivity.this,"scanner_setting_click");
                     openSetting();
+                }
+
             }
         });
     }
@@ -125,7 +146,8 @@ public class ScannerActivity extends BaseActivity2 {
             openSoundScanner();
         }
         Intent intent = new Intent(ScannerActivity.this, SettingActivity.class);
-        startActivity(intent);
+        resultLauncher.launch(intent);
+        //startActivity(intent);
     }
 
     private void openSoundScanner() {
@@ -434,11 +456,11 @@ public class ScannerActivity extends BaseActivity2 {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                AppOpenManager.getInstance().disableAppResumeWithActivity(ScannerActivity.class);
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri.fromParts("package", getPackageName(), null);
                 intent.setData(uri);
                 startActivity(intent);
-                isFromSetting = true;
             }
         });
 
@@ -525,13 +547,13 @@ public class ScannerActivity extends BaseActivity2 {
     @Override
     protected void onResume() {
         super.onResume();
-        loadBanner(mActivityScannerBinding.rlBanner);
-        if (isFromSetting){
-            //Toast.makeText(this, "TRUE", Toast.LENGTH_SHORT).show();
-            AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
-            isFromSetting = false;
-            return;
-        }
+        //loadBanner(mActivityScannerBinding.rlBanner);
 
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        setResult(RESULT_OK);
+        finish();
     }
 }
