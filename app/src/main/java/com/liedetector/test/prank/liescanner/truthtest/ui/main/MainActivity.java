@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 Admob.getInstance().loadNativeAd(MainActivity.this, ConstantIdAds.listIDAdsNativeHome, new AdCallback() {
                     @Override
                     public void onUnifiedNativeAdLoaded(@NonNull NativeAd unifiedNativeAd) {
-                        NativeAdView adView = (NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_show_large, null,false);
+                        NativeAdView adView = (NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_show_large1, null,false);
                         binding.nativeHome.removeAllViews();
                         binding.nativeHome.addView(adView);
                         Admob.getInstance().populateUnifiedNativeAdView(unifiedNativeAd, adView);
