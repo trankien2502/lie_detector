@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.ghost.GhostActivity">
     <include
+        android:layout_marginTop="5dp"
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,9 +15,10 @@
         layout="@layout/layout_header" />
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        app:cardCornerRadius="24dp"
+        app:cardCornerRadius="16dp"
+        android:layout_above="@id/rlBanner"
         android:layout_below="@id/header"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         android:layout_height="match_parent">
         <FrameLayout
             android:layout_width="match_parent"
@@ -33,19 +35,20 @@
                 </androidx.camera.view.PreviewView>
                 <ImageView
                     android:id="@+id/img_ghost_4"
-                    android:layout_width="200dp"
-                    android:layout_height="400dp"
+                    android:layout_width="235dp"
+                    android:layout_height="420dp"
                     android:layout_marginTop="0dp"
-                    android:layout_marginBottom="-15dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="0dp"
                     android:visibility="gone"
                     android:scaleType="centerCrop"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:src="@drawable/img_ghost_4"/>
+                    android:layout_gravity="center"
+                    android:src="@drawable/img_ghost_5"/>
+
                 <ImageView
                     android:id="@+id/img_ghost_5"
-                    android:layout_width="150dp"
+                    android:layout_width="180dp"
                     android:layout_height="320dp"
                     android:layout_marginTop="150dp"
                     android:layout_marginBottom="0dp"
@@ -54,7 +57,7 @@
                     android:visibility="gone"
                     android:scaleType="centerCrop"
                     android:layout_gravity="top|center_horizontal"
-                    android:src="@drawable/img_ghost_5"/>
+                    android:src="@drawable/img_ghost_4"/>
                 <ImageView
                     android:id="@+id/img_ghost_11"
                     android:layout_width="250dp"
@@ -64,7 +67,7 @@
                     android:layout_marginEnd="-60dp"
                     android:visibility="gone"
                     android:layout_gravity="bottom|end"
-                    android:src="@drawable/img_ghost_11"/>
+                    android:src="@drawable/img_ghost_1"/>
                 <ImageView
                     android:id="@+id/img_ghost_22"
                     android:layout_width="250dp"
@@ -75,7 +78,7 @@
                     android:layout_marginStart="0dp"
                     android:visibility="gone"
                     android:layout_gravity="center|top"
-                    android:src="@drawable/img_ghost_22"/>
+                    android:src="@drawable/img_ghost_55"/>
                 <ImageView
                     android:id="@+id/img_ghost_33"
                     android:layout_width="200dp"
@@ -86,7 +89,7 @@
                     android:layout_marginStart="0dp"
                     android:visibility="gone"
                     android:layout_gravity="top|end"
-                    android:src="@drawable/img_ghost_33"/>
+                    android:src="@drawable/img_ghost_55"/>
                 <ImageView
                     android:id="@+id/img_ghost_44"
                     android:layout_width="200dp"
@@ -98,7 +101,7 @@
                     android:layout_marginStart="-50dp"
                     android:visibility="gone"
                     android:layout_gravity="top|start"
-                    android:src="@drawable/img_ghost_44"/>
+                    android:src="@drawable/img_ghost_55"/>
                 <ImageView
                     android:id="@+id/img_ghost_55"
                     android:layout_width="250dp"
@@ -110,7 +113,7 @@
                     android:layout_marginStart="-50dp"
                     android:visibility="gone"
                     android:layout_gravity="bottom|start"
-                    android:src="@drawable/img_ghost_55"/>
+                    android:src="@drawable/img_ghost_5"/>
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -118,6 +121,72 @@
                     android:src="@drawable/img_filter_camera"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/sign_ghost_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="100dp"
+                    android:visibility="gone"
+                    android:src="@drawable/img_sign_ghost"/>
+
+                <ImageView
+                    android:id="@+id/sign_ghost_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="170dp"
+                    android:src="@drawable/img_sign_ghost"
+                    android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/sign_ghost_11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginBottom="230dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/img_sign_ghost"
+                    android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/sign_ghost_22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/img_sign_ghost"
+                    android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/sign_ghost_33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|top"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="30dp"
+                    android:src="@drawable/img_sign_ghost"
+                    android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/sign_ghost_44"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|top"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/img_sign_ghost"
+                    android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/sign_ghost_55"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|bottom"
+                    android:layout_marginBottom="250dp"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/img_sign_ghost"
+                    android:visibility="gone" />
             </FrameLayout>
 
             <RelativeLayout
@@ -141,12 +210,10 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="6dp"
-                        android:layout_marginTop="8dp"
                         android:fontFamily="@font/druk_text_wide_medium_trial"
                         android:text="@string/evp_levels"
                         android:textColor="@color/white"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                     <LinearLayout
                         android:id="@+id/layout_evp_level"
@@ -538,17 +605,18 @@
 
                     </LinearLayout>
                 </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tv_ghost_scan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:text="@string/walk_around_slowly_to_detect_supernatural_entities"
+                    android:layout_centerInParent="true"
                     android:fontFamily="@font/druk_text_wide_medium_trial"
                     android:gravity="center"
-                    android:layout_centerInParent="true"
-                    android:lineHeight="24sp"/>
+                    android:lineSpacingExtra="10dp"
+                    android:text="@string/walk_around_slowly_to_detect_supernatural_entities"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
                 <RelativeLayout
                     android:id="@+id/layout_sign_ghost"
@@ -556,11 +624,8 @@
                     android:layout_height="match_parent"
                     android:layout_above="@id/layout_radar_scan"
                     android:layout_below="@id/layout_evp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:visibility="gone">
+                    android:layout_margin="10dp"
+                    android:visibility="visible">
 
 
                     <ImageView
@@ -704,5 +769,17 @@
 
         </FrameLayout>
     </androidx.cardview.widget.CardView>
+    <RelativeLayout
+        android:id="@+id/rlBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true">
+        <include
+            android:id="@+id/banner"
+            layout="@layout/layout_banner_control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
 </RelativeLayout>

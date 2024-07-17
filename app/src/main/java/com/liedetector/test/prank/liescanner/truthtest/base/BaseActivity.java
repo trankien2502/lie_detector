@@ -58,6 +58,12 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
             AppOpenManager.getInstance().disableAppResumeWithActivity(getClass());
         }
     }
+    public void showLoadingDialog(){
+        alertDialog.show();
+    }
+    public void dismissLoadingDialog(){
+        alertDialog.dismiss();
+    }
 
     public void loadBanner(RelativeLayout view) {
         if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
@@ -74,15 +80,6 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
     }
 
 
-    public void loadBannerCollapsible(View view) {
-        if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBannerCollapsible.size() != 0 && ConstantRemote.banner_collapsible) {
-            Admob.getInstance().loadCollapsibleBannerFloor(this, ConstantIdAds.listIDAdsBannerCollapsible, "bottom");
-            view.setVisibility(View.VISIBLE);
-        } else {
-            view.setVisibility(View.GONE);
-        }
-
-    }
     private void createLoadingDialog(){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();

@@ -125,5 +125,13 @@
     <string name="start1">Commencer</string>
     <string name="please_select_language">Veuillez sélectionner la langue !</string>
     <string name="stop">Arrêter</string>
+    <string name="install">Installer</string>
+    <string name="ghost">GHOST</string>
+    <string name="capture">CAPTURE</string>
+    <string name="image_capture">CAPTURE DIMAGE</string>
+    <string name="evp_levels">NIVEAU EVP</string>
+    <string name="walk_around_slowly_to_detect_supernatural_entities">PROMENEZ-VOUS LENTEMENT POUR DÉTECTER DES ENTITÉS SURNATURELLES.....</string>
+    <string name="loading">Chargement...</string>
+    <string name="_1234">1234</string>
 
 </resources>

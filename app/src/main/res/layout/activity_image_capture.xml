@@ -17,10 +17,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nativeGhostCapture"
         app:layout_constraintTop_toBottomOf="@+id/header">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -49,20 +53,20 @@
                         android:scaleType="fitXY" />
                     <ImageView
                         android:id="@+id/img_ghost_4"
-                        android:layout_width="135dp"
-                        android:layout_height="280dp"
+                        android:layout_width="165dp"
+                        android:layout_height="285dp"
                         android:layout_marginTop="0dp"
-                        android:layout_marginBottom="-20dp"
+                        android:layout_marginBottom="0dp"
                         android:layout_marginStart="0dp"
                         android:layout_marginEnd="0dp"
                         android:visibility="gone"
                         android:scaleType="centerCrop"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:src="@drawable/img_ghost_4"/>
+                        android:layout_gravity="center"
+                        android:src="@drawable/img_ghost_55"/>
                     <ImageView
                         android:id="@+id/img_ghost_5"
-                        android:layout_width="90dp"
-                        android:layout_height="210dp"
+                        android:layout_width="125dp"
+                        android:layout_height="220dp"
                         android:layout_marginTop="97dp"
                         android:layout_marginBottom="0dp"
                         android:layout_marginStart="0dp"
@@ -92,7 +96,7 @@
                         android:layout_marginStart="0dp"
                         android:visibility="gone"
                         android:layout_gravity="center|top"
-                        android:src="@drawable/img_ghost_22"/>
+                        android:src="@drawable/img_ghost_55"/>
                     <ImageView
                         android:id="@+id/img_ghost_33"
                         android:layout_width="145dp"
@@ -103,7 +107,7 @@
                         android:layout_marginStart="0dp"
                         android:visibility="gone"
                         android:layout_gravity="top|end"
-                        android:src="@drawable/img_ghost_33"/>
+                        android:src="@drawable/img_ghost_5"/>
                     <ImageView
                         android:id="@+id/img_ghost_44"
                         android:layout_width="140dp"
@@ -115,7 +119,7 @@
                         android:layout_marginStart="15dp"
                         android:visibility="gone"
                         android:layout_gravity="top|start"
-                        android:src="@drawable/img_ghost_44"/>
+                        android:src="@drawable/img_ghost_11"/>
                     <ImageView
                         android:id="@+id/img_ghost_55"
                         android:layout_width="165dp"
@@ -168,11 +172,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/none"
-                android:text="1234vfdgvbf"
-                android:layout_marginTop="100dp"
+                android:textColor="#00000000"
+                android:visibility="invisible"
+                android:text="@string/_1234"
+                android:layout_marginTop="30dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_share" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+    <RelativeLayout
+        android:id="@+id/nativeGhostCapture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginHorizontal="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <FrameLayout
+            android:id="@+id/fr_ads_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <include layout="@layout/layout_native_load_small" />
+        </FrameLayout>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

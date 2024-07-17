@@ -126,4 +126,13 @@
     <string name="please_select_language">Bitte wählen Sie eine Sprache!</string>
     <string name="stop">Stopp</string>
 
+    <string name="install">Installieren</string>
+    <string name="ghost">GEISTER</string>
+    <string name="capture">AUFNAHME</string>
+    <string name="image_capture">BILDAUFNAHME</string>
+    <string name="evp_levels">EVP-LEVELS</string>
+    <string name="walk_around_slowly_to_detect_supernatural_entities">LANGSAM UMHERGEHEN, UM ÜBERNATÜRLICHE WESEN ZU ERKENNEN.....</string>
+    <string name="loading">Wird geladen...</string>
+    <string name="_1234">1234</string>
+
 </resources>

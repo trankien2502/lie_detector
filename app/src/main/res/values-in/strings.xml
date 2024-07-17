@@ -126,4 +126,13 @@
     <string name="please_select_language">Silakan pilih bahasa!</string>
     <string name="stop">Berhenti</string>
 
+    <string name="install">Instal</string>
+    <string name="ghost">PENANGKAPAN</string>
+    <string name="capture">HANTU</string>
+    <string name="image_capture">PENANGKAPAN GAMBAR</string>
+    <string name="evp_levels">TINGKAT EVP</string>
+    <string name="walk_around_slowly_to_detect_supernatural_entities">BERJALANLAH PERLAHAN UNTUK MENDETEKSI ENTITAS SUPERNATURAL.....</string>
+    <string name="loading">Memuat...</string>
+    <string name="_1234">1234</string>
+
 </resources>

@@ -132,4 +132,8 @@ dependencies {
     //adjust
     implementation 'com.adjust.sdk:adjust-android:4.38.0'
 
+    //loading
+    implementation "com.airbnb.android:lottie:6.3.0"
+
+
 }

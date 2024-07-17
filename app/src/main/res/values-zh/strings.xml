@@ -125,5 +125,13 @@
     <string name="start1">开始</string>
     <string name="please_select_language">请选择语言！</string>
     <string name="stop">停止</string>
+    <string name="install">安装</string>
+    <string name="ghost">幽灵</string>
+    <string name="capture">捕捉</string>
+    <string name="image_capture">图像捕捉</string>
+    <string name="evp_levels">EVP 等级</string>
+    <string name="walk_around_slowly_to_detect_supernatural_entities">慢慢走动以探测超自然实体.....</string>
+    <string name="loading">正在加载...</string>
+    <string name="_1234">1234</string>
 
 </resources>

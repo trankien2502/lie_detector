@@ -16,6 +16,8 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
 import androidx.camera.core.CameraSelector;
@@ -28,20 +30,29 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.ads.sapp.admob.AppOpenManager;
+import com.ads.sapp.ads.CommonAd;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.liedetector.test.prank.liescanner.truthtest.R;
-import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity2;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantIdAds;
+import com.liedetector.test.prank.liescanner.truthtest.ads.ConstantRemote;
+import com.liedetector.test.prank.liescanner.truthtest.ads.IsNetWork;
+import com.liedetector.test.prank.liescanner.truthtest.base.BaseActivity;
 import com.liedetector.test.prank.liescanner.truthtest.databinding.ActivityGhostBinding;
 import com.liedetector.test.prank.liescanner.truthtest.ui.ghost_result.ImageCaptureActivity;
 import com.liedetector.test.prank.liescanner.truthtest.ui.setting.SettingActivity;
 import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
+
 import java.nio.ByteBuffer;
 import java.util.Random;
 
-public class GhostActivity extends BaseActivity2 {
+public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
 
-    ActivityGhostBinding mActivityGhostBinding;
     ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     ProcessCameraProvider cameraProvider;
     Preview preview;
@@ -57,30 +68,114 @@ public class GhostActivity extends BaseActivity2 {
     int[] ghost = null;
     ImageView[] ghostImage = null;
     ImageView[] pointSign = null;
+    ImageView[] ghostSign = null;
     boolean isGhostAppeared = false;
     int timeToSee = 30, timeToLeave = 15;
+    int timeShowSignGhost;
     public static int appearedGhost;
     public static int appearedGhostImage;
-    boolean isLightSign = false;
-    public static boolean isStartGetGhost;
+    boolean isLightSign = false, isGhostSignShow = true;
+    boolean isStartGetGhost, isActivityGhost;
     int displayTextTime = 10;
     MediaPlayer mediaPlayerBackground, mediaPlayerGhost;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mActivityGhostBinding = ActivityGhostBinding.inflate(getLayoutInflater());
-        setContentView(mActivityGhostBinding.getRoot());
+    public ActivityGhostBinding getBinding() {
+        return ActivityGhostBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
+    public void initView() {
         EventTracking.logEvent(this, "ghost_view");
+        //loadBanner();
         initData();
         initUI();
-        initListener();
         isStartGetGhost = true;
+        isActivityGhost = true;
+        Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost);
         getGhost();
     }
 
-    private void playBackgroundSound(){
-        if (mediaPlayerBackground!=null){
+    @Override
+    public void bindView() {
+        binding.header.imgLeft.setOnClickListener(view -> {
+            onBackPressed();
+        });
+        binding.header.imgSetting.setOnClickListener(view -> {
+            isActivityGhost = false;
+            resultLauncher.launch(new Intent(GhostActivity.this, SettingActivity.class));
+        });
+        binding.layoutCameraGhost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventTracking.logEvent(GhostActivity.this, "ghost_camera_click");
+                if (!isStartGetGhost) return;
+                isStartGetGhost = false;
+                isActivityGhost = false;
+                Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost);
+                Log.d("isCheckGhost", "isActivityGhost: " + isActivityGhost);
+                if (imageCapture == null) {
+                    Toast.makeText(GhostActivity.this, "Camera is not available!", Toast.LENGTH_SHORT).show();
+                    isStartGetGhost = true;
+                    isActivityGhost = true;
+                    Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost);
+                    Log.d("isCheckGhost", "isActivityGhost: " + isActivityGhost);
+                    return;
+                }
+                showLoadingDialog();
+                timeToLeave += 2;
+                imageCapture.takePicture(ContextCompat.getMainExecutor(GhostActivity.this),
+                        new ImageCapture.OnImageCapturedCallback() {
+                            @Override
+                            public void onCaptureSuccess(@NonNull ImageProxy image) {
+                                @ExperimentalGetImage Image media = image.getImage();
+                                @OptIn(markerClass = ExperimentalGetImage.class) Bitmap bitmap = imageToBitmap(media);
+                                int rotationDegrees = image.getImageInfo().getRotationDegrees();
+                                if (rotationDegrees != 0) {
+                                    Matrix matrix = new Matrix();
+                                    matrix.postRotate(rotationDegrees);
+                                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                                }
+                                image.close();
+                                capturedBitmap = bitmap;
+                                AppOpenManager.getInstance().disableAppResumeWithActivity(GhostActivity.class);
+                                //startNextActivity(ImageCaptureActivity.class, null);
+                                resultLauncher.launch(new Intent(GhostActivity.this, ImageCaptureActivity.class));
+                                dismissLoadingDialog();
+                            }
+
+                            @Override
+                            public void onError(@NonNull ImageCaptureException exception) {
+                                dismissLoadingDialog();
+                                Toast.makeText(GhostActivity.this, "Error capturing image", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+    }
+
+//    private void loadBanner() {
+//        new Thread(() -> runOnUiThread(() -> {
+//            if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
+//                CommonAd.getInstance().loadCollapsibleBannerFloor(this, ConstantIdAds.listIDAdsBanner, "bottom");
+//                findViewById(R.id.banner).setVisibility(View.VISIBLE);
+//            } else {
+//                findViewById(R.id.banner).setVisibility(View.GONE);
+//            }
+//        })).start();
+//    }
+
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        EventTracking.logEvent(this, "ghost_back_click");
+        finish();
+    }
+
+
+    private void playBackgroundSound() {
+        if (mediaPlayerBackground != null) {
             mediaPlayerBackground.release();
         }
         mediaPlayerBackground = MediaPlayer.create(this, R.raw.background_sound);
@@ -88,22 +183,23 @@ public class GhostActivity extends BaseActivity2 {
         mediaPlayerBackground.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                    mediaPlayer.seekTo(0);
-                    mediaPlayer.start();
+                mediaPlayer.seekTo(0);
+                mediaPlayer.start();
             }
         });
     }
-    private void playGhostAppearSound(){
-        if (mediaPlayerGhost!=null){
+
+    private void playGhostAppearSound() {
+        if (mediaPlayerGhost != null) {
             mediaPlayerGhost.release();
         }
-        mediaPlayerGhost = MediaPlayer.create(this,R.raw.ghost_appear_sound);
+        mediaPlayerGhost = MediaPlayer.create(this, R.raw.ghost_appear_sound);
         if (isGhostAppeared)
             mediaPlayerGhost.start();
         mediaPlayerGhost.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                if (isGhostAppeared){
+                if (isGhostAppeared) {
                     mediaPlayer.seekTo(0);
                     mediaPlayer.start();
                 }
@@ -112,27 +208,32 @@ public class GhostActivity extends BaseActivity2 {
         });
 
     }
-    private void stopGhostAppearSound(){
-        if (mediaPlayerGhost!=null){
+
+    private void stopGhostAppearSound() {
+        if (mediaPlayerGhost != null) {
             mediaPlayerGhost.release();
-            mediaPlayerGhost=null;
+            mediaPlayerGhost = null;
         }
     }
-    private void stopBackgroundSound(){
-        if (mediaPlayerBackground!=null){
+
+    private void stopBackgroundSound() {
+        if (mediaPlayerBackground != null) {
             mediaPlayerBackground.release();
-            mediaPlayerBackground=null;
+            mediaPlayerBackground = null;
         }
     }
+
     private void initUI() {
+        binding.header.imgSetting.setVisibility(View.VISIBLE);
+        binding.header.tvTitle.setText(R.string.ghost);
         startCameraBack();
         playBackgroundSound();
         startSecondHandAnimation();
-        initUIHeader();
         showEvpLevel();
         showTextScan();
     }
-    private void showEvpLevel(){
+
+    private void showEvpLevel() {
         Handler handler1 = new Handler();
         Runnable runnable = new Runnable() {
             @Override
@@ -141,8 +242,9 @@ public class GhostActivity extends BaseActivity2 {
                 if (!isGhostAppeared) {
                     for (int i = 0; i < 7; i++) ghostImage[i].setVisibility(View.GONE);
                     for (int i = 0; i < 7; i++) pointSign[i].setVisibility(View.GONE);
-                    mActivityGhostBinding.layoutPointSign.setVisibility(View.GONE);
-                    mActivityGhostBinding.layoutCameraGhost.setVisibility(View.GONE);
+                    for (int i = 0; i < 7; i++) ghostSign[i].setVisibility(View.GONE);
+                    binding.layoutPointSign.setVisibility(View.GONE);
+                    binding.layoutCameraGhost.setVisibility(View.GONE);
                     Random randomLine = new Random();
                     int line = randomLine.nextInt(5);
                     if (line == 1 || line == 3) {
@@ -168,9 +270,9 @@ public class GhostActivity extends BaseActivity2 {
 
                 } else {
                     if (isLightSign) {
-                        mActivityGhostBinding.layoutPointSign.setVisibility(View.VISIBLE);
+                        binding.layoutPointSign.setVisibility(View.VISIBLE);
                     } else {
-                        mActivityGhostBinding.layoutPointSign.setVisibility(View.GONE);
+                        binding.layoutPointSign.setVisibility(View.GONE);
                     }
                     isLightSign = !isLightSign;
                     for (int i = 0; i < 54; i++) {
@@ -194,43 +296,51 @@ public class GhostActivity extends BaseActivity2 {
         };
         handler1.postDelayed(runnable, 250);
     }
-    private void showTextScan(){
+
+    private void showTextScan() {
         Handler handler2 = new Handler();
         handler2.post(new Runnable() {
             @Override
             public void run() {
                 displayTextTime--;
                 if (displayTextTime > 0) {
-                    mActivityGhostBinding.tvGhostScan.setVisibility(View.VISIBLE);
+                    binding.tvGhostScan.setVisibility(View.VISIBLE);
                     handler2.postDelayed(this, 1000);
                 } else {
-                    mActivityGhostBinding.tvGhostScan.setVisibility(View.GONE);
+                    binding.tvGhostScan.setVisibility(View.GONE);
                     handler2.removeCallbacks(this);
                 }
             }
         });
     }
-    private void getGhost() {
+
+    private void randomToSeeGhost() {
         Random random = new Random();
         boolean isSoonToSee = random.nextBoolean();
         int timeRandomSee = random.nextInt(11);
         timeToSee = 30;
         if (isSoonToSee) timeToSee -= timeRandomSee;
         else timeToSee += timeRandomSee;
+    }
+
+    private void getGhost() {
+        randomToSeeGhost();
         ghostAppearRunable = new Runnable() {
             @Override
             public void run() {
                 if (isStartGetGhost) {
                     timeToSee--;
-                    mActivityGhostBinding.layoutSignGhost.setVisibility(View.GONE);
+                    binding.layoutSignGhost.setVisibility(View.GONE);
                     if (timeToSee > 0) {
                         ghostHandler.postDelayed(this, 1000);
                     } else {
+                        ghostHandler.removeCallbacks(this);
                         ghostAppear();
                     }
                 } else {
                     ghostHandler.postDelayed(this, 1000);
                 }
+                Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost + " " + timeToSee);
             }
         };
         ghostHandler.postDelayed(ghostAppearRunable, 1000);
@@ -238,13 +348,14 @@ public class GhostActivity extends BaseActivity2 {
 
     private void ghostAppear() {
         isGhostAppeared = true;
-        ghostHandler.removeCallbacks(ghostAppearRunable);
+        Log.d("isCheckGhost", "isGhostAppeared: " + isGhostAppeared);
         Random random = new Random();
         boolean isSoonToLeave = random.nextBoolean();
         int timeRandomLeave = random.nextInt(11);
         timeToLeave = 15;
         if (isSoonToLeave) timeToLeave -= timeRandomLeave;
         else timeToLeave += timeRandomLeave;
+        timeShowSignGhost = timeToLeave - 1;
         appearedGhost = random.nextInt(10);
         appearedGhostImage = random.nextInt(7);
         playGhostAppearSound();
@@ -255,12 +366,27 @@ public class GhostActivity extends BaseActivity2 {
                 ghostImage[appearedGhostImage].setVisibility(View.VISIBLE);
                 pointSign[appearedGhostImage].setVisibility(View.VISIBLE);
                 timeToLeave--;
-                mActivityGhostBinding.layoutCameraGhost.setVisibility(View.VISIBLE);
-                mActivityGhostBinding.layoutSignGhost.setVisibility(View.VISIBLE);
+                binding.layoutCameraGhost.setVisibility(View.VISIBLE);
+                binding.layoutSignGhost.setVisibility(View.VISIBLE);
                 if (timeToLeave > 0) {
+                    if (timeToLeave < timeShowSignGhost) {
+                        if (isGhostSignShow)
+                            ghostSign[appearedGhostImage].setVisibility(View.VISIBLE);
+                        else ghostSign[appearedGhostImage].setVisibility(View.INVISIBLE);
+                        isGhostSignShow = !isGhostSignShow;
+                        new Handler().postDelayed(() -> {
+                            if (isGhostSignShow)
+                                ghostSign[appearedGhostImage].setVisibility(View.VISIBLE);
+                            else ghostSign[appearedGhostImage].setVisibility(View.INVISIBLE);
+                            isGhostSignShow = !isGhostSignShow;
+                        }, 500);
+                    }
+                    Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost + " " + timeToLeave);
                     ghostHandler.postDelayed(this, 1000);
                 } else {
                     isGhostAppeared = false;
+                    //isStartGetGhost = true;
+                    Log.d("isCheckGhost", "isGhostAppeared: " + isGhostAppeared);
                     ghostHandler.removeCallbacks(this);
                     stopGhostAppearSound();
                     getGhost();
@@ -272,15 +398,15 @@ public class GhostActivity extends BaseActivity2 {
 
     private void initData() {
         evp = new ImageView[]{
-                mActivityGhostBinding.evp0, mActivityGhostBinding.evp1, mActivityGhostBinding.evp2, mActivityGhostBinding.evp3, mActivityGhostBinding.evp4, mActivityGhostBinding.evp5,
-                mActivityGhostBinding.evp6, mActivityGhostBinding.evp7, mActivityGhostBinding.evp8, mActivityGhostBinding.evp9, mActivityGhostBinding.evp10, mActivityGhostBinding.evp11,
-                mActivityGhostBinding.evp12, mActivityGhostBinding.evp13, mActivityGhostBinding.evp14, mActivityGhostBinding.evp15, mActivityGhostBinding.evp16, mActivityGhostBinding.evp17,
-                mActivityGhostBinding.evp18, mActivityGhostBinding.evp19, mActivityGhostBinding.evp20, mActivityGhostBinding.evp21, mActivityGhostBinding.evp22, mActivityGhostBinding.evp23,
-                mActivityGhostBinding.evp24, mActivityGhostBinding.evp25, mActivityGhostBinding.evp26, mActivityGhostBinding.evp27, mActivityGhostBinding.evp28, mActivityGhostBinding.evp29,
-                mActivityGhostBinding.evp30, mActivityGhostBinding.evp31, mActivityGhostBinding.evp32, mActivityGhostBinding.evp33, mActivityGhostBinding.evp34, mActivityGhostBinding.evp35,
-                mActivityGhostBinding.evp36, mActivityGhostBinding.evp37, mActivityGhostBinding.evp38, mActivityGhostBinding.evp39, mActivityGhostBinding.evp40, mActivityGhostBinding.evp41,
-                mActivityGhostBinding.evp42, mActivityGhostBinding.evp43, mActivityGhostBinding.evp44, mActivityGhostBinding.evp45, mActivityGhostBinding.evp46, mActivityGhostBinding.evp47,
-                mActivityGhostBinding.evp48, mActivityGhostBinding.evp49, mActivityGhostBinding.evp50, mActivityGhostBinding.evp51, mActivityGhostBinding.evp52, mActivityGhostBinding.evp53
+                binding.evp0, binding.evp1, binding.evp2, binding.evp3, binding.evp4, binding.evp5,
+                binding.evp6, binding.evp7, binding.evp8, binding.evp9, binding.evp10, binding.evp11,
+                binding.evp12, binding.evp13, binding.evp14, binding.evp15, binding.evp16, binding.evp17,
+                binding.evp18, binding.evp19, binding.evp20, binding.evp21, binding.evp22, binding.evp23,
+                binding.evp24, binding.evp25, binding.evp26, binding.evp27, binding.evp28, binding.evp29,
+                binding.evp30, binding.evp31, binding.evp32, binding.evp33, binding.evp34, binding.evp35,
+                binding.evp36, binding.evp37, binding.evp38, binding.evp39, binding.evp40, binding.evp41,
+                binding.evp42, binding.evp43, binding.evp44, binding.evp45, binding.evp46, binding.evp47,
+                binding.evp48, binding.evp49, binding.evp50, binding.evp51, binding.evp52, binding.evp53
         };
         evpLevel = new int[]{
                 R.drawable.img_evp_0, R.drawable.img_evp_1, R.drawable.img_evp_2, R.drawable.img_evp_3, R.drawable.img_evp_4,
@@ -293,14 +419,19 @@ public class GhostActivity extends BaseActivity2 {
                 R.drawable.img_ghost_1, R.drawable.img_ghost_2, R.drawable.img_ghost_3, R.drawable.img_ghost_4, R.drawable.img_ghost_5
         };
         ghostImage = new ImageView[]{
-                mActivityGhostBinding.imgGhost11, mActivityGhostBinding.imgGhost22, mActivityGhostBinding.imgGhost33,
-                mActivityGhostBinding.imgGhost44, mActivityGhostBinding.imgGhost55, mActivityGhostBinding.imgGhost4,
-                mActivityGhostBinding.imgGhost5
+                binding.imgGhost11, binding.imgGhost22, binding.imgGhost33,
+                binding.imgGhost44, binding.imgGhost55, binding.imgGhost4,
+                binding.imgGhost5
         };
         pointSign = new ImageView[]{
-                mActivityGhostBinding.imgPointSign1, mActivityGhostBinding.imgPointSign7, mActivityGhostBinding.imgPointSign3,
-                mActivityGhostBinding.imgPointSign4, mActivityGhostBinding.imgPointSign5,mActivityGhostBinding.imgPointSign6,
-                mActivityGhostBinding.imgPointSign2
+                binding.imgPointSign1, binding.imgPointSign7, binding.imgPointSign3,
+                binding.imgPointSign4, binding.imgPointSign5, binding.imgPointSign6,
+                binding.imgPointSign2
+        };
+        ghostSign = new ImageView[]{
+                binding.signGhost11, binding.signGhost22, binding.signGhost33,
+                binding.signGhost44, binding.signGhost55, binding.signGhost4,
+                binding.signGhost5
         };
     }
 
@@ -318,77 +449,27 @@ public class GhostActivity extends BaseActivity2 {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
-    private void initListener() {
-        initListenerHeader();
-        mActivityGhostBinding.layoutCameraGhost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EventTracking.logEvent(GhostActivity.this,"ghost_camera_click");
-                if (!isStartGetGhost) return;//ngăn user k bấm 2 lần khi activity chưa chuyển
-                isStartGetGhost = false;
-                if (imageCapture == null) {
-                    Toast.makeText(GhostActivity.this, "Camera is not available!", Toast.LENGTH_SHORT).show();
-                    isStartGetGhost = true;
-                    return;
-                }
-                alertDialog.show();
-                timeToLeave += 2;
-                imageCapture.takePicture(ContextCompat.getMainExecutor(GhostActivity.this),
-                        new ImageCapture.OnImageCapturedCallback() {
-                            @Override
-                            public void onCaptureSuccess(@NonNull ImageProxy image) {
-                                @ExperimentalGetImage Image media = image.getImage();
-                                @OptIn(markerClass = ExperimentalGetImage.class) Bitmap bitmap = imageToBitmap(media);
-                                int rotationDegrees = image.getImageInfo().getRotationDegrees();
-                                if (rotationDegrees != 0) {
-                                    Matrix matrix = new Matrix();
-                                    matrix.postRotate(rotationDegrees);
-                                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                                }
-                                image.close();
-                                capturedBitmap = bitmap;
-                                startNextActivity(ImageCaptureActivity.class, null);
-                                alertDialog.dismiss();
-                            }
-
-                            @Override
-                            public void onError(@NonNull ImageCaptureException exception) {
-                                alertDialog.dismiss();
-                                Toast.makeText(GhostActivity.this, "Error capturing image", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-        });
+    private void checkToBackGhostActivity() {
+        if (isGhostAppeared) {
+            playGhostAppearSound();
+            isStartGetGhost = false;
+            new Handler().postDelayed(() -> {
+                isStartGetGhost = true;
+            }, timeToLeave);
+        } else {
+            isStartGetGhost = true;
+        }
+        Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost);
+        playBackgroundSound();
     }
 
-    private void initUIHeader() {
-        mActivityGhostBinding.header.tvTitle.setText(R.string.ghost);
-    }
-
-    private void initListenerHeader() {
-        mActivityGhostBinding.header.imgLeft.setOnClickListener(view -> {
-            onBackPressed();
-
-        });
-        mActivityGhostBinding.header.imgSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GhostActivity.this, SettingActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-//    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-//        if (result.getResultCode() == RESULT_OK) {
-//            //binding.nativeHome.removeAllViews();
-//            try {
-//                //binding.nativeHome.addView((NativeAdView) LayoutInflater.from(MainActivity.this).inflate(R.layout.layout_native_load_large, null));
-//                //loadNativeHome();
-//            } catch (Exception e) {
-//                //binding.nativeHome.setVisibility(View.INVISIBLE);
-//            }
-//        }
-//    });
+    public ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            isActivityGhost = true;
+            Log.d("isCheckGhost", "isActivityGhost: " + isActivityGhost);
+            checkToBackGhostActivity();
+        }
+    });
 
     private void startSecondHandAnimation() {
         handler.postDelayed(new Runnable() {
@@ -399,7 +480,7 @@ public class GhostActivity extends BaseActivity2 {
                 rotate.setDuration(100);
                 rotate.setFillAfter(true);
                 rotate.setInterpolator(new LinearInterpolator());
-                mActivityGhostBinding.imgRadarScan.startAnimation(rotate);
+                binding.imgRadarScan.startAnimation(rotate);
 
                 degrees += 15;
                 if (degrees == 360) {
@@ -433,7 +514,7 @@ public class GhostActivity extends BaseActivity2 {
                     cameraSelector = new CameraSelector.Builder()
                             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                             .build();
-                    preview.setSurfaceProvider(mActivityGhostBinding.previewView.getSurfaceProvider());
+                    preview.setSurfaceProvider(binding.previewView.getSurfaceProvider());
                     //bindPreviewBack();
                     bindPreViewToCaptureImage();
                 } catch (Exception e) {
@@ -446,6 +527,8 @@ public class GhostActivity extends BaseActivity2 {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ghostHandler.removeCallbacks(ghostAppearRunable);
+        ghostHandler.removeCallbacks(ghostLeaveRunnable);
         stopBackgroundSound();
         stopGhostAppearSound();
         if (cameraProvider != null) {
@@ -457,6 +540,16 @@ public class GhostActivity extends BaseActivity2 {
     protected void onStop() {
         super.onStop();
         isStartGetGhost = false;
+        Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost);
+        stopBackgroundSound();
+        stopGhostAppearSound();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isStartGetGhost = false;
+        Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost);
         stopBackgroundSound();
         stopGhostAppearSound();
     }
@@ -464,16 +557,47 @@ public class GhostActivity extends BaseActivity2 {
     @Override
     protected void onResume() {
         super.onResume();
-        isStartGetGhost = true;
-        if (isGhostAppeared) playGhostAppearSound();
-        playBackgroundSound();
+        if (IsNetWork.haveNetworkConnection(this)) {
+            if (ConstantRemote.resume) {
+                AppOpenManager.getInstance().enableAppResumeWithActivity(GhostActivity.class);
+                AppOpenManager.getInstance().setEnableScreenContentCallback(true);
+                AppOpenManager.getInstance().setFullScreenContentCallback(
+                        new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                if (isActivityGhost){
+                                    checkToBackGhostActivity();
+                                    AppOpenManager.getInstance().removeFullScreenContentCallback();
+                                    Log.d("adresumeghost", "Dissmiss");
+                                }
+
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                if (isActivityGhost){
+                                    checkToBackGhostActivity();
+                                    AppOpenManager.getInstance().removeFullScreenContentCallback();
+                                    Log.d("adresumeghost", "fail");
+                                }
+
+                            }
+                        }
+                );
+
+            } else {
+                AppOpenManager.getInstance().disableAppResumeWithActivity(GhostActivity.class);
+                checkToBackGhostActivity();
+                Log.d("adresumeghost", "false_config");
+            }
+        } else {
+            checkToBackGhostActivity();
+        }
+
+
     }
 
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        setResult(RESULT_OK);
-        EventTracking.logEvent(this,"ghost_back_click");
-        finish();
-    }
+
 }
