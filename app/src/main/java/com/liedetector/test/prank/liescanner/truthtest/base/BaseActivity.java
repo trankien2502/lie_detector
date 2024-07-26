@@ -65,20 +65,6 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         alertDialog.dismiss();
     }
 
-    public void loadBanner(RelativeLayout view) {
-        if (IsNetWork.haveNetworkConnection(this) && ConstantIdAds.listIDAdsBanner.size() != 0 && ConstantRemote.banner) {
-            view.removeAllViews();
-            RelativeLayout layout = (RelativeLayout) LayoutInflater.from(this).inflate(com.ads.sapp.R.layout.layout_banner_control, null, false);
-            view.addView(layout);
-            Admob.getInstance().loadBannerFloor(this, ConstantIdAds.listIDAdsBanner);
-            view.setVisibility(View.VISIBLE);
-        } else {
-            view.setVisibility(View.GONE);
-        }
-
-
-    }
-
 
     private void createLoadingDialog(){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
