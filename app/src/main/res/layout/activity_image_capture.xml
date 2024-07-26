@@ -32,7 +32,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view1"
                 android:layout_width="311dp"
-                android:layout_height="472dp"
+                android:layout_height="552dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
@@ -48,96 +48,21 @@
                     <ImageView
                         android:id="@+id/img_image_capture"
                         android:layout_width="311dp"
-                        android:layout_height="472dp"
+                        android:layout_height="552dp"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY" />
                     <ImageView
-                        android:id="@+id/img_ghost_4"
-                        android:layout_width="165dp"
-                        android:layout_height="285dp"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginEnd="0dp"
-                        android:visibility="gone"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="center"
-                        android:src="@drawable/img_ghost_55"/>
-                    <ImageView
-                        android:id="@+id/img_ghost_5"
-                        android:layout_width="125dp"
-                        android:layout_height="220dp"
-                        android:layout_marginTop="97dp"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginEnd="0dp"
-                        android:visibility="gone"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="top|center_horizontal"
-                        android:src="@drawable/img_ghost_5"/>
-
-                    <ImageView
-                        android:id="@+id/img_ghost_11"
-                        android:layout_width="170dp"
-                        android:layout_height="315dp"
-                        android:layout_marginBottom="-10dp"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginEnd="10dp"
-                        android:visibility="gone"
-                        android:layout_gravity="bottom|end"
-                        android:src="@drawable/img_ghost_11"/>
-                    <ImageView
-                        android:id="@+id/img_ghost_22"
-                        android:layout_width="170dp"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="70dp"
-                        android:layout_marginEnd="14dp"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginStart="0dp"
-                        android:visibility="gone"
-                        android:layout_gravity="center|top"
-                        android:src="@drawable/img_ghost_55"/>
-                    <ImageView
-                        android:id="@+id/img_ghost_33"
-                        android:layout_width="145dp"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="55dp"
-                        android:layout_marginEnd="40dp"
-                        android:layout_marginBottom="0dp"
-                        android:layout_marginStart="0dp"
-                        android:visibility="gone"
-                        android:layout_gravity="top|end"
-                        android:src="@drawable/img_ghost_5"/>
-                    <ImageView
-                        android:id="@+id/img_ghost_44"
-                        android:layout_width="140dp"
-                        android:layout_height="225dp"
-                        android:layout_marginTop="60dp"
-                        android:layout_marginEnd="0dp"
-                        android:layout_marginBottom="0dp"
-                        android:scaleType="fitCenter"
-                        android:layout_marginStart="15dp"
-                        android:visibility="gone"
-                        android:layout_gravity="top|start"
-                        android:src="@drawable/img_ghost_11"/>
-                    <ImageView
-                        android:id="@+id/img_ghost_55"
-                        android:layout_width="165dp"
-                        android:layout_height="345dp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="-35dp"
-                        android:scaleType="fitCenter"
-                        android:layout_marginStart="15dp"
-                        android:visibility="gone"
-                        android:layout_gravity="bottom|start"
-                        android:src="@drawable/img_ghost_55"/>
-
+                        android:id="@+id/img_ghost_filter"
+                        android:layout_width="311dp"
+                        android:layout_height="552dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitXY"/>
                     <ImageView
                         android:id="@+id/img_image_filter"
                         android:layout_width="311dp"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
+                        android:visibility="invisible"
                         android:scaleType="fitXY"
                         android:src="@drawable/img_filter_camera" />
                 </FrameLayout>

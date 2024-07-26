@@ -114,7 +114,6 @@ public class LanguageStartAdapter extends RecyclerView.Adapter<LanguageStartAdap
     public void setCheck(String code) {
         for (LanguageModel item : languageModelList) {
             item.setActive(item.getCode().equals(code));
-
         }
         notifyDataSetChanged();
     }

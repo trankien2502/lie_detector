@@ -7,12 +7,11 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.core.content.FileProvider;
 
 
@@ -39,8 +38,6 @@ import java.io.IOException;
 
 public class ImageCaptureActivity extends BaseActivity<ActivityImageCaptureBinding> {
     public static Bitmap finalBitmap;
-    ImageView[] ghostImage = null;
-    int[] ghost = null;
     private final String AUTHORITY = "com.liedetector.test.prank.liescanner.truthtest.fileprovider";
 
     @Override
@@ -50,12 +47,12 @@ public class ImageCaptureActivity extends BaseActivity<ActivityImageCaptureBindi
 
     @Override
     public void initView() {
-        initData();
         binding.header.imgSetting.setVisibility(View.INVISIBLE);
         binding.header.tvTitle.setText(R.string.image_capture);
         binding.imgImageCapture.setImageBitmap(GhostActivity.capturedBitmap);
-        ghostImage[GhostActivity.appearedGhostImage].setImageResource(ghost[GhostActivity.appearedGhost]);
-        ghostImage[GhostActivity.appearedGhostImage].setVisibility(View.VISIBLE);
+        binding.imgGhostFilter.setImageBitmap(GhostActivity.capturedGhost);
+//        ghostImage[GhostActivity.appearedGhostImage].setImageResource(ghost[GhostActivity.appearedGhost]);
+//        ghostImage[GhostActivity.appearedGhostImage].setVisibility(View.VISIBLE);
         EventTracking.logEvent(this, "ghost_result_view");
     }
 
@@ -119,17 +116,17 @@ public class ImageCaptureActivity extends BaseActivity<ActivityImageCaptureBindi
 //        }
 //    }
 
-    private void initData() {
-        ghostImage = new ImageView[]{
-                binding.imgGhost11, binding.imgGhost22, binding.imgGhost33,
-                binding.imgGhost44, binding.imgGhost55, binding.imgGhost4,
-                binding.imgGhost5
-        };
-        ghost = new int[]{
-                R.drawable.img_ghost_11, R.drawable.img_ghost_22, R.drawable.img_ghost_33, R.drawable.img_ghost_44, R.drawable.img_ghost_55,
-                R.drawable.img_ghost_1, R.drawable.img_ghost_2, R.drawable.img_ghost_3, R.drawable.img_ghost_4, R.drawable.img_ghost_5
-        };
-    }
+//    private void initData() {
+//        ghostImage = new ImageView[]{
+//                binding.imgGhost11, binding.imgGhost22, binding.imgGhost33,
+//                binding.imgGhost44, binding.imgGhost55, binding.imgGhost4,
+//                binding.imgGhost5
+//        };
+//        ghost = new int[]{
+//                R.drawable.img_ghost_11, R.drawable.img_ghost_22, R.drawable.img_ghost_33, R.drawable.img_ghost_44, R.drawable.img_ghost_55,
+//                R.drawable.img_ghost_1, R.drawable.img_ghost_2, R.drawable.img_ghost_3, R.drawable.img_ghost_4, R.drawable.img_ghost_5
+//        };
+//    }
 
     private void shareImage(Uri uri) {
         Intent shareIntent = new Intent();
@@ -153,8 +150,6 @@ public class ImageCaptureActivity extends BaseActivity<ActivityImageCaptureBindi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        for (int i = 0; i < 5; i++) ghostImage[i].setVisibility(View.GONE);
-
     }
 
     @Override

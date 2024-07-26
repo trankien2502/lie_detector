@@ -3,12 +3,15 @@ package com.liedetector.test.prank.liescanner.truthtest.ui.ghost;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.Rational;
+import android.util.Size;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -20,6 +23,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
+import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageCapture;
@@ -50,6 +54,7 @@ import com.liedetector.test.prank.liescanner.truthtest.util.EventTracking;
 
 import java.nio.ByteBuffer;
 import java.util.Random;
+import java.util.function.BiPredicate;
 
 public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
 
@@ -60,7 +65,7 @@ public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
     private final Handler handler = new Handler();
     Handler ghostHandler = new Handler();
     private int degrees = 0;
-    public static Bitmap capturedBitmap;
+    public static Bitmap capturedBitmap, capturedGhost;
     ImageCapture imageCapture;
     Runnable ghostAppearRunable, ghostLeaveRunnable;
     ImageView[] evp = null;
@@ -137,11 +142,12 @@ public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
                                     bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                                 }
                                 image.close();
+                                capturedGhost = getImageLayout(binding.layoutGetImage);
                                 capturedBitmap = bitmap;
                                 AppOpenManager.getInstance().disableAppResumeWithActivity(GhostActivity.class);
-                                //startNextActivity(ImageCaptureActivity.class, null);
                                 resultLauncher.launch(new Intent(GhostActivity.this, ImageCaptureActivity.class));
                                 dismissLoadingDialog();
+                                Log.e("isCheckGhost"," "+binding.previewView.getWidth()+binding.previewView.getHeight());
                             }
 
                             @Override
@@ -152,6 +158,30 @@ public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
                         });
             }
         });
+    }
+    public Bitmap getImageLayout(View view){
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
+    }
+    public Bitmap getViewGhostInsideLayout(View layoutGhost, View ghost){
+        Bitmap bitmap = Bitmap.createBitmap(layoutGhost.getWidth(), layoutGhost.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        layoutGhost.draw(canvas);
+        int[] location = new int[2];
+        ghost.getLocationInWindow(location);
+        canvas.translate(-location[0], -location[1]);
+        ghost.draw(canvas);
+        return bitmap;
+    }
+    public Bitmap combineBitmaps(Bitmap bitmapCamera, Bitmap bitmapGhost) {
+        Bitmap combinedBitmap = Bitmap.createBitmap(bitmapCamera.getWidth(), bitmapCamera.getHeight(), bitmapCamera.getConfig());
+        Canvas canvas = new Canvas(combinedBitmap);
+        canvas.drawBitmap(bitmapCamera, 0, 0, null);
+        canvas.drawBitmap(bitmapGhost, 0, 0, null);
+
+        return combinedBitmap;
     }
 
 //    private void loadBanner() {
@@ -226,11 +256,11 @@ public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
     private void initUI() {
         binding.header.imgSetting.setVisibility(View.VISIBLE);
         binding.header.tvTitle.setText(R.string.ghost);
-        startCameraBack();
         playBackgroundSound();
         startSecondHandAnimation();
         showEvpLevel();
         showTextScan();
+        startCameraBack();
     }
 
     private void showEvpLevel() {
@@ -494,7 +524,7 @@ public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
 
     private void bindPreViewToCaptureImage() {
         cameraProvider.unbindAll();
-        imageCapture = new ImageCapture.Builder().build();
+        imageCapture = new ImageCapture.Builder().setTargetResolution(new Size(binding.previewView.getWidth(),binding.previewView.getHeight())).build();
         cameraProvider.bindToLifecycle((LifecycleOwner) GhostActivity.this, cameraSelector, preview, imageCapture);
     }
 
@@ -527,6 +557,7 @@ public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("isCheckGhost", "onDestroy: " );
         ghostHandler.removeCallbacks(ghostAppearRunable);
         ghostHandler.removeCallbacks(ghostLeaveRunnable);
         stopBackgroundSound();
@@ -543,6 +574,7 @@ public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
         Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost);
         stopBackgroundSound();
         stopGhostAppearSound();
+        Log.d("isCheckGhost", "onStop: " );
     }
 
     @Override
@@ -550,12 +582,14 @@ public class GhostActivity extends BaseActivity<ActivityGhostBinding> {
         super.onPause();
         isStartGetGhost = false;
         Log.d("isCheckGhost", "isStartGetGhost: " + isStartGetGhost);
+        Log.d("isCheckGhost", "onPause: " );
         stopBackgroundSound();
         stopGhostAppearSound();
     }
 
     @Override
     protected void onResume() {
+        Log.d("isCheckGhost", "onResume: " );
         super.onResume();
         if (IsNetWork.haveNetworkConnection(this)) {
             if (ConstantRemote.resume) {

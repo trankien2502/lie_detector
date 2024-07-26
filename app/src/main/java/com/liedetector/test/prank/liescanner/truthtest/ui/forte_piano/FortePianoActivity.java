@@ -127,13 +127,13 @@ public class FortePianoActivity extends BaseActivity<ActivityFortePianoBinding> 
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        Log.d("piano","down " + i);
+                        Log.d("piano_check","down " + i);
                         setImageNoteResourse(i, R.drawable.img_black_note_below_press, R.drawable.img_black_note_press, R.drawable.img_black_note_above_press, R.drawable.img_white_note_press);
                         soundPool.play(soundIds[i + note], 1, 1, 0, 0, 1);
                         break;
                     case MotionEvent.ACTION_UP:
                         //runnable = () -> pianoNote[i].setImageResource(R.drawable.img_white_note_default);
-                        Log.d("piano","up " + i);
+                        Log.d("piano_check","up " + i);
                         setImageNoteResourse(i, R.drawable.img_black_note_below_default, R.drawable.img_black_note_default, R.drawable.img_black_note_above_default, R.drawable.img_white_note_default);
                         break;
                 }
